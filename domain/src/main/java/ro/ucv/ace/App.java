@@ -27,9 +27,7 @@ public class App {
 
         app.sayHello();
         app.saveTasks();
-        app.getTasks();
-        app.taskService.updateTask();
-
+        app.findTaskByName();
     }
 
     private void sayHello() {
@@ -46,6 +44,11 @@ public class App {
 
     public void getTasks() {
         List<Task> tasks = taskService.findTasks();
+        tasks.forEach(System.out::println);
+    }
+
+    public void findTaskByName() {
+        List<Task> tasks = taskService.findTaskByName("mt");
         tasks.forEach(System.out::println);
     }
 }

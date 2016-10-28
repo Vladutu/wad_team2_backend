@@ -31,4 +31,8 @@ public class TaskService {
         Task t = tasks.get(0);
         t.setName("updatedName");
     }
+
+    public List<Task> findTaskByName(String name) {
+        return taskRepository.findTaskByName(name);
+    }
 }

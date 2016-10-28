@@ -11,15 +11,6 @@ import javax.persistence.Table;
 @Table(name = "AUTOMATIC_TESTED_CLASS")
 public class AutomaticTestedTask extends AbstractTask {
 
-    @Column(name = "NAME", length = 100, nullable = false, unique = true)
-    private String name;
-
-    @Column(name = "DESCRIPTION", length = 5000, nullable = false)
-    private String description;
-
-    @Column(name = "LANGUAGE", length = 30, nullable = false)
-    private String language;
-
     @Column(name = "INPUT_FILE", length = 10000, nullable = false)
     private String inputFile;
 
@@ -30,26 +21,22 @@ public class AutomaticTestedTask extends AbstractTask {
     }
 
     public AutomaticTestedTask(String name, String description, String language, String inputFile, String outputFile) {
-        this.name = name;
-        this.description = description;
-        this.language = language;
+        super(name, description, language);
         this.inputFile = inputFile;
         this.outputFile = outputFile;
+    }
+
+
+    @Override
+    public void setName(String updatedName) {
+        super.setName(updatedName);
     }
 
     @Override
     public String toString() {
         return "AutomaticTestedTask{" +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", language='" + language + '\'' +
-                ", inputFile='" + inputFile + '\'' +
+                "inputFile='" + inputFile + '\'' +
                 ", outputFile='" + outputFile + '\'' +
-                '}';
-    }
-
-    @Override
-    public void setName(String updatedName) {
-        this.name = updatedName;
+                "} " + super.toString();
     }
 }

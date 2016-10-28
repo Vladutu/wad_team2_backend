@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Geo on 28.10.2016.
@@ -34,5 +35,11 @@ public class TaskRepository {
         abstractTasks.forEach(tasks::add);
 
         return tasks;
+    }
+
+    public List<Task> findTaskByName(String name) {
+        return jinqSource.streamAll(entityManager, AbstractTask.class)
+                .where(t -> t.getName().equals(name))
+                .collect(Collectors.toList());
     }
 }

@@ -5,4 +5,6 @@ package ro.ucv.ace.model;
  */
 public interface Task {
     void setName(String updatedName);
+
+    void addSubject(Subject subject);
 }

@@ -24,6 +24,11 @@ public class ManualTestedTask extends AbstractTask {
     }
 
     @Override
+    public void addSubject(Subject subject) {
+        super.addSubject(subject);
+    }
+
+    @Override
     public String toString() {
         return "ManualTestedTask{} " + super.toString();
     }

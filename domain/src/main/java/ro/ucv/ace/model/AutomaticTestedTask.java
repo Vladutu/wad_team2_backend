@@ -8,7 +8,7 @@ import javax.persistence.Table;
  * Created by Geo on 28.10.2016.
  */
 @Entity
-@Table(name = "AUTOMATIC_TESTED_CLASS")
+@Table(name = "AUTOMATIC_TESTED_TASK")
 public class AutomaticTestedTask extends AbstractTask {
 
     @Column(name = "INPUT_FILE", length = 10000, nullable = false)
@@ -30,6 +30,11 @@ public class AutomaticTestedTask extends AbstractTask {
     @Override
     public void setName(String updatedName) {
         super.setName(updatedName);
+    }
+
+    @Override
+    public void addSubject(Subject subject) {
+        super.addSubject(subject);
     }
 
     @Override

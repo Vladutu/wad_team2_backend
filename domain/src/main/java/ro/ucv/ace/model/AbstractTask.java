@@ -1,6 +1,8 @@
 package ro.ucv.ace.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Geo on 28.10.2016.
@@ -23,6 +25,13 @@ public abstract class AbstractTask implements Task {
     @Column(name = "LANGUAGE", length = 30, nullable = false)
     private String language;
 
+    @ManyToMany
+    @JoinTable(name = "TASK_SUBJECT",
+            joinColumns = {@JoinColumn(name = "TASK_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "SUBJECT_ID", referencedColumnName = "ID")}
+    )
+    private List<Subject> subjects = new ArrayList<>();
+
     public AbstractTask() {
     }
 
@@ -35,6 +44,11 @@ public abstract class AbstractTask implements Task {
     @Override
     public void setName(String updatedName) {
         name = updatedName;
+    }
+
+    @Override
+    public void addSubject(Subject subject) {
+        subjects.add(subject);
     }
 
     public String getName() {

@@ -15,6 +15,10 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ro.ucv.ace.model.AbstractTask;
+import ro.ucv.ace.model.Task;
+import ro.ucv.ace.repository.JpaRepository;
+import ro.ucv.ace.repository.JpaRepositoryImpl;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -86,5 +90,10 @@ public class DomainConfig {
     @Bean
     JpaVendorAdapter jpaVendorAdapter() {
         return new HibernateJpaVendorAdapter();
+    }
+
+    @Bean(name = "innerTaskRepository")
+    JpaRepository<Task, AbstractTask, Integer> taskRepository() {
+        return new JpaRepositoryImpl<>(Task.class, AbstractTask.class);
     }
 }

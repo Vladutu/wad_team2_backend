@@ -12,27 +12,29 @@ import java.util.List;
  * Created by Geo on 28.10.2016.
  */
 @Service("taskService")
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
 
-    public void saveTask(Task task) {
-        taskRepository.saveTask(task);
+    public List<Task> findAll() {
+        return taskRepository.findAll();
     }
 
-    public List<Task> findTasks() {
-        return taskRepository.findTasks();
+    public List<Task> findByName(String name) {
+        return taskRepository.findByName(name);
     }
 
-    public void updateTask() {
-        List<Task> tasks = findTasks();
-        Task t = tasks.get(0);
-        t.setName("updatedName");
+    public Task findOne(Integer id) {
+        return taskRepository.findOne(id);
     }
 
-    public List<Task> findTaskByName(String name) {
-        return taskRepository.findTaskByName(name);
+    public Task save(Task t) {
+        return taskRepository.save(t);
+    }
+
+    public Task delete(Integer id) {
+        return taskRepository.delete(id);
     }
 }

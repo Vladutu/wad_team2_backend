@@ -1,5 +1,10 @@
 package ro.ucv.ace.model;
 
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import ro.ucv.ace.builder.TestBuilder;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Configurable(preConstruction = true, dependencyCheck = true, autowire = Autowire.BY_TYPE)
 public abstract class AbstractTask implements Task {
 
     @Id
@@ -31,6 +37,10 @@ public abstract class AbstractTask implements Task {
             inverseJoinColumns = {@JoinColumn(name = "SUBJECT_ID", referencedColumnName = "ID")}
     )
     private List<Subject> subjects = new ArrayList<>();
+
+    @Autowired
+    @Transient
+    private TestBuilder testBuilder;
 
     public AbstractTask() {
     }

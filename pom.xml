@@ -171,6 +171,12 @@
                 <artifactId>spring-security-config</artifactId>
                 <version>${springsecurity.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.16.10</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

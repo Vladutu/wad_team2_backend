@@ -15,6 +15,10 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ro.ucv.ace.model.IAuthenticatable;
+import ro.ucv.ace.model.impl.User;
+import ro.ucv.ace.repository.IJpaRepository;
+import ro.ucv.ace.repository.impl.JpaRepository;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -86,5 +90,10 @@ public class DomainConfig {
     @Bean
     JpaVendorAdapter jpaVendorAdapter() {
         return new HibernateJpaVendorAdapter();
+    }
+
+    @Bean(name = "authenticatableRepository")
+    IJpaRepository<IAuthenticatable, User, Integer> authenticatableUserIntegerIJpaRepository() {
+        return new JpaRepository<>(IAuthenticatable.class, User.class);
     }
 }

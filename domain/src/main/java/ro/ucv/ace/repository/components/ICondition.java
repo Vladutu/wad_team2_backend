@@ -9,5 +9,5 @@ import org.jinq.orm.stream.JinqStream;
  * @author Georgian Vladutu
  */
 @FunctionalInterface
-public interface Condition<U> extends JinqStream.Where<U, Exception> {
+public interface ICondition<U> extends JinqStream.Where<U, Exception> {
 }

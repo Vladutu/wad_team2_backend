@@ -1,7 +1,4 @@
-package ro.ucv.ace.model;
-
-import lombok.Getter;
-import lombok.Setter;
+package ro.ucv.ace.model.impl;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -11,8 +8,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "SECRETARY")
-@Getter
-@Setter
 public class Secretary extends User {
 
 }

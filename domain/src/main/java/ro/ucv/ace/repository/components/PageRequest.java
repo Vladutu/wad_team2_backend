@@ -1,9 +1,9 @@
 package ro.ucv.ace.repository.components;
 
 /**
- * This class implements the Page interface.
+ * This class implements the IPage interface.
  */
-public class PageRequest implements Page {
+public class PageRequest implements IPage {
 
     private Integer page;
 

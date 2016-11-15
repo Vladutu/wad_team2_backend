@@ -1,7 +1,4 @@
-package ro.ucv.ace.model;
-
-import lombok.Getter;
-import lombok.Setter;
+package ro.ucv.ace.model.impl;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,8 +9,6 @@ import java.util.List;
  */
 @Entity
 @Table(name = "STUDENT")
-@Getter
-@Setter
 public class Student extends User {
 
     @ManyToOne
@@ -22,4 +17,20 @@ public class Student extends User {
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Solution> solutions = new ArrayList<>();
+
+    public Subgroup getSubgroup() {
+        return subgroup;
+    }
+
+    public void setSubgroup(Subgroup subgroup) {
+        this.subgroup = subgroup;
+    }
+
+    public List<Solution> getSolutions() {
+        return solutions;
+    }
+
+    public void setSolutions(List<Solution> solutions) {
+        this.solutions = solutions;
+    }
 }

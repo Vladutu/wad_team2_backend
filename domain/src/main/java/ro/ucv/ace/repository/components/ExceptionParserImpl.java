@@ -5,12 +5,12 @@ import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Component;
 
 /**
- * This class implements ExceptionParser interface.
+ * This class implements IExceptionParser interface.
  *
  * @author Georgian Vladutu
  */
 @Component
-public class ExceptionParserImpl implements ExceptionParser {
+public class ExceptionParserImpl implements IExceptionParser {
 
     @Override
     public String parsePersistenceException(JpaSystemException e, Class<?> clazz) {

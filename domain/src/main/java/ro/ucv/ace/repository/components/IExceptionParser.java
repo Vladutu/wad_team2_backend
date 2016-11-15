@@ -8,7 +8,7 @@ import org.springframework.orm.jpa.JpaSystemException;
  *
  * @author Georgian Vladutu
  */
-public interface ExceptionParser {
+public interface IExceptionParser {
 
     /**
      * Parses the message of a JpaSystemException object and returns the new message.

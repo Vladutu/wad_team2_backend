@@ -1,4 +1,4 @@
-package ro.ucv.ace.repository;
+package ro.ucv.ace.repository.impl;
 
 import org.jinq.jpa.JPAJinqStream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,20 +8,22 @@ import ro.ucv.ace.config.JinqSource;
 import ro.ucv.ace.exception.DuplicateEntryException;
 import ro.ucv.ace.exception.EntityNotFoundException;
 import ro.ucv.ace.exception.ForeignKeyException;
-import ro.ucv.ace.repository.components.Condition;
-import ro.ucv.ace.repository.components.ExceptionParser;
-import ro.ucv.ace.repository.components.Page;
+import ro.ucv.ace.repository.IJpaRepository;
+import ro.ucv.ace.repository.components.ICondition;
+import ro.ucv.ace.repository.components.IExceptionParser;
+import ro.ucv.ace.repository.components.IPage;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Geo on 28.10.2016.
  */
-public class JpaRepositoryImpl<S, T extends S, ID extends Serializable> implements JpaRepository<S, T, ID> {
+public class JpaRepository<S, T extends S, ID extends Serializable> implements IJpaRepository<S, T, ID> {
 
     private final Class<T> persistentClass;
 
@@ -34,10 +36,10 @@ public class JpaRepositoryImpl<S, T extends S, ID extends Serializable> implemen
     private JinqSource jinqSource;
 
     @Autowired
-    private ExceptionParser exceptionParser;
+    private IExceptionParser exceptionParser;
 
 
-    public JpaRepositoryImpl(Class<S> interfaceClass, Class<T> persistentClass) {
+    public JpaRepository(Class<S> interfaceClass, Class<T> persistentClass) {
         this.persistentClass = persistentClass;
         this.interfaceClass = interfaceClass;
     }
@@ -62,7 +64,7 @@ public class JpaRepositoryImpl<S, T extends S, ID extends Serializable> implemen
     }
 
     @Override
-    public List<S> findAll(Page page) {
+    public List<S> findAll(IPage page) {
         List<T> ts = streamAll()
                 .skip(page.getSkip())
                 .limit(page.getLimit())
@@ -72,7 +74,7 @@ public class JpaRepositoryImpl<S, T extends S, ID extends Serializable> implemen
     }
 
     @Override
-    public List<S> findAllWhere(Condition<T> condition) {
+    public List<S> findAllWhere(ICondition<T> condition) {
         List<T> ts = streamAll()
                 .where(condition)
                 .toList();
@@ -89,6 +91,19 @@ public class JpaRepositoryImpl<S, T extends S, ID extends Serializable> implemen
         }
 
         throw new EntityNotFoundException("Unable to find " + interfaceClass.getSimpleName() + " with id " + id);
+    }
+
+    @Override
+    public S findOneWhere(ICondition<T> condition) {
+        Optional<T> opt = streamAll()
+                .where(condition)
+                .findAny();
+
+        if (opt.isPresent()) {
+            return opt.get();
+        }
+
+        throw new EntityNotFoundException("Unable to find " + interfaceClass.getSimpleName() + " with the searched criteria");
     }
 
     @Override

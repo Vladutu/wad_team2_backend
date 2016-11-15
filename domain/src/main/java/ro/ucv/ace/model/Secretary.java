@@ -3,7 +3,8 @@ package ro.ucv.ace.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by Geo on 15.11.2016.
@@ -12,17 +13,6 @@ import javax.persistence.*;
 @Table(name = "SECRETARY")
 @Getter
 @Setter
-public class Secretary {
+public class Secretary extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
-
-    @Embedded
-    private PersonDetails personDetails;
-
-    @OneToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "ACCOUNT_ID")
-    private Account account;
 }

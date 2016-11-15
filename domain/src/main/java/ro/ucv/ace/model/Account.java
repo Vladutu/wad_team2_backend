@@ -2,6 +2,7 @@ package ro.ucv.ace.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import ro.ucv.ace.model.enums.UserRole;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,8 +34,14 @@ public class Account {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private UserRole type;
+    @Column(name = "USER_ROLE")
+    private UserRole role;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     private List<Notification> notifications = new ArrayList<>();
+
+    @JoinColumn(name = "ID")
+    @OneToOne
+    @MapsId
+    private User user;
 }

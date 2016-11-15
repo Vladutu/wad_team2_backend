@@ -14,19 +14,7 @@ import java.util.List;
 @Table(name = "STUDENT")
 @Getter
 @Setter
-public class Student {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
-
-    @Embedded
-    private PersonDetails personDetails;
-
-    @OneToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "ACCOUNT_ID")
-    private Account account;
+public class Student extends User {
 
     @ManyToOne
     @JoinColumn(name = "SUBGROUP_ID", referencedColumnName = "ID")

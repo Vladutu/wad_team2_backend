@@ -2,6 +2,7 @@ package ro.ucv.ace.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import ro.ucv.ace.model.enums.Gender;
 
 import javax.persistence.*;
 

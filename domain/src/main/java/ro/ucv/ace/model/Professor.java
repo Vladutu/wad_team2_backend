@@ -12,21 +12,9 @@ import javax.persistence.*;
 @Table(name = "PROFESSOR")
 @Getter
 @Setter
-public class Professor {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
-
-    @Embedded
-    private PersonDetails personDetails;
+public class Professor extends User {
 
     @Column(name = "POSITION", nullable = false)
     @Basic
     private String position;
-
-    @OneToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "ACCOUNT_ID")
-    private Account account;
 }

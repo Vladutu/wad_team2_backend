@@ -37,7 +37,7 @@ public class Account {
     @Column(name = "USER_ROLE")
     private UserRole role;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Notification> notifications = new ArrayList<>();
 
     @JoinColumn(name = "ID")

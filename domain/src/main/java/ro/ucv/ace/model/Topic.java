@@ -25,6 +25,6 @@ public class Topic {
     @Basic
     private String name;
 
-    @OneToMany(mappedBy = "topic")
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.REMOVE, orphanRemoval = true)
     List<Task> tasks = new ArrayList<>();
 }

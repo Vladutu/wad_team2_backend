@@ -1,4 +1,4 @@
-package ro.ucv.ace.model;
+package ro.ucv.ace.model.enums;
 
 /**
  * Created by Geo on 15.11.2016.

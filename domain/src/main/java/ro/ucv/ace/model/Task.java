@@ -2,6 +2,7 @@ package ro.ucv.ace.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import ro.ucv.ace.model.enums.Language;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -46,6 +47,6 @@ public class Task {
     @JoinColumn(name = "TOPIC_ID", referencedColumnName = "ID")
     private Topic topic;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Solution> solutions = new ArrayList<>();
 }

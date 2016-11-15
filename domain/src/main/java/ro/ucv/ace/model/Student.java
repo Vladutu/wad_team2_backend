@@ -20,6 +20,6 @@ public class Student extends User {
     @JoinColumn(name = "SUBGROUP_ID", referencedColumnName = "ID")
     private Subgroup subgroup;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Solution> solutions = new ArrayList<>();
 }

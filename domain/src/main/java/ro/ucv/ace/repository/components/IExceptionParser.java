@@ -4,7 +4,7 @@ import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.orm.jpa.JpaSystemException;
 
 /**
- * Interface which provides methods to modify the plain messages returned by the JPA exceptions.
+ * Interface which provides methods to modify the plain messages returned by the JPA exception.
  *
  * @author Georgian Vladutu
  */

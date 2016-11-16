@@ -58,4 +58,12 @@ public class GlobalControllerAdvice {
 
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ErrorInfo> invalidPasswordException(InvalidPasswordException e) {
+        ErrorInfo errorInfo = new ErrorInfo(HttpStatus.BAD_REQUEST, e.getMessage());
+
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+
 }

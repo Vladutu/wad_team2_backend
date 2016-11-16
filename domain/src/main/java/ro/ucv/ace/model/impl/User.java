@@ -1,6 +1,8 @@
 package ro.ucv.ace.model.impl;
 
 import ro.ucv.ace.model.IAuthenticatable;
+import ro.ucv.ace.model.IUser;
+import ro.ucv.ace.visitor.UserVisitor;
 
 import javax.persistence.*;
 
@@ -10,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "USER")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User implements IAuthenticatable {
+public class User implements IAuthenticatable, IUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +24,11 @@ public class User implements IAuthenticatable {
 
     @Embedded
     private PersonDetails personDetails;
+
+    @Override
+    public void accept(UserVisitor userVisitor) {
+        userVisitor.visit(this);
+    }
 
     @Override
     public String getUsername() {

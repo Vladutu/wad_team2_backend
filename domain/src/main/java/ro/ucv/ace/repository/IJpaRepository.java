@@ -1,7 +1,7 @@
 package ro.ucv.ace.repository;
 
-import ro.ucv.ace.repository.components.Condition;
-import ro.ucv.ace.repository.components.Page;
+import ro.ucv.ace.repository.components.ICondition;
+import ro.ucv.ace.repository.components.IPage;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * @param <T>  type of the entity
  * @param <ID> type of the entity primary key
  */
-public interface JpaRepository<S, T extends S, ID extends Serializable> {
+public interface IJpaRepository<S, T extends S, ID extends Serializable> {
 
     /**
      * Returns all entities of the type.
@@ -23,20 +23,20 @@ public interface JpaRepository<S, T extends S, ID extends Serializable> {
     List<S> findAll();
 
     /**
-     * Returns a Page of entities meeting the paging restriction provided in the Page object.
+     * Returns a IPage of entities meeting the paging restriction provided in the IPage object.
      *
      * @param page page
      * @return a page of entities
      */
-    List<S> findAll(Page page);
+    List<S> findAll(IPage page);
 
     /**
-     * Returns all entities meeting the condition restriction provided in the Condition object.
+     * Returns all entities meeting the condition restriction provided in the ICondition object.
      *
      * @param condition condition
      * @return list of entities meeting the condition
      */
-    List<S> findAllWhere(Condition<T> condition);
+    List<S> findAllWhere(ICondition<T> condition);
 
     /**
      * Returns the entity whose id is the same as the method parameter.
@@ -45,6 +45,14 @@ public interface JpaRepository<S, T extends S, ID extends Serializable> {
      * @return entity
      */
     S findOne(ID id);
+
+    /**
+     * Returns the entity that meets the condition restriction provided in the ICondition object.
+     *
+     * @param condition condition
+     * @return searched entity
+     */
+    S findOneWhere(ICondition<T> condition);
 
 
     /**

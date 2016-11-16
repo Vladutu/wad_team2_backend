@@ -5,7 +5,7 @@ package ro.ucv.ace.repository.components;
  *
  * @author Georgian Vladutu
  */
-public interface Page {
+public interface IPage {
 
     /**
      * Returns the maximum number of entities that can be returned by the query.

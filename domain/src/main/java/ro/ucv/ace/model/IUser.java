@@ -7,7 +7,7 @@ import ro.ucv.ace.visitor.UserVisitor;
  */
 public interface IUser {
 
-    String getPassword();
+    boolean passwordMatches(String password);
 
     void accept(UserVisitor userVisitor);
 }

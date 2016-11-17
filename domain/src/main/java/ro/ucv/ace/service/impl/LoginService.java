@@ -42,9 +42,7 @@ public class LoginService implements ILoginService {
     public UserDto authenticateUser(UserLoginDto userLogin) {
         IUser user = userRepository.getByUsername(userLogin.getUsername().toLowerCase());
 
-        String hashPassword = user.getPassword();
-
-        if (!passwordEncoder.matches(userLogin.getPassword(), hashPassword)) {
+        if (!user.passwordMatches(userLogin.getPassword())) {
             throw new InvalidPasswordException("Invalid user password!");
         }
 

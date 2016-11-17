@@ -1,5 +1,9 @@
 package ro.ucv.ace.model.impl;
 
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.ucv.ace.model.IAuthenticatable;
 import ro.ucv.ace.model.IUser;
 import ro.ucv.ace.visitor.UserVisitor;
@@ -12,6 +16,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "USER")
 @Inheritance(strategy = InheritanceType.JOINED)
+@Configurable(preConstruction = true, autowire = Autowire.BY_TYPE)
 public class User implements IAuthenticatable, IUser {
 
     @Id
@@ -24,6 +29,15 @@ public class User implements IAuthenticatable, IUser {
 
     @Embedded
     private PersonDetails personDetails;
+
+    @Autowired
+    @Transient
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public boolean passwordMatches(String password) {
+        return passwordEncoder.matches(password, this.account.getPassword());
+    }
 
     @Override
     public void accept(UserVisitor userVisitor) {

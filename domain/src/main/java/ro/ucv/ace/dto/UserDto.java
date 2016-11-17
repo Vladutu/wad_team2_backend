@@ -5,6 +5,7 @@ package ro.ucv.ace.dto;
  */
 public class UserDto {
 
+    private int id;
     private String username;
     private String role;
     private String authorization;
@@ -14,8 +15,9 @@ public class UserDto {
     private String ssn;
     private String email;
 
-    public UserDto(String username, String role, String authorization, String firstName, String lastName, String gender,
+    public UserDto(int id, String username, String role, String authorization, String firstName, String lastName, String gender,
                    String ssn, String email) {
+        this.id = id;
         this.username = username;
         this.role = role;
         this.authorization = authorization;
@@ -24,6 +26,14 @@ public class UserDto {
         this.gender = gender;
         this.ssn = ssn;
         this.email = email;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {

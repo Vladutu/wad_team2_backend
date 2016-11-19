@@ -1,7 +1,6 @@
 package ro.ucv.ace.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.ucv.ace.dto.UserDto;
@@ -26,9 +25,6 @@ public class LoginService implements ILoginService {
 
     @Autowired
     private ILoginRepository loginRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private IUserRepository userRepository;

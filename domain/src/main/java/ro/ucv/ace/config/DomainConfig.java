@@ -38,7 +38,7 @@ import java.util.Properties;
 @EnableSpringConfigured
 @EnableScheduling
 @ComponentScan({"ro.ucv.ace"})
-@PropertySource(value = {"classpath:db.properties"})
+@PropertySource(value = {"classpath:db.properties", "classpath:mail.properties"})
 public class DomainConfig {
 
     @Autowired

@@ -26,7 +26,7 @@ import ro.ucv.ace.model.impl.Subgroup;
 import ro.ucv.ace.model.impl.User;
 import ro.ucv.ace.repository.IJpaRepository;
 import ro.ucv.ace.repository.impl.JpaRepository;
-import ro.ucv.ace.socket.SocketManager;
+import ro.ucv.ace.socket.impl.SocketManager;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;

@@ -1,5 +1,8 @@
 package ro.ucv.ace.model.impl;
 
+import ro.ucv.ace.model.ISubgroup;
+import ro.ucv.ace.visitor.SubgroupVisitor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "SUBGROUP")
-public class Subgroup {
+public class Subgroup implements ISubgroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +25,13 @@ public class Subgroup {
 
     @OneToMany(mappedBy = "subgroup")
     private List<Student> students = new ArrayList<>();
+
+    public Subgroup() {
+    }
+
+    public Subgroup(String name) {
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;
@@ -45,5 +55,15 @@ public class Subgroup {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    @Override
+    public void accept(SubgroupVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public void update(String name) {
+        this.name = name;
     }
 }

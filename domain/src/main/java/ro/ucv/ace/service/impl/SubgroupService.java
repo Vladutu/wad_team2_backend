@@ -2,6 +2,7 @@ package ro.ucv.ace.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.ucv.ace.builder.ISubgroupBuilder;
 import ro.ucv.ace.dto.subgroup.ESSubgroupDto;
 import ro.ucv.ace.dto.subgroup.SubgroupDto;
@@ -17,6 +18,7 @@ import java.util.List;
  * Created by Geo on 19.11.2016.
  */
 @Service("subgroupService")
+@Transactional(rollbackFor = Exception.class)
 public class SubgroupService implements ISubgroupService {
 
     @Autowired

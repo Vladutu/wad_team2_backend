@@ -16,6 +16,8 @@ import ro.ucv.ace.visitor.UserVisitor;
 
 import java.nio.charset.Charset;
 import java.util.Base64;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Created by Geo on 15.11.2016.
@@ -41,7 +43,14 @@ public class LoginService implements ILoginService {
     @Override
     public UserDto authenticateUser(UserLoginDto userLogin) {
         System.out.println("Inside auth user");
-        manager.sendMessage();
+        Future<String> response = manager.sendMessage();
+        try {
+            System.out.println("Final response is: " + response.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         IUser user = userRepository.getByUsername(userLogin.getUsername().toLowerCase());
 

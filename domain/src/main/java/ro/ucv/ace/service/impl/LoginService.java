@@ -44,16 +44,7 @@ public class LoginService implements ILoginService {
 
     @Override
     public UserDto authenticateUser(UserLoginDto userLogin) {
-        System.out.println("Inside auth user");
-        Future<JobResult> response = manager.sendJob(new CompilationJob("asdf", "asdf"));
-        try {
-            System.out.println("Final response is: " + response.get().getResult());
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
         IUser user = userRepository.getByUsername(userLogin.getUsername().toLowerCase());
-
 
         if (!user.passwordMatches(userLogin.getPassword())) {
             throw new InvalidPasswordException("Invalid user password!");

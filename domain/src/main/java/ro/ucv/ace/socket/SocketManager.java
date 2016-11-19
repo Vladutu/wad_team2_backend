@@ -60,15 +60,16 @@ public class SocketManager {
      * @return Future of the job's result
      */
     public Future<JobResult> sendJob(Job job) {
+        String jobString = "";
+
         // Convert job to a JSON format
-        String jobString;
         try {
              jobString = this.mapper.writeValueAsString(job);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
-        // Get job result
-        return pool.submit(new SocketSender(this.socket, this.mapper, "test", "sad"));
+        // Submit async task to exec pool, and return a future variant of the job result
+        return pool.submit(new SocketSender(this.socket, this.mapper, job.getType(), jobString));
     }
 }

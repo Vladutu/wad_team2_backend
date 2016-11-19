@@ -8,10 +8,12 @@ public class CompilationJob extends Job{
 
     private String path;
     private String language;
+    private String type;
 
     public CompilationJob(String path, String language){
         this.path = path;
         this.language = language;
+        this.type = "compile";
     }
 
     public String getLanguage() {
@@ -28,5 +30,10 @@ public class CompilationJob extends Job{
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

@@ -26,27 +26,28 @@ public class SocketSender implements Callable<JobResult> {
         this.mapper = mapper;
     }
 
-    //TODO: Return actual response, send actual message
+    /**
+     * Sends a job message to the code verifier server through existent socket
+     * @return JobResult result of that Job message
+     * @throws Exception
+     */
     @Override
     public JobResult call() throws Exception {
         final BlockingQueue<String> response = new LinkedBlockingQueue<>();
-        this.socket.emit(this.type, new Ack() {
-            @Override
-            public void call(Object... args) {
-                System.out.println("Received response from server");
-                // Get JSONObject response
-                JSONObject jsonResponse = (JSONObject) args[0];
+        this.socket.emit(this.type, this.message, (Ack) args -> {
+            System.out.println("Received response from server");
+            // Get JSONObject response
+            JSONObject jsonResponse = (JSONObject) args[0];
 
-                // Convert it to string
-                String stringResponse = jsonResponse.toString();
+            // Convert it to string
+            String stringResponse = jsonResponse.toString();
 
-                // Offer it to the queue
-                response.offer(stringResponse);
-            }
+            // Offer it to the queue
+            response.offer(stringResponse);
         });
 
         // Read value from queue, convert to JobResult and return it
-        //TODO: make sure response is a valid JobResult , otherwise throw JsonParseException
+        // TODO: make sure response is a valid JobResult , otherwise throw JsonParseException
         return mapper.readValue(response.take(), JobResult.class);
     }
 }

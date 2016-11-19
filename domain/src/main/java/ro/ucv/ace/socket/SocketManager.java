@@ -1,5 +1,6 @@
 package ro.ucv.ace.socket;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -26,7 +27,7 @@ public class SocketManager {
     private Socket socket = null;
     private boolean connected = false;
     private ExecutorService pool;
-    ObjectMapper mapper;
+    private ObjectMapper mapper;
 
     public SocketManager(String protocol, String port, String host) {
         this.protocol = protocol;
@@ -34,7 +35,7 @@ public class SocketManager {
         this.host = host;
         this.pool = Executors.newFixedThreadPool(10);
         this.mapper = new ObjectMapper();
-        
+
         startListening();
     }
 
@@ -52,7 +53,22 @@ public class SocketManager {
         this.socket.connect();
     }
 
-    public Future<String> sendMessage() {
-        return pool.submit(new SocketSender(this.socket, "test", "sad"));
+    /**
+     * Sends a job to the Code Verifier server
+     * Converts Job to JSON using class mapper
+     * @param job Any type of supported job
+     * @return Future of the job's result
+     */
+    public Future<JobResult> sendJob(Job job) {
+        // Convert job to a JSON format
+        String jobString;
+        try {
+             jobString = this.mapper.writeValueAsString(job);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        // Get job result
+        return pool.submit(new SocketSender(this.socket, this.mapper, "test", "sad"));
     }
 }

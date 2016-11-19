@@ -11,6 +11,8 @@ import ro.ucv.ace.model.IUser;
 import ro.ucv.ace.repository.ILoginRepository;
 import ro.ucv.ace.repository.IUserRepository;
 import ro.ucv.ace.service.ILoginService;
+import ro.ucv.ace.socket.CompilationJob;
+import ro.ucv.ace.socket.JobResult;
 import ro.ucv.ace.socket.SocketManager;
 import ro.ucv.ace.visitor.UserVisitor;
 
@@ -43,12 +45,10 @@ public class LoginService implements ILoginService {
     @Override
     public UserDto authenticateUser(UserLoginDto userLogin) {
         System.out.println("Inside auth user");
-        Future<String> response = manager.sendMessage();
+        Future<JobResult> response = manager.sendJob(new CompilationJob("asdf", "asdf"));
         try {
-            System.out.println("Final response is: " + response.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+            System.out.println("Final response is: " + response.get().getResult());
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 

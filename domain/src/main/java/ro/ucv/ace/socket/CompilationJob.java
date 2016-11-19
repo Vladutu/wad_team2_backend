@@ -3,7 +3,7 @@ package ro.ucv.ace.socket;
 /**
  * Created by ctotolin on 19-Nov-16.
  */
-public class CompilationJob {
+public class CompilationJob extends Job{
 
 
     private String path;

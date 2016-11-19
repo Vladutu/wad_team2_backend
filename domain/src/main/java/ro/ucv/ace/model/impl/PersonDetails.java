@@ -26,6 +26,17 @@ public class PersonDetails {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    public PersonDetails() {
+
+    }
+
+    public PersonDetails(String firstName, String lastName, String ssn, String gender) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.ssn = ssn;
+        this.gender = Gender.valueOf(gender);
+    }
+
     public String getFirstName() {
         return firstName;
     }

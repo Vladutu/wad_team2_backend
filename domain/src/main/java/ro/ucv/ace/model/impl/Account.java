@@ -41,6 +41,17 @@ public class Account {
     @MapsId
     private User user;
 
+    public Account() {
+
+    }
+
+    public Account(String email, String username, String password, UserRole professor) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.role = professor;
+    }
+
     public Integer getId() {
         return id;
     }

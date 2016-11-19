@@ -18,8 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ro.ucv.ace.model.IAuthenticatable;
+import ro.ucv.ace.model.IProfessor;
 import ro.ucv.ace.model.ISubgroup;
 import ro.ucv.ace.model.IUser;
+import ro.ucv.ace.model.impl.Professor;
 import ro.ucv.ace.model.impl.Subgroup;
 import ro.ucv.ace.model.impl.User;
 import ro.ucv.ace.repository.IJpaRepository;
@@ -116,5 +118,10 @@ public class DomainConfig {
     @Bean(name = "innerSubgroupRepository")
     IJpaRepository<ISubgroup, Subgroup, Integer> iSubgroupSubgroupIntegerIJpaRepository() {
         return new JpaRepository<>(ISubgroup.class, Subgroup.class);
+    }
+
+    @Bean(name = "innerProfessorRepository")
+    IJpaRepository<IProfessor, Professor, Integer> iProfessorProfessorIntegerIJpaRepository() {
+        return new JpaRepository<>(IProfessor.class, Professor.class);
     }
 }

@@ -11,15 +11,10 @@ import ro.ucv.ace.model.IUser;
 import ro.ucv.ace.repository.ILoginRepository;
 import ro.ucv.ace.repository.IUserRepository;
 import ro.ucv.ace.service.ILoginService;
-import ro.ucv.ace.socket.CompilationJob;
-import ro.ucv.ace.socket.JobResult;
-import ro.ucv.ace.socket.SocketManager;
 import ro.ucv.ace.visitor.UserVisitor;
 
 import java.nio.charset.Charset;
 import java.util.Base64;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 /**
  * Created by Geo on 15.11.2016.
@@ -35,7 +30,7 @@ public class LoginService implements ILoginService {
     private IUserRepository userRepository;
 
     @Autowired
-    private SocketManager manager;
+    private UserVisitor userVisitor;
 
     @Override
     public IAuthenticatable getByUsername(String username) {
@@ -49,8 +44,6 @@ public class LoginService implements ILoginService {
         if (!user.passwordMatches(userLogin.getPassword())) {
             throw new InvalidPasswordException("Invalid user password!");
         }
-
-        UserVisitor userVisitor = new UserVisitor();
 
         user.accept(userVisitor);
 

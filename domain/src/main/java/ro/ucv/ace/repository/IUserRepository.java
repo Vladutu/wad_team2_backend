@@ -7,4 +7,6 @@ import ro.ucv.ace.model.IUser;
  */
 public interface IUserRepository {
     IUser getByUsername(String username);
+
+    boolean usernameExists(String username);
 }

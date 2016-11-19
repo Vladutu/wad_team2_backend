@@ -2,6 +2,7 @@ package ro.ucv.ace.repository.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ro.ucv.ace.exception.EntityNotFoundException;
 import ro.ucv.ace.model.IUser;
 import ro.ucv.ace.model.impl.User;
 import ro.ucv.ace.repository.IJpaRepository;
@@ -20,4 +21,15 @@ public class UserRepository implements IUserRepository {
     public IUser getByUsername(String username) {
         return innerUserRepository.findOneWhere(user -> user.getAccount().getUsername().equals(username));
     }
+
+    @Override
+    public boolean usernameExists(String username) {
+        try {
+            IUser usr = innerUserRepository.findOneWhere(user -> user.getAccount().getUsername().equals(username));
+        } catch (EntityNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
+
 }

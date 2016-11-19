@@ -10,6 +10,7 @@ import ro.ucv.ace.utils.mail.IMailSender;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 /**
@@ -43,13 +44,13 @@ public class MailSender implements IMailSender {
     public void sendMail(IMail mail) {
         try {
             Message message = new MimeMessage(createSession());
-            message.setFrom(new InternetAddress(mail.getFrom()));
+            message.setFrom(new InternetAddress(mail.getFrom(), "E-App"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getTo()));
             message.setSubject(mail.getSubject());
             message.setContent(mail.getBody(), "text/html; charset=utf-8");
 
             Transport.send(message);
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             throw new MailSendException("Unable to send the mail. Original message was: " + e.getMessage());
         }
 

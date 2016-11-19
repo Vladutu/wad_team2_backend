@@ -24,6 +24,7 @@ import ro.ucv.ace.model.impl.Subgroup;
 import ro.ucv.ace.model.impl.User;
 import ro.ucv.ace.repository.IJpaRepository;
 import ro.ucv.ace.repository.impl.JpaRepository;
+import ro.ucv.ace.socket.SocketManager;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -40,7 +41,7 @@ import java.util.Properties;
 @EnableSpringConfigured
 @EnableScheduling
 @ComponentScan({"ro.ucv.ace"})
-@PropertySource(value = {"classpath:db.properties", "classpath:mail.properties"})
+@PropertySource(value = {"classpath:db.properties", "classpath:mail.properties", "classpath:socket.properties"})
 public class DomainConfig {
 
     @Autowired
@@ -116,5 +117,14 @@ public class DomainConfig {
     @Bean(name = "innerSubgroupRepository")
     IJpaRepository<ISubgroup, Subgroup, Integer> iSubgroupSubgroupIntegerIJpaRepository() {
         return new JpaRepository<>(ISubgroup.class, Subgroup.class);
+    }
+
+    @Bean(name = "socketManager")
+    SocketManager socketManager() {
+        return new SocketManager(
+                environment.getRequiredProperty("socket.protocol"),
+                environment.getRequiredProperty("socket.port"),
+                environment.getRequiredProperty("socket.host")
+        );
     }
 }

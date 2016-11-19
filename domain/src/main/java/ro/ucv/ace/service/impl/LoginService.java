@@ -11,6 +11,7 @@ import ro.ucv.ace.model.IUser;
 import ro.ucv.ace.repository.ILoginRepository;
 import ro.ucv.ace.repository.IUserRepository;
 import ro.ucv.ace.service.ILoginService;
+import ro.ucv.ace.socket.SocketManager;
 import ro.ucv.ace.visitor.UserVisitor;
 
 import java.nio.charset.Charset;
@@ -29,6 +30,9 @@ public class LoginService implements ILoginService {
     @Autowired
     private IUserRepository userRepository;
 
+    @Autowired
+    private SocketManager manager;
+
     @Override
     public IAuthenticatable getByUsername(String username) {
         return loginRepository.getByUsername(username);
@@ -36,7 +40,11 @@ public class LoginService implements ILoginService {
 
     @Override
     public UserDto authenticateUser(UserLoginDto userLogin) {
+        System.out.println("Inside auth user");
+        manager.sendMessage();
+
         IUser user = userRepository.getByUsername(userLogin.getUsername().toLowerCase());
+
 
         if (!user.passwordMatches(userLogin.getPassword())) {
             throw new InvalidPasswordException("Invalid user password!");

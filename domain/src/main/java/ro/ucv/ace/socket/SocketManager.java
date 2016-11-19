@@ -1,9 +1,8 @@
 package ro.ucv.ace.socket;
 
-import io.socket.client.Ack;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -27,13 +26,15 @@ public class SocketManager {
     private Socket socket = null;
     private boolean connected = false;
     private ExecutorService pool;
+    ObjectMapper mapper;
 
     public SocketManager(String protocol, String port, String host) {
         this.protocol = protocol;
         this.port = port;
         this.host = host;
         this.pool = Executors.newFixedThreadPool(10);
-
+        this.mapper = new ObjectMapper();
+        
         startListening();
     }
 

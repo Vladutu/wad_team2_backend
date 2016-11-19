@@ -26,7 +26,7 @@ public class Professor extends User implements IProfessor {
 
     public Professor(String firstName, String gender, String lastName, String position, String ssn, String email, String username, String password) {
         PersonDetails personDetails = new PersonDetails(firstName, lastName, ssn, gender);
-        Account account = new Account(email, username, password, UserRole.PROFESSOR);
+        Account account = new Account(email, username, password, UserRole.PROFESSOR, this);
         this.setAccount(account);
         this.setPersonDetails(personDetails);
         this.position = position;

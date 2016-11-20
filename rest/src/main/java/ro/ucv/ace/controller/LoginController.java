@@ -16,7 +16,7 @@ import ro.ucv.ace.service.ILoginService;
 import javax.validation.Valid;
 
 /**
- * Created by tzapt on 11/16/2016.
+ * Created by Victor on 11/16/2016.
  */
 
 @RestController

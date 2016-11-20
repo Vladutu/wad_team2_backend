@@ -1,9 +1,9 @@
-package ro.ucv.ace.dto.professor;
+package ro.ucv.ace.dto.student;
 
 /**
- * Created by tzapt on 11/19/2016.
+ * Created by tzapt on 11/20/2016.
  */
-public class ProfessorDto {
+public class StudentDto {
 
     private int id;
 
@@ -19,9 +19,10 @@ public class ProfessorDto {
 
     private String email;
 
-    private String position;
+    private String subgroup;
 
-    public ProfessorDto(int id, String username, String firstName, String lastName, String gender, String ssn, String email, String position) {
+    public StudentDto(int id, String username, String firstName, String lastName, String gender, String ssn, String email,
+                      String subgroup) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -29,7 +30,7 @@ public class ProfessorDto {
         this.gender = gender;
         this.ssn = ssn;
         this.email = email;
-        this.position = position;
+        this.subgroup = subgroup;
     }
 
     public int getId() {
@@ -88,11 +89,11 @@ public class ProfessorDto {
         this.email = email;
     }
 
-    public String getPosition() {
-        return position;
+    public String getSubgroup() {
+        return subgroup;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
+    public void setSubgroup(String subgroup) {
+        this.subgroup = subgroup;
     }
 }

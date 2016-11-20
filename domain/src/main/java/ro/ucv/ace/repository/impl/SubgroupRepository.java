@@ -37,4 +37,9 @@ public class SubgroupRepository implements ISubgroupRepository {
     public ISubgroup findOne(int id) {
         return innerSubgroupRepository.findOne(id);
     }
+
+    @Override
+    public ISubgroup findByName(String name) {
+        return innerSubgroupRepository.findOneWhere(subgroup -> subgroup.getName().equals(name));
+    }
 }

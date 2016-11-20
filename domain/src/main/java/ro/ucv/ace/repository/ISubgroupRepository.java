@@ -16,4 +16,6 @@ public interface ISubgroupRepository {
     ISubgroup delete(int id);
 
     ISubgroup findOne(int id);
+
+    ISubgroup findByName(String name);
 }

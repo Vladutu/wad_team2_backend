@@ -30,7 +30,7 @@ public class ProfessorService implements IProfessorService {
     private IProfessorBuilder professorBuilder;
 
     @Autowired
-    private ProfessorVisitor visitor;
+    private ProfessorVisitor professorVisitor;
 
     @Autowired
     private IMailService mailService;
@@ -54,9 +54,9 @@ public class ProfessorService implements IProfessorService {
 
         mailService.sendAccountCreationMail(professorDto.getEmail(), username, password);
 
-        professor.accept(visitor);
+        professor.accept(professorVisitor);
 
-        return visitor.getProfessorDto();
+        return professorVisitor.getProfessorDto();
     }
 
     @Override
@@ -64,8 +64,8 @@ public class ProfessorService implements IProfessorService {
         List<IProfessor> professors = professorRepository.findAll();
         List<ProfessorDto> professorDtos = new ArrayList<>();
         professors.forEach(p -> {
-            p.accept(visitor);
-            professorDtos.add(visitor.getProfessorDto());
+            p.accept(professorVisitor);
+            professorDtos.add(professorVisitor.getProfessorDto());
         });
 
         return professorDtos;
@@ -74,9 +74,9 @@ public class ProfessorService implements IProfessorService {
     @Override
     public ProfessorDto delete(int id) {
         IProfessor professor = professorRepository.delete(id);
-        professor.accept(visitor);
+        professor.accept(professorVisitor);
 
-        return visitor.getProfessorDto();
+        return professorVisitor.getProfessorDto();
     }
 
     @Override
@@ -85,8 +85,8 @@ public class ProfessorService implements IProfessorService {
         professor.update(professorDto.getFirstName(), professorDto.getLastName(), professorDto.getSsn(),
                 professorDto.getEmail(), professorDto.getGender(), professorDto.getPosition());
 
-        professor.accept(visitor);
+        professor.accept(professorVisitor);
 
-        return visitor.getProfessorDto();
+        return professorVisitor.getProfessorDto();
     }
 }

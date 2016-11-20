@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.springframework.stereotype.Component;
+import ro.ucv.ace.exception.SocketConnectionException;
 import ro.ucv.ace.socket.IJob;
 import ro.ucv.ace.socket.ISocketManager;
 
@@ -49,12 +50,9 @@ public class SocketManager implements ISocketManager {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        this.socket.on(Socket.EVENT_CONNECT, args -> {
-            this.connected = true;
-        }).on(Socket.EVENT_DISCONNECT, args -> {
-            this.connected = false;
-        });
-        this.socket.connect();
+
+        // TODO: Garbage collector not closing this connection. Find out why
+        // this.socket.connect();
     }
 
     /**
@@ -66,9 +64,13 @@ public class SocketManager implements ISocketManager {
      */
     @Override
     public Future<JobResult> sendJob(IJob job) {
-        String jobString = "";
+        // Check if we are still connected to the Code Verifier
+        if(!socket.connected()) {
+            throw new SocketConnectionException("Not connected to Code Verifier Server");
+        }
 
         // Convert job to a JSON format
+        String jobString = "";
         try {
             jobString = this.mapper.writeValueAsString(job);
             System.out.println(jobString);

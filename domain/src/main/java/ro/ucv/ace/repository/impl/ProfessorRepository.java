@@ -7,6 +7,8 @@ import ro.ucv.ace.model.impl.Professor;
 import ro.ucv.ace.repository.IJpaRepository;
 import ro.ucv.ace.repository.IProfessorRepository;
 
+import java.util.List;
+
 /**
  * Created by tzapt on 11/19/2016.
  */
@@ -19,5 +21,20 @@ public class ProfessorRepository implements IProfessorRepository {
     @Override
     public IProfessor save(IProfessor professor) {
         return innerProfessorRepository.save(professor);
+    }
+
+    @Override
+    public List<IProfessor> findAll() {
+        return innerProfessorRepository.findAll();
+    }
+
+    @Override
+    public IProfessor delete(int id) {
+        return innerProfessorRepository.delete(id);
+    }
+
+    @Override
+    public IProfessor findOne(int id) {
+        return innerProfessorRepository.findOne(id);
     }
 }

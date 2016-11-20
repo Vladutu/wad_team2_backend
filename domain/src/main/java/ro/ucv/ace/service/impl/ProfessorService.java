@@ -13,6 +13,7 @@ import ro.ucv.ace.service.IMailService;
 import ro.ucv.ace.service.IProfessorService;
 import ro.ucv.ace.visitor.ProfessorVisitor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,16 +61,32 @@ public class ProfessorService implements IProfessorService {
 
     @Override
     public List<ProfessorDto> getAll() {
-        return null;
+        List<IProfessor> professors = professorRepository.findAll();
+        List<ProfessorDto> professorDtos = new ArrayList<>();
+        professors.forEach(p -> {
+            p.accept(visitor);
+            professorDtos.add(visitor.getProfessorDto());
+        });
+
+        return professorDtos;
     }
 
     @Override
     public ProfessorDto delete(int id) {
-        return null;
+        IProfessor professor = professorRepository.delete(id);
+        professor.accept(visitor);
+
+        return visitor.getProfessorDto();
     }
 
     @Override
     public ProfessorDto edit(int id, ESProfessorDto professorDto) {
-        return null;
+        IProfessor professor = professorRepository.findOne(id);
+        professor.update(professorDto.getFirstName(), professorDto.getLastName(), professorDto.getSsn(),
+                professorDto.getEmail(), professorDto.getGender(), professorDto.getPosition());
+
+        professor.accept(visitor);
+
+        return visitor.getProfessorDto();
     }
 }

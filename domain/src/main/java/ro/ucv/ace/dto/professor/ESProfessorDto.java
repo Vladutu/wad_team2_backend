@@ -6,10 +6,15 @@ package ro.ucv.ace.dto.professor;
 public class ESProfessorDto {
 
     private String firstName;
+
     private String lastName;
+
     private String ssn;
+
     private String email;
+
     private String position;
+
     private String gender;
 
     public ESProfessorDto() {

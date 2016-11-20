@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import org.springframework.stereotype.Component;
 import ro.ucv.ace.exception.SocketConnectionException;
 import ro.ucv.ace.socket.IJob;
 import ro.ucv.ace.socket.ISocketManager;
@@ -17,7 +16,6 @@ import java.util.concurrent.Future;
 /**
  * Created by ctotolin on 19-Nov-16.
  */
-@Component
 public class SocketManager implements ISocketManager {
 
     private String protocol;
@@ -65,7 +63,7 @@ public class SocketManager implements ISocketManager {
     @Override
     public Future<JobResult> sendJob(IJob job) {
         // Check if we are still connected to the Code Verifier
-        if(!socket.connected()) {
+        if (!socket.connected()) {
             throw new SocketConnectionException("Not connected to Code Verifier Server");
         }
 

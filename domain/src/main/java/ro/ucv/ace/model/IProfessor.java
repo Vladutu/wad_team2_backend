@@ -9,4 +9,5 @@ public interface IProfessor {
 
     void accept(ProfessorVisitor visitor);
 
+    void update(String firstName, String lastName, String ssn, String email, String gender, String position);
 }

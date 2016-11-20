@@ -16,7 +16,7 @@ public class Topic {
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     @Basic
     private String name;
 

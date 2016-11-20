@@ -1,6 +1,7 @@
 package ro.ucv.ace.model.impl;
 
 import ro.ucv.ace.model.IProfessor;
+import ro.ucv.ace.model.enums.Gender;
 import ro.ucv.ace.model.enums.UserRole;
 import ro.ucv.ace.visitor.ProfessorVisitor;
 
@@ -43,6 +44,16 @@ public class Professor extends User implements IProfessor {
     @Override
     public void accept(ProfessorVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public void update(String firstName, String lastName, String ssn, String email, String gender, String position) {
+        this.getPersonDetails().setFirstName(firstName);
+        this.getPersonDetails().setLastName(lastName);
+        this.getPersonDetails().setSsn(ssn);
+        this.getPersonDetails().setGender(Gender.valueOf(gender));
+        this.setPosition(position);
+        this.getAccount().setEmail(email);
     }
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import org.springframework.beans.factory.DisposableBean;
 import ro.ucv.ace.exception.SocketConnectionException;
 import ro.ucv.ace.socket.IJob;
 import ro.ucv.ace.socket.ISocketManager;
@@ -16,7 +17,7 @@ import java.util.concurrent.Future;
 /**
  * Created by ctotolin on 19-Nov-16.
  */
-public class SocketManager implements ISocketManager {
+public class SocketManager implements ISocketManager, DisposableBean {
 
     private String protocol;
 
@@ -50,7 +51,7 @@ public class SocketManager implements ISocketManager {
         }
 
         // TODO: Garbage collector not closing this connection. Find out why
-        // this.socket.connect();
+        this.socket.connect();
     }
 
     /**
@@ -78,5 +79,10 @@ public class SocketManager implements ISocketManager {
 
         // Submit async task to exec pool, and return a future variant of the job result
         return pool.submit(new SocketSender(this.socket, this.mapper, job.getType(), jobString));
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        this.socket.disconnect();
     }
 }

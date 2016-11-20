@@ -29,6 +29,9 @@ public class LoginService implements ILoginService {
     @Autowired
     private IUserRepository userRepository;
 
+    @Autowired
+    private UserVisitor userVisitor;
+
     @Override
     public IAuthenticatable getByUsername(String username) {
         return loginRepository.getByUsername(username);
@@ -41,8 +44,6 @@ public class LoginService implements ILoginService {
         if (!user.passwordMatches(userLogin.getPassword())) {
             throw new InvalidPasswordException("Invalid user password!");
         }
-
-        UserVisitor userVisitor = new UserVisitor();
 
         user.accept(userVisitor);
 

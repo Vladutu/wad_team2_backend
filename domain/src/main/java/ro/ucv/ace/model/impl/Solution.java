@@ -14,10 +14,16 @@ public class Solution {
     @Column(name = "ID")
     private Integer id;
 
+    @Column(name = "MARK")
+    @Basic
     private int mark;
 
+    @Column(name = "DIRECTORY_PATH", unique = true)
+    @Basic
     private String directoryPath;
 
+    @Column(name = "CAN_UPLOAD")
+    @Basic
     private boolean canUpload;
 
     @ManyToOne

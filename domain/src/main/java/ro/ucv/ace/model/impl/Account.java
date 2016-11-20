@@ -25,7 +25,7 @@ public class Account {
     @Basic
     private String password;
 
-    @Column(name = "EMAIL", nullable = false)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     @Basic
     private String email;
 
@@ -40,6 +40,18 @@ public class Account {
     @OneToOne
     @MapsId
     private User user;
+
+    public Account() {
+
+    }
+
+    public Account(String email, String username, String password, UserRole professor, User user) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.role = professor;
+        this.user = user;
+    }
 
     public Integer getId() {
         return id;

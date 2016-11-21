@@ -2,8 +2,7 @@ package ro.ucv.ace.repository.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ro.ucv.ace.model.IStudent;
-import ro.ucv.ace.model.impl.Student;
+import ro.ucv.ace.model.Student;
 import ro.ucv.ace.repository.IJpaRepository;
 import ro.ucv.ace.repository.IStudentRepository;
 
@@ -16,26 +15,25 @@ import java.util.List;
 public class StudentRepository implements IStudentRepository {
 
     @Autowired
-    private IJpaRepository<IStudent, Student, Integer> innerStudentRepository;
-
+    private IJpaRepository<Student, Integer> innerStudentRepository;
 
     @Override
-    public IStudent save(IStudent student) {
+    public Student save(Student student) {
         return innerStudentRepository.save(student);
     }
 
     @Override
-    public List<IStudent> findAll() {
+    public List<Student> findAll() {
         return innerStudentRepository.findAll();
     }
 
     @Override
-    public IStudent delete(int id) {
+    public Student delete(int id) {
         return innerStudentRepository.delete(id);
     }
 
     @Override
-    public IStudent findOne(int id) {
+    public Student findOne(int id) {
         return innerStudentRepository.findOne(id);
     }
 }

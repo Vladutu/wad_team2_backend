@@ -1,12 +1,12 @@
 package ro.ucv.ace.repository;
 
-import ro.ucv.ace.model.IUser;
+import ro.ucv.ace.model.User;
 
 /**
  * Created by tzapt on 11/16/2016.
  */
 public interface IUserRepository {
-    IUser getByUsername(String username);
+    User getByUsername(String username);
 
     boolean usernameExists(String username);
 }

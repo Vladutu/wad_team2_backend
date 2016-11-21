@@ -1,11 +1,11 @@
-package ro.ucv.ace.utils.mail.impl;
+package ro.ucv.ace.mail.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import ro.ucv.ace.exception.MailSendException;
-import ro.ucv.ace.utils.mail.IMail;
-import ro.ucv.ace.utils.mail.IMailSender;
+import ro.ucv.ace.mail.IMailSender;
+import ro.ucv.ace.mail.IMail;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;

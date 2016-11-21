@@ -1,7 +1,5 @@
-package ro.ucv.ace.model.impl;
+package ro.ucv.ace.model;
 
-import ro.ucv.ace.model.IStudent;
-import ro.ucv.ace.model.ISubgroup;
 import ro.ucv.ace.model.enums.Gender;
 import ro.ucv.ace.model.enums.UserRole;
 import ro.ucv.ace.visitor.StudentVisitor;
@@ -15,7 +13,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "STUDENT")
-public class Student extends User implements IStudent {
+public class Student extends User {
 
     @ManyToOne
     @JoinColumn(name = "SUBGROUP_ID", referencedColumnName = "ID")
@@ -29,10 +27,10 @@ public class Student extends User implements IStudent {
     }
 
     public Student(String firstName, String lastName, String email, String ssn, String gender, String username, String password,
-                   ISubgroup subgroup) {
+                   Subgroup subgroup) {
         PersonDetails personDetails = new PersonDetails(firstName, lastName, ssn, gender);
         Account account = new Account(email, username, password, UserRole.STUDENT, this);
-        this.setSubgroup((Subgroup) subgroup);
+        this.setSubgroup(subgroup);
         this.setAccount(account);
         this.setPersonDetails(personDetails);
     }
@@ -53,18 +51,16 @@ public class Student extends User implements IStudent {
         this.solutions = solutions;
     }
 
-    @Override
     public void accept(StudentVisitor visitor) {
         visitor.visit(this);
     }
 
-    @Override
-    public void update(String firstName, String lastName, String ssn, String email, String gender, ISubgroup subgroup) {
+    public void update(String firstName, String lastName, String ssn, String email, String gender, Subgroup subgroup) {
         this.getPersonDetails().setFirstName(firstName);
         this.getPersonDetails().setLastName(lastName);
         this.getPersonDetails().setSsn(ssn);
         this.getPersonDetails().setGender(Gender.valueOf(gender));
         this.getAccount().setEmail(email);
-        this.setSubgroup((Subgroup) subgroup);
+        this.setSubgroup(subgroup);
     }
 }

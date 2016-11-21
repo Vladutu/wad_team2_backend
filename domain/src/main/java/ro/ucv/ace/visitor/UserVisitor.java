@@ -1,8 +1,8 @@
 package ro.ucv.ace.visitor;
 
 import org.springframework.stereotype.Component;
-import ro.ucv.ace.dto.UserDto;
-import ro.ucv.ace.model.impl.User;
+import ro.ucv.ace.dto.user.UserDto;
+import ro.ucv.ace.model.User;
 
 /**
  * Created by tzapt on 11/16/2016.

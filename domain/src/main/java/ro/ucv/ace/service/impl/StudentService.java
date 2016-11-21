@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ro.ucv.ace.builder.IStudentBuilder;
 import ro.ucv.ace.dto.student.ESStudentDto;
 import ro.ucv.ace.dto.student.StudentDto;
-import ro.ucv.ace.model.IStudent;
-import ro.ucv.ace.model.ISubgroup;
+import ro.ucv.ace.model.Student;
+import ro.ucv.ace.model.Subgroup;
 import ro.ucv.ace.repository.ISubgroupRepository;
 import ro.ucv.ace.repository.IUserRepository;
 import ro.ucv.ace.repository.impl.StudentRepository;
@@ -54,9 +54,9 @@ public class StudentService implements IStudentService {
             username = (studentDto.getFirstName().substring(0, ++index) + studentDto.getLastName()).toLowerCase();
         }
 
-        ISubgroup subgroup = subgroupRepository.findByName(studentDto.getSubgroup());
+        Subgroup subgroup = subgroupRepository.findByName(studentDto.getSubgroup());
 
-        IStudent student = studentRepository.save(studentBuilder.build(studentDto, username, password, subgroup));
+        Student student = studentRepository.save(studentBuilder.build(studentDto, username, password, subgroup));
 
         mailService.sendAccountCreationMail(studentDto.getEmail(), username, password);
 
@@ -67,7 +67,7 @@ public class StudentService implements IStudentService {
 
     @Override
     public List<StudentDto> getAll() {
-        List<IStudent> students = studentRepository.findAll();
+        List<Student> students = studentRepository.findAll();
         List<StudentDto> studentDtos = new ArrayList<>();
         students.forEach(s -> {
             s.accept(studentVisitor);
@@ -79,7 +79,7 @@ public class StudentService implements IStudentService {
 
     @Override
     public StudentDto delete(int id) {
-        IStudent student = studentRepository.delete(id);
+        Student student = studentRepository.delete(id);
         student.accept(studentVisitor);
 
         return studentVisitor.getStudentDto();
@@ -87,9 +87,9 @@ public class StudentService implements IStudentService {
 
     @Override
     public StudentDto edit(int id, ESStudentDto studentDto) {
-        IStudent student = studentRepository.findOne(id);
+        Student student = studentRepository.findOne(id);
 
-        ISubgroup subgroup = subgroupRepository.findByName(studentDto.getSubgroup());
+        Subgroup subgroup = subgroupRepository.findByName(studentDto.getSubgroup());
 
         student.update(studentDto.getFirstName(), studentDto.getLastName(), studentDto.getSsn(),
                 studentDto.getEmail(), studentDto.getGender(), subgroup);

@@ -2,7 +2,7 @@ package ro.ucv.ace.visitor;
 
 import org.springframework.stereotype.Component;
 import ro.ucv.ace.dto.student.StudentDto;
-import ro.ucv.ace.model.impl.Student;
+import ro.ucv.ace.model.Student;
 
 /**
  * Created by tzapt on 11/20/2016.

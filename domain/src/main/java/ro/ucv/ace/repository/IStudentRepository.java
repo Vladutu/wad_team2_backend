@@ -1,6 +1,6 @@
 package ro.ucv.ace.repository;
 
-import ro.ucv.ace.model.IStudent;
+import ro.ucv.ace.model.Student;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ import java.util.List;
  */
 public interface IStudentRepository {
 
-    IStudent save(IStudent student);
+    Student save(Student student);
 
-    List<IStudent> findAll();
+    List<Student> findAll();
 
-    IStudent delete(int id);
+    Student delete(int id);
 
-    IStudent findOne(int id);
+    Student findOne(int id);
 }

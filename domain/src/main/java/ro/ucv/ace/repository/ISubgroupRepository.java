@@ -1,6 +1,6 @@
 package ro.ucv.ace.repository;
 
-import ro.ucv.ace.model.ISubgroup;
+import ro.ucv.ace.model.Subgroup;
 
 import java.util.List;
 
@@ -9,13 +9,13 @@ import java.util.List;
  */
 public interface ISubgroupRepository {
 
-    ISubgroup save(ISubgroup subgroup);
+    Subgroup save(Subgroup subgroup);
 
-    List<ISubgroup> findAll();
+    List<Subgroup> findAll();
 
-    ISubgroup delete(int id);
+    Subgroup delete(int id);
 
-    ISubgroup findOne(int id);
+    Subgroup findOne(int id);
 
-    ISubgroup findByName(String name);
+    Subgroup findByName(String name);
 }

@@ -1,6 +1,6 @@
-package ro.ucv.ace.utils.mail.impl;
+package ro.ucv.ace.mail.impl;
 
-import ro.ucv.ace.utils.mail.IMail;
+import ro.ucv.ace.mail.IMail;
 
 /**
  * Created by Geo on 19.11.2016.

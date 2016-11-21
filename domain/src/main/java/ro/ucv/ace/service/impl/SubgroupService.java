@@ -53,7 +53,6 @@ public class SubgroupService implements ISubgroupService {
     @Override
     public SubgroupDto delete(int id) {
         Subgroup subgroup = subgroupRepository.delete(id);
-
         subgroup.accept(visitor);
 
         return visitor.getSubgroupDto();
@@ -63,6 +62,7 @@ public class SubgroupService implements ISubgroupService {
     public SubgroupDto edit(int id, ESSubgroupDto subgroupDto) {
         Subgroup subgroup = subgroupRepository.findOne(id);
         subgroup.update(subgroupDto.getName());
+        subgroup = subgroupRepository.save(subgroup);
         subgroup.accept(visitor);
 
         return visitor.getSubgroupDto();

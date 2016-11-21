@@ -99,7 +99,10 @@ public class JpaRepository<T, ID extends Serializable> implements IJpaRepository
     @Override
     public T save(T t) {
         try {
-            return getEntityManager().merge(t);
+            T saved = getEntityManager().merge(t);
+            getEntityManager().flush();
+
+            return saved;
         } catch (JpaObjectRetrievalFailureException jbrfe) {
             throw new ForeignKeyException(exceptionParser.parseEntityNotFoundException(jbrfe));
         } catch (JpaSystemException jse) {

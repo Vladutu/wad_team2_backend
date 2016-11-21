@@ -40,7 +40,6 @@ public class ProfessorService implements IProfessorService {
 
     @Override
     public ProfessorDto save(ESProfessorDto professorDto) {
-
         Integer index = 1;
         String username = (professorDto.getFirstName().substring(0, index) + professorDto.getLastName()).toLowerCase();
         Integer ssnLength = professorDto.getSsn().length();
@@ -84,6 +83,7 @@ public class ProfessorService implements IProfessorService {
         Professor professor = professorRepository.findOne(id);
         professor.update(professorDto.getFirstName(), professorDto.getLastName(), professorDto.getSsn(),
                 professorDto.getEmail(), professorDto.getGender(), professorDto.getPosition());
+        professor = professorRepository.save(professor);
 
         professor.accept(professorVisitor);
 

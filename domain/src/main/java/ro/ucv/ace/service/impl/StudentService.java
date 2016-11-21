@@ -93,6 +93,7 @@ public class StudentService implements IStudentService {
 
         student.update(studentDto.getFirstName(), studentDto.getLastName(), studentDto.getSsn(),
                 studentDto.getEmail(), studentDto.getGender(), subgroup);
+        student = studentRepository.save(student);
 
         student.accept(studentVisitor);
 

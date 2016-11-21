@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ro.ucv.ace.exception.EntityNotFoundException;
-import ro.ucv.ace.model.IAuthenticatable;
+import ro.ucv.ace.model.User;
 import ro.ucv.ace.service.ILoginService;
 
 import java.util.ArrayList;
@@ -27,18 +27,18 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            IAuthenticatable authenticatable = loginService.getByUsername(username);
+            User user = loginService.getByUsername(username);
 
-            return new org.springframework.security.core.userdetails.User(authenticatable.getUsername(), authenticatable.getPassword(),
-                    true, true, true, true, getGrantedAuthorities(authenticatable));
+            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                    true, true, true, true, getGrantedAuthorities(user));
         } catch (EntityNotFoundException e) {
             throw new UsernameNotFoundException("Username not found");
         }
     }
 
-    private Collection<? extends GrantedAuthority> getGrantedAuthorities(IAuthenticatable authenticatable) {
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + authenticatable.getRole()));
+    private Collection<? extends GrantedAuthority> getGrantedAuthorities(User user) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
 
         return authorities;
     }

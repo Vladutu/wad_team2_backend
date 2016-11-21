@@ -3,12 +3,10 @@ package ro.ucv.ace.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.ucv.ace.dto.UserDto;
-import ro.ucv.ace.dto.UserLoginDto;
+import ro.ucv.ace.dto.user.UserDto;
+import ro.ucv.ace.dto.user.UserLoginDto;
 import ro.ucv.ace.exception.InvalidPasswordException;
-import ro.ucv.ace.model.IAuthenticatable;
-import ro.ucv.ace.model.IUser;
-import ro.ucv.ace.repository.ILoginRepository;
+import ro.ucv.ace.model.User;
 import ro.ucv.ace.repository.IUserRepository;
 import ro.ucv.ace.service.ILoginService;
 import ro.ucv.ace.visitor.UserVisitor;
@@ -24,22 +22,19 @@ import java.util.Base64;
 public class LoginService implements ILoginService {
 
     @Autowired
-    private ILoginRepository loginRepository;
-
-    @Autowired
     private IUserRepository userRepository;
 
     @Autowired
     private UserVisitor userVisitor;
 
     @Override
-    public IAuthenticatable getByUsername(String username) {
-        return loginRepository.getByUsername(username);
+    public User getByUsername(String username) {
+        return userRepository.getByUsername(username);
     }
 
     @Override
     public UserDto authenticateUser(UserLoginDto userLogin) {
-        IUser user = userRepository.getByUsername(userLogin.getUsername().toLowerCase());
+        User user = userRepository.getByUsername(userLogin.getUsername().toLowerCase());
 
         if (!user.passwordMatches(userLogin.getPassword())) {
             throw new InvalidPasswordException("Invalid user password!");

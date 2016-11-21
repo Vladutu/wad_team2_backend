@@ -9,18 +9,17 @@ import java.util.List;
 /**
  * This interface provides methods for basic operations on JPA entities.
  *
- * @param <S>  type of the interface which the entity implements
  * @param <T>  type of the entity
  * @param <ID> type of the entity primary key
  */
-public interface IJpaRepository<S, T extends S, ID extends Serializable> {
+public interface IJpaRepository<T, ID extends Serializable> {
 
     /**
      * Returns all entities of the type.
      *
      * @return list of entities of type T
      */
-    List<S> findAll();
+    List<T> findAll();
 
     /**
      * Returns a IPage of entities meeting the paging restriction provided in the IPage object.
@@ -28,7 +27,7 @@ public interface IJpaRepository<S, T extends S, ID extends Serializable> {
      * @param page page
      * @return a page of entities
      */
-    List<S> findAll(IPage page);
+    List<T> findAll(IPage page);
 
     /**
      * Returns all entities meeting the condition restriction provided in the ICondition object.
@@ -36,7 +35,7 @@ public interface IJpaRepository<S, T extends S, ID extends Serializable> {
      * @param condition condition
      * @return list of entities meeting the condition
      */
-    List<S> findAllWhere(ICondition<T> condition);
+    List<T> findAllWhere(ICondition<T> condition);
 
     /**
      * Returns the entity whose id is the same as the method parameter.
@@ -44,7 +43,7 @@ public interface IJpaRepository<S, T extends S, ID extends Serializable> {
      * @param id id of the entity
      * @return entity
      */
-    S findOne(ID id);
+    T findOne(ID id);
 
     /**
      * Returns the entity that meets the condition restriction provided in the ICondition object.
@@ -52,7 +51,7 @@ public interface IJpaRepository<S, T extends S, ID extends Serializable> {
      * @param condition condition
      * @return searched entity
      */
-    S findOneWhere(ICondition<T> condition);
+    T findOneWhere(ICondition<T> condition);
 
 
     /**
@@ -61,7 +60,7 @@ public interface IJpaRepository<S, T extends S, ID extends Serializable> {
      * @param t entity to be saved
      * @return saved entity
      */
-    S save(S t);
+    T save(T t);
 
     /**
      * Deletes the entity whose id is  the same as the method parameter.
@@ -69,7 +68,7 @@ public interface IJpaRepository<S, T extends S, ID extends Serializable> {
      * @param id id of the entity
      * @return deleted entity
      */
-    S delete(ID id);
+    T delete(ID id);
 
 
     /**

@@ -17,13 +17,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import ro.ucv.ace.model.IAuthenticatable;
-import ro.ucv.ace.model.IProfessor;
-import ro.ucv.ace.model.ISubgroup;
-import ro.ucv.ace.model.IUser;
-import ro.ucv.ace.model.impl.Professor;
-import ro.ucv.ace.model.impl.Subgroup;
-import ro.ucv.ace.model.impl.User;
+import ro.ucv.ace.model.Professor;
+import ro.ucv.ace.model.Student;
+import ro.ucv.ace.model.Subgroup;
+import ro.ucv.ace.model.User;
 import ro.ucv.ace.repository.IJpaRepository;
 import ro.ucv.ace.repository.impl.JpaRepository;
 import ro.ucv.ace.socket.impl.SocketManager;
@@ -106,19 +103,15 @@ public class DomainConfig {
         return new HibernateJpaVendorAdapter();
     }
 
-    @Bean(name = "authenticatableRepository")
-    IJpaRepository<IAuthenticatable, User, Integer> authenticatableUserIntegerIJpaRepository() {
-        return new JpaRepository<>(IAuthenticatable.class, User.class);
-    }
 
     @Bean(name = "innerUserRepository")
-    IJpaRepository<IUser, User, Integer> iUserUserIntegerIJpaRepository() {
-        return new JpaRepository<>(IUser.class, User.class);
+    IJpaRepository<User, Integer> iUserUserIntegerIJpaRepository() {
+        return new JpaRepository<>(User.class);
     }
 
     @Bean(name = "innerSubgroupRepository")
-    IJpaRepository<ISubgroup, Subgroup, Integer> iSubgroupSubgroupIntegerIJpaRepository() {
-        return new JpaRepository<>(ISubgroup.class, Subgroup.class);
+    IJpaRepository<Subgroup, Integer> iSubgroupSubgroupIntegerIJpaRepository() {
+        return new JpaRepository<>(Subgroup.class);
     }
 
     @Bean(name = "socketManager")
@@ -131,7 +124,12 @@ public class DomainConfig {
     }
 
     @Bean(name = "innerProfessorRepository")
-    IJpaRepository<IProfessor, Professor, Integer> iProfessorProfessorIntegerIJpaRepository() {
-        return new JpaRepository<>(IProfessor.class, Professor.class);
+    IJpaRepository<Professor, Integer> iProfessorProfessorIntegerIJpaRepository() {
+        return new JpaRepository<>(Professor.class);
+    }
+
+    @Bean(name = "innerStudentRepository")
+    IJpaRepository<Student, Integer> iStudentStudentIntegerIJpaRepository() {
+        return new JpaRepository<>(Student.class);
     }
 }

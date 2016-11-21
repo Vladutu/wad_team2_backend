@@ -1,4 +1,4 @@
-package ro.ucv.ace.model.impl;
+package ro.ucv.ace.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

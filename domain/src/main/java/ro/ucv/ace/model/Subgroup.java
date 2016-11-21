@@ -1,6 +1,5 @@
-package ro.ucv.ace.model.impl;
+package ro.ucv.ace.model;
 
-import ro.ucv.ace.model.ISubgroup;
 import ro.ucv.ace.visitor.SubgroupVisitor;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "SUBGROUP")
-public class Subgroup implements ISubgroup {
+public class Subgroup{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,12 +56,10 @@ public class Subgroup implements ISubgroup {
         this.students = students;
     }
 
-    @Override
     public void accept(SubgroupVisitor visitor) {
         visitor.visit(this);
     }
 
-    @Override
     public void update(String name) {
         this.name = name;
     }

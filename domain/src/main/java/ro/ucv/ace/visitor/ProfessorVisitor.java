@@ -2,7 +2,7 @@ package ro.ucv.ace.visitor;
 
 import org.springframework.stereotype.Component;
 import ro.ucv.ace.dto.professor.ProfessorDto;
-import ro.ucv.ace.model.impl.Professor;
+import ro.ucv.ace.model.Professor;
 
 /**
  * Created by tzapt on 11/19/2016.

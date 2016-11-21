@@ -1,4 +1,4 @@
-package ro.ucv.ace.dto;
+package ro.ucv.ace.dto.user;
 
 import javax.validation.constraints.Size;
 

@@ -3,9 +3,9 @@ package ro.ucv.ace.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.ucv.ace.service.IMailService;
-import ro.ucv.ace.utils.mail.IMail;
-import ro.ucv.ace.utils.mail.IMailSender;
-import ro.ucv.ace.utils.mail.impl.NewAccountMail;
+import ro.ucv.ace.mail.IMail;
+import ro.ucv.ace.mail.IMailSender;
+import ro.ucv.ace.mail.impl.NewAccountMail;
 
 /**
  * Created by Geo on 19.11.2016.

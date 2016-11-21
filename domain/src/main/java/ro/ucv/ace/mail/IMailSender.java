@@ -1,4 +1,4 @@
-package ro.ucv.ace.utils.mail;
+package ro.ucv.ace.mail;
 
 /**
  * Created by Geo on 19.11.2016.

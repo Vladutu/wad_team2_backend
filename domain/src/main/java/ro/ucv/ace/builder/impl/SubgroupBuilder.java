@@ -3,8 +3,7 @@ package ro.ucv.ace.builder.impl;
 import org.springframework.stereotype.Component;
 import ro.ucv.ace.builder.ISubgroupBuilder;
 import ro.ucv.ace.dto.subgroup.ESSubgroupDto;
-import ro.ucv.ace.model.ISubgroup;
-import ro.ucv.ace.model.impl.Subgroup;
+import ro.ucv.ace.model.Subgroup;
 
 /**
  * Created by Geo on 19.11.2016.
@@ -13,7 +12,7 @@ import ro.ucv.ace.model.impl.Subgroup;
 public class SubgroupBuilder implements ISubgroupBuilder {
 
     @Override
-    public ISubgroup build(ESSubgroupDto subgroupDto) {
+    public Subgroup build(ESSubgroupDto subgroupDto) {
         return new Subgroup(subgroupDto.getName());
     }
 }

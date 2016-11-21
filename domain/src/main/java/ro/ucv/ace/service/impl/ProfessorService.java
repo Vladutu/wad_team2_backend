@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ro.ucv.ace.builder.IProfessorBuilder;
 import ro.ucv.ace.dto.professor.ESProfessorDto;
 import ro.ucv.ace.dto.professor.ProfessorDto;
-import ro.ucv.ace.model.IProfessor;
+import ro.ucv.ace.model.Professor;
 import ro.ucv.ace.repository.IProfessorRepository;
 import ro.ucv.ace.repository.IUserRepository;
 import ro.ucv.ace.service.IMailService;
@@ -30,7 +30,7 @@ public class ProfessorService implements IProfessorService {
     private IProfessorBuilder professorBuilder;
 
     @Autowired
-    private ProfessorVisitor visitor;
+    private ProfessorVisitor professorVisitor;
 
     @Autowired
     private IMailService mailService;
@@ -40,7 +40,6 @@ public class ProfessorService implements IProfessorService {
 
     @Override
     public ProfessorDto save(ESProfessorDto professorDto) {
-
         Integer index = 1;
         String username = (professorDto.getFirstName().substring(0, index) + professorDto.getLastName()).toLowerCase();
         Integer ssnLength = professorDto.getSsn().length();
@@ -50,22 +49,22 @@ public class ProfessorService implements IProfessorService {
             username = (professorDto.getFirstName().substring(0, ++index) + professorDto.getLastName()).toLowerCase();
         }
 
-        IProfessor professor = professorRepository.save(professorBuilder.build(professorDto, username, password));
+        Professor professor = professorRepository.save(professorBuilder.build(professorDto, username, password));
 
         mailService.sendAccountCreationMail(professorDto.getEmail(), username, password);
 
-        professor.accept(visitor);
+        professor.accept(professorVisitor);
 
-        return visitor.getProfessorDto();
+        return professorVisitor.getProfessorDto();
     }
 
     @Override
     public List<ProfessorDto> getAll() {
-        List<IProfessor> professors = professorRepository.findAll();
+        List<Professor> professors = professorRepository.findAll();
         List<ProfessorDto> professorDtos = new ArrayList<>();
         professors.forEach(p -> {
-            p.accept(visitor);
-            professorDtos.add(visitor.getProfessorDto());
+            p.accept(professorVisitor);
+            professorDtos.add(professorVisitor.getProfessorDto());
         });
 
         return professorDtos;
@@ -73,20 +72,21 @@ public class ProfessorService implements IProfessorService {
 
     @Override
     public ProfessorDto delete(int id) {
-        IProfessor professor = professorRepository.delete(id);
-        professor.accept(visitor);
+        Professor professor = professorRepository.delete(id);
+        professor.accept(professorVisitor);
 
-        return visitor.getProfessorDto();
+        return professorVisitor.getProfessorDto();
     }
 
     @Override
     public ProfessorDto edit(int id, ESProfessorDto professorDto) {
-        IProfessor professor = professorRepository.findOne(id);
+        Professor professor = professorRepository.findOne(id);
         professor.update(professorDto.getFirstName(), professorDto.getLastName(), professorDto.getSsn(),
                 professorDto.getEmail(), professorDto.getGender(), professorDto.getPosition());
+        professor = professorRepository.save(professor);
 
-        professor.accept(visitor);
+        professor.accept(professorVisitor);
 
-        return visitor.getProfessorDto();
+        return professorVisitor.getProfessorDto();
     }
 }

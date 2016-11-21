@@ -1,6 +1,6 @@
 package ro.ucv.ace.repository;
 
-import ro.ucv.ace.model.IProfessor;
+import ro.ucv.ace.model.Professor;
 
 import java.util.List;
 
@@ -8,11 +8,11 @@ import java.util.List;
  * Created by tzapt on 11/19/2016.
  */
 public interface IProfessorRepository {
-    IProfessor save(IProfessor professor);
+    Professor save(Professor professor);
 
-    List<IProfessor> findAll();
+    List<Professor> findAll();
 
-    IProfessor delete(int id);
+    Professor delete(int id);
 
-    IProfessor findOne(int id);
+    Professor findOne(int id);
 }

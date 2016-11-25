@@ -7,6 +7,7 @@ import io.socket.client.Socket;
 import org.springframework.beans.factory.DisposableBean;
 import ro.ucv.ace.exception.SocketConnectionException;
 import ro.ucv.ace.socket.IJob;
+import ro.ucv.ace.socket.IJobResult;
 import ro.ucv.ace.socket.ISocketManager;
 
 import java.net.URISyntaxException;
@@ -49,8 +50,6 @@ public class SocketManager implements ISocketManager, DisposableBean {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
-        // TODO: Garbage collector not closing this connection. Find out why
         this.socket.connect();
     }
 
@@ -62,7 +61,7 @@ public class SocketManager implements ISocketManager, DisposableBean {
      * @return Future of the job's result
      */
     @Override
-    public Future<JobResult> sendJob(IJob job) {
+    public Future<IJobResult> sendJob(IJob job) {
         // Check if we are still connected to the Code Verifier
         if (!socket.connected()) {
             throw new SocketConnectionException("Not connected to Code Verifier Server");

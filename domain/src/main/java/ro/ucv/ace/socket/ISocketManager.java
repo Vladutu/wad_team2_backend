@@ -1,7 +1,5 @@
 package ro.ucv.ace.socket;
 
-import ro.ucv.ace.socket.impl.JobResult;
-
 import java.util.concurrent.Future;
 
 /**
@@ -9,5 +7,5 @@ import java.util.concurrent.Future;
  */
 public interface ISocketManager {
 
-    Future<JobResult> sendJob(IJob job);
+    Future<IJobResult> sendJob(IJob job);
 }

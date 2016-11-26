@@ -12,6 +12,9 @@ import ro.ucv.ace.dto.user.UserDto;
 import ro.ucv.ace.dto.user.UserLoginDto;
 import ro.ucv.ace.exception.EntityBindingException;
 import ro.ucv.ace.service.ILoginService;
+import ro.ucv.ace.socket.IJob;
+import ro.ucv.ace.socket.impl.CompilationJob;
+import ro.ucv.ace.socket.impl.SocketManager;
 
 import javax.validation.Valid;
 
@@ -26,12 +29,18 @@ public class LoginController {
     @Autowired
     private ILoginService loginService;
 
+    @Autowired
+    private SocketManager socketManager;
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<UserDto> postLogin(@Valid @RequestBody UserLoginDto userLogin, BindingResult bindResult) {
         if (bindResult.hasErrors()) {
             throw new EntityBindingException(bindResult.getFieldErrors());
         }
         UserDto userDto = loginService.authenticateUser(userLogin);
+
+        IJob job = new CompilationJob("/test_compilation", "JAVA");
+        socketManager.sendJob(job);
 
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }

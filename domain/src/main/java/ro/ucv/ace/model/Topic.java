@@ -1,5 +1,7 @@
 package ro.ucv.ace.model;
 
+import ro.ucv.ace.visitor.TopicVisitor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,14 @@ public class Topic {
     @OneToMany(mappedBy = "topic", cascade = CascadeType.REMOVE, orphanRemoval = true)
     List<Task> tasks = new ArrayList<>();
 
+    public Topic() {
+
+    }
+
+    public Topic(String name) {
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -45,5 +55,13 @@ public class Topic {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public void accept(TopicVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public void update(String name) {
+        this.name = name;
     }
 }

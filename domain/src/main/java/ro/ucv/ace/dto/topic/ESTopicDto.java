@@ -1,16 +1,16 @@
-package ro.ucv.ace.dto.subgroup;
+package ro.ucv.ace.dto.topic;
 
 /**
- * Created by Geo on 19.11.2016.
+ * Created by tzapt on 11/26/2016.
  */
-public class ESSubgroupDto {
+public class ESTopicDto {
 
     private String name;
 
-    public ESSubgroupDto() {
+    public ESTopicDto() {
     }
 
-    public ESSubgroupDto(String name) {
+    public ESTopicDto(String name) {
         this.name = name;
     }
 

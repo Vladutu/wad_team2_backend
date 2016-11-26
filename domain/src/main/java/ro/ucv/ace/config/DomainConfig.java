@@ -17,10 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import ro.ucv.ace.model.Professor;
-import ro.ucv.ace.model.Student;
-import ro.ucv.ace.model.Subgroup;
-import ro.ucv.ace.model.User;
+import ro.ucv.ace.model.*;
 import ro.ucv.ace.repository.IJpaRepository;
 import ro.ucv.ace.repository.impl.JpaRepository;
 import ro.ucv.ace.socket.impl.SocketManager;
@@ -45,7 +42,6 @@ public class DomainConfig {
 
     @Autowired
     private Environment environment;
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -110,7 +106,7 @@ public class DomainConfig {
     }
 
     @Bean(name = "innerSubgroupRepository")
-    IJpaRepository<Subgroup, Integer> iSubgroupSubgroupIntegerIJpaRepository() {
+    IJpaRepository<Subgroup, Integer> subgroupIntegerIJpaRepository() {
         return new JpaRepository<>(Subgroup.class);
     }
 
@@ -124,12 +120,22 @@ public class DomainConfig {
     }
 
     @Bean(name = "innerProfessorRepository")
-    IJpaRepository<Professor, Integer> iProfessorProfessorIntegerIJpaRepository() {
+    IJpaRepository<Professor, Integer> professorIntegerIJpaRepository() {
         return new JpaRepository<>(Professor.class);
     }
 
     @Bean(name = "innerStudentRepository")
-    IJpaRepository<Student, Integer> iStudentStudentIntegerIJpaRepository() {
+    IJpaRepository<Student, Integer> studentIntegerIJpaRepository() {
         return new JpaRepository<>(Student.class);
+    }
+
+    @Bean(name = "innerTaskRepository")
+    IJpaRepository<Task, Integer> taskIntegerIJpaRepository() {
+        return new JpaRepository<>(Task.class);
+    }
+
+    @Bean(name = "innerTopicRepository")
+    IJpaRepository<Topic, Integer> topicIntegerIJpaRepository() {
+        return new JpaRepository<>(Topic.class);
     }
 }

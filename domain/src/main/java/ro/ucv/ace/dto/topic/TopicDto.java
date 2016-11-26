@@ -1,19 +1,15 @@
-package ro.ucv.ace.dto.subgroup;
+package ro.ucv.ace.dto.topic;
 
 /**
- * Created by Geo on 19.11.2016.
+ * Created by tzapt on 11/26/2016.
  */
-public class SubgroupDto {
+public class TopicDto {
 
     private Integer id;
 
     private String name;
 
-    public SubgroupDto() {
-    }
-
-    public SubgroupDto(Integer id, String name) {
-
+    public TopicDto(Integer id, String name) {
         this.id = id;
         this.name = name;
     }

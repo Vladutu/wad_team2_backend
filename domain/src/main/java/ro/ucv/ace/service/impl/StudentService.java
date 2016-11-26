@@ -8,9 +8,9 @@ import ro.ucv.ace.dto.student.ESStudentDto;
 import ro.ucv.ace.dto.student.StudentDto;
 import ro.ucv.ace.model.Student;
 import ro.ucv.ace.model.Subgroup;
+import ro.ucv.ace.repository.IStudentRepository;
 import ro.ucv.ace.repository.ISubgroupRepository;
 import ro.ucv.ace.repository.IUserRepository;
-import ro.ucv.ace.repository.impl.StudentRepository;
 import ro.ucv.ace.service.IStudentService;
 import ro.ucv.ace.visitor.StudentVisitor;
 
@@ -25,7 +25,7 @@ import java.util.List;
 public class StudentService implements IStudentService {
 
     @Autowired
-    private StudentRepository studentRepository;
+    private IStudentRepository studentRepository;
 
     @Autowired
     private IStudentBuilder studentBuilder;

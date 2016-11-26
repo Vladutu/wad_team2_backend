@@ -37,10 +37,10 @@ public class LoginController {
         if (bindResult.hasErrors()) {
             throw new EntityBindingException(bindResult.getFieldErrors());
         }
-        UserDto userDto = loginService.authenticateUser(userLogin);
-
         IJob job = new CompilationJob("/test_compilation", "JAVA");
         socketManager.sendJob(job);
+
+        UserDto userDto = loginService.authenticateUser(userLogin);
 
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }

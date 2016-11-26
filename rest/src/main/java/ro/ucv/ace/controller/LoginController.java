@@ -13,7 +13,9 @@ import ro.ucv.ace.dto.user.UserLoginDto;
 import ro.ucv.ace.exception.EntityBindingException;
 import ro.ucv.ace.service.ILoginService;
 import ro.ucv.ace.socket.IJob;
+import ro.ucv.ace.socket.IJobResult;
 import ro.ucv.ace.socket.impl.CompilationJob;
+import ro.ucv.ace.socket.impl.CompilationJobResult;
 import ro.ucv.ace.socket.impl.SocketManager;
 
 import javax.validation.Valid;
@@ -33,15 +35,17 @@ public class LoginController {
     private SocketManager socketManager;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<UserDto> postLogin(@Valid @RequestBody UserLoginDto userLogin, BindingResult bindResult) {
+    public ResponseEntity<String> postLogin(@Valid @RequestBody UserLoginDto userLogin, BindingResult bindResult) {
         if (bindResult.hasErrors()) {
             throw new EntityBindingException(bindResult.getFieldErrors());
         }
+
         IJob job = new CompilationJob("/test_compilation", "JAVA");
-        socketManager.sendJob(job);
+        IJobResult result = (CompilationJobResult) socketManager.sendJob(job);
+        result.getResponse();
 
         UserDto userDto = loginService.authenticateUser(userLogin);
 
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+        return new ResponseEntity<>(result.getResponse(), HttpStatus.OK);
     }
 }

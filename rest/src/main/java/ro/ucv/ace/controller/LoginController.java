@@ -12,14 +12,8 @@ import ro.ucv.ace.dto.user.UserDto;
 import ro.ucv.ace.dto.user.UserLoginDto;
 import ro.ucv.ace.exception.EntityBindingException;
 import ro.ucv.ace.service.ILoginService;
-import ro.ucv.ace.socket.IJob;
-import ro.ucv.ace.socket.IJobResult;
-import ro.ucv.ace.socket.impl.CompilationJob;
-import ro.ucv.ace.socket.impl.SocketManager;
 
 import javax.validation.Valid;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 /**
  * Created by tzapt on 11/16/2016.
@@ -32,21 +26,13 @@ public class LoginController {
     @Autowired
     private ILoginService loginService;
 
-    @Autowired
-    private SocketManager socketManager;
-
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<String> postLogin(@Valid @RequestBody UserLoginDto userLogin, BindingResult bindResult) throws ExecutionException, InterruptedException {
+    public ResponseEntity<UserDto> postLogin(@Valid @RequestBody UserLoginDto userLogin, BindingResult bindResult) {
         if (bindResult.hasErrors()) {
             throw new EntityBindingException(bindResult.getFieldErrors());
         }
-
-        IJob job = new CompilationJob("/test_compilation", "JAVA");
-        Future<IJobResult> result = socketManager.sendJob(job);
-        IJobResult string = result.get();
-
         UserDto userDto = loginService.authenticateUser(userLogin);
 
-        return new ResponseEntity<>(string.getResponse(), HttpStatus.OK);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 }

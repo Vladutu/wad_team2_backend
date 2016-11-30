@@ -12,7 +12,7 @@ import ro.ucv.ace.model.Topic;
 public class TopicBuilder implements ITopicBuilder {
 
     @Override
-    public Topic build(ESTopicDto topicDto) {
-        return new Topic(topicDto.getName());
+    public Topic build(ESTopicDto topicDto, int professorId) {
+        return new Topic(topicDto.getName(), professorId);
     }
 }

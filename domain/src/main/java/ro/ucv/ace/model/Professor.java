@@ -4,10 +4,9 @@ import ro.ucv.ace.model.enums.Gender;
 import ro.ucv.ace.model.enums.UserRole;
 import ro.ucv.ace.visitor.ProfessorVisitor;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Geo on 15.11.2016.
@@ -19,6 +18,9 @@ public class Professor extends User {
     @Column(name = "POSITION", nullable = false)
     @Basic
     private String position;
+
+    @OneToMany(mappedBy = "professor")
+    private List<Topic> topics = new ArrayList<>();
 
     public Professor() {
 
@@ -32,12 +34,24 @@ public class Professor extends User {
         this.position = position;
     }
 
+    public Professor(int professorId) {
+        this.setId(professorId);
+    }
+
     public String getPosition() {
         return position;
     }
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public List<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<Topic> topics) {
+        this.topics = topics;
     }
 
     public void accept(ProfessorVisitor visitor) {
@@ -53,4 +67,14 @@ public class Professor extends User {
         this.getAccount().setEmail(email);
     }
 
+    public boolean hasTopicWithName(String name) {
+        topics.size();
+        for (Topic topic : topics) {
+            if (topic.hasName(name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -1,6 +1,7 @@
 package ro.ucv.ace.model;
 
 import ro.ucv.ace.model.enums.Language;
+import ro.ucv.ace.visitor.TaskVisitor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -108,5 +109,9 @@ public class Task {
 
     public void setSolutions(List<Solution> solutions) {
         this.solutions = solutions;
+    }
+
+    public void accept(TaskVisitor visitor) {
+        visitor.visit(this);
     }
 }

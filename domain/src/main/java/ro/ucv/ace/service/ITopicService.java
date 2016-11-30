@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface ITopicService {
 
-    TopicDto save(ESTopicDto topicDto);
+    TopicDto save(int professorId, ESTopicDto topicDto);
 
-    List<TopicDto> getAll();
+    List<TopicDto> getAll(int professorId);
 
     TopicDto delete(int id);
 

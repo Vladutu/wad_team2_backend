@@ -18,19 +18,24 @@ public class Topic {
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "NAME", unique = true)
+    @Column(name = "NAME")
     @Basic
     private String name;
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.REMOVE, orphanRemoval = true)
     List<Task> tasks = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID")
+    private Professor professor;
+
     public Topic() {
 
     }
 
-    public Topic(String name) {
+    public Topic(String name, int professorId) {
         this.name = name;
+        this.professor = new Professor(professorId);
     }
 
     public Integer getId() {
@@ -63,5 +68,17 @@ public class Topic {
 
     public void update(String name) {
         this.name = name;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public boolean hasName(String name) {
+        return this.name.equals(name);
     }
 }

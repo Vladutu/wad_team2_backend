@@ -16,4 +16,8 @@ public interface ITopicRepository {
     Topic delete(int id);
 
     Topic findOne(int id);
+
+    List<Topic> findByProfessor(int professorId);
+
+    Topic findByProfessorAndName(int professorId, String name);
 }

@@ -1,6 +1,8 @@
 package ro.ucv.ace.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Geo on 30.11.2016.
@@ -15,4 +17,7 @@ public abstract class PlagiarismAnalyser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
+
+    @OneToMany(mappedBy = "plagiarismAnalyser")
+    private List<Task> tasks = new ArrayList<>();
 }

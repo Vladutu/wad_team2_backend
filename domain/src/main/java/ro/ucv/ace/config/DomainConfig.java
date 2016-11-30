@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -37,7 +38,8 @@ import java.util.Properties;
 @EnableSpringConfigured
 @EnableScheduling
 @ComponentScan({"ro.ucv.ace"})
-@PropertySource(value = {"classpath:db.properties", "classpath:mail.properties", "classpath:socket.properties"})
+@PropertySource(value = {"classpath:db.properties", "classpath:mail.properties", "classpath:socket.properties",
+        "classpath:folder.properties"})
 public class DomainConfig {
 
     @Autowired
@@ -46,6 +48,11 @@ public class DomainConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfigIn() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
     @Bean
@@ -137,5 +144,15 @@ public class DomainConfig {
     @Bean(name = "innerTopicRepository")
     IJpaRepository<Topic, Integer> topicIntegerIJpaRepository() {
         return new JpaRepository<>(Topic.class);
+    }
+
+    @Bean(name = "nullPlagiarismRepository")
+    IJpaRepository<NullPlagiarismAnalyser, Integer> nullPlagiarismAnalyserIntegerIJpaRepository() {
+        return new JpaRepository<>(NullPlagiarismAnalyser.class);
+    }
+
+    @Bean(name = "defaultPlagiarismRepository")
+    IJpaRepository<DefaultPlagiarismAnalyser, Integer> defaultPlagiarismAnalyserIntegerIJpaRepository() {
+        return new JpaRepository<>(DefaultPlagiarismAnalyser.class);
     }
 }

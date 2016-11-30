@@ -41,7 +41,7 @@ public class TopicService implements ITopicService {
         Professor professor = professorRepository.findOne(professorId);
 
         if (professor.hasTopicWithName(topicDto.getName())) {
-            throw new DuplicateEntryException("Task: Duplicate entry '" + topicDto.getName() + "' for Professor with id " + professorId);
+            throw new DuplicateEntryException("Topic: Duplicate entry '" + topicDto.getName() + "' for Professor with id " + professorId);
         }
 
         Topic topic = topicRepository.save(topicBuilder.build(topicDto, professorId));

@@ -81,4 +81,21 @@ public class Topic {
     public boolean hasName(String name) {
         return this.name.equals(name);
     }
+
+
+    public boolean hasTaskWithName(String name) {
+        tasks.size();
+
+        for (Task task : tasks) {
+            if (task.hasName(name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean hasId(int topicId) {
+        return this.id.equals(topicId);
+    }
 }

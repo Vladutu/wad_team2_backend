@@ -23,20 +23,21 @@ public class ProfessorTopicController {
     @Autowired
     private ITopicService topicService;
 
-    @RequestMapping(value = "/topics", method = RequestMethod.GET)
-    public ResponseEntity<List<TopicDto>> getAllTopics() {
-        List<TopicDto> topicDtos = topicService.getAll();
+    @RequestMapping(value = "/{professorId}/topics", method = RequestMethod.GET)
+    public ResponseEntity<List<TopicDto>> getAllTopics(@PathVariable("professorId") int professorId) {
+        List<TopicDto> topicDtos = topicService.getAll(professorId);
 
         return new ResponseEntity<>(topicDtos, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/topics", method = RequestMethod.POST)
-    public ResponseEntity<TopicDto> saveTopic(@Valid @RequestBody ESTopicDto topicDto, BindingResult bindingResult) {
+    @RequestMapping(value = "/{professorId}/topics", method = RequestMethod.POST)
+    public ResponseEntity<TopicDto> saveTopic(@Valid @RequestBody ESTopicDto topicDto, BindingResult bindingResult,
+                                              @PathVariable("professorId") int professorId) {
         if (bindingResult.hasErrors()) {
             throw new EntityBindingException(bindingResult.getFieldErrors());
         }
 
-        TopicDto saved = topicService.save(topicDto);
+        TopicDto saved = topicService.save(professorId,topicDto);
 
         return new ResponseEntity<>(saved, HttpStatus.OK);
     }

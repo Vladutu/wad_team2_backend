@@ -15,7 +15,62 @@ public class TaskDto {
 
     private String language;
 
-    private String testing;
+    private boolean canSubmitSolutions;
 
-    //TODO add other fields for json cuz idk how it will look
+    public TaskDto(Integer id, String name, String description, String deadline, String language, boolean canSubmitSolutions) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.deadline = deadline;
+        this.language = language;
+        this.canSubmitSolutions = canSubmitSolutions;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public boolean isCanSubmitSolutions() {
+        return canSubmitSolutions;
+    }
+
+    public void setCanSubmitSolutions(boolean canSubmitSolutions) {
+        this.canSubmitSolutions = canSubmitSolutions;
+    }
 }

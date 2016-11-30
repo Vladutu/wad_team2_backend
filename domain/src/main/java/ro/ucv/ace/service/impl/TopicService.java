@@ -6,8 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ro.ucv.ace.builder.ITopicBuilder;
 import ro.ucv.ace.dto.topic.ESTopicDto;
 import ro.ucv.ace.dto.topic.TopicDto;
+import ro.ucv.ace.exception.DuplicateEntryException;
+import ro.ucv.ace.model.Professor;
 import ro.ucv.ace.model.Topic;
 import ro.ucv.ace.repository.ITopicRepository;
+import ro.ucv.ace.repository.impl.ProfessorRepository;
 import ro.ucv.ace.service.ITopicService;
 import ro.ucv.ace.visitor.TopicVisitor;
 
@@ -25,25 +28,35 @@ public class TopicService implements ITopicService {
     private ITopicRepository topicRepository;
 
     @Autowired
+    private ProfessorRepository professorRepository;
+
+    @Autowired
     private TopicVisitor visitor;
 
     @Autowired
     private ITopicBuilder topicBuilder;
 
     @Override
-    public TopicDto save(ESTopicDto topicDto) {
-        Topic topic = topicRepository.save(topicBuilder.build(topicDto));
+    public TopicDto save(int professorId, ESTopicDto topicDto) {
+        Professor professor = professorRepository.findOne(professorId);
+
+        if (professor.hasTopicWithName(topicDto.getName())) {
+            throw new DuplicateEntryException("Task: Duplicate entry '" + topicDto.getName() + "' for Professor with id " + professorId);
+        }
+
+        Topic topic = topicRepository.save(topicBuilder.build(topicDto, professorId));
         topic.accept(visitor);
 
         return visitor.getTopicDto();
+
     }
 
     @Override
-    public List<TopicDto> getAll() {
-        List<Topic> subgroups = topicRepository.findAll();
+    public List<TopicDto> getAll(int professorId) {
+        List<Topic> topics = topicRepository.findByProfessor(professorId);
         List<TopicDto> topicDtos = new ArrayList<>();
 
-        subgroups.forEach(s -> {
+        topics.forEach(s -> {
             s.accept(visitor);
             topicDtos.add(visitor.getTopicDto());
         });

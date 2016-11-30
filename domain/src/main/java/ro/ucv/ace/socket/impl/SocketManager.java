@@ -1,5 +1,6 @@
 package ro.ucv.ace.socket.impl;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.socket.client.IO;
@@ -40,6 +41,11 @@ public class SocketManager implements ISocketManager, DisposableBean {
         this.host = host;
         this.pool = Executors.newFixedThreadPool(10);
         this.mapper = new ObjectMapper();
+        mapper.setVisibilityChecker(mapper.getSerializationConfig().getDefaultVisibilityChecker()
+                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
 
         startListening();
     }
@@ -77,7 +83,7 @@ public class SocketManager implements ISocketManager, DisposableBean {
         }
 
         // Submit async task to exec pool, and return a future variant of the job result
-        return pool.submit(new SocketSender(this.socket, this.mapper, job.getType(), jobString));
+        return pool.submit(new SocketSender(this.socket, this.mapper, job.getType().getName(), jobString));
     }
 
     @Override

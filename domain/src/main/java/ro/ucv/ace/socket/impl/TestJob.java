@@ -5,16 +5,16 @@ import ro.ucv.ace.model.enums.Language;
 import ro.ucv.ace.socket.IJob;
 
 /**
- * Created by ctotolin on 19-Nov-16.
+ * Created by Geo on 30.11.2016.
  */
-public class CompilationJob extends Job implements IJob {
+public class TestJob extends Job implements IJob {
 
     private String path;
 
     private Language language;
 
-    public CompilationJob(String path, Language language) {
-        super(JobType.COMPILE);
+    public TestJob(String path, Language language) {
+        super(JobType.TEST);
         this.path = path;
         this.language = language;
     }

@@ -23,6 +23,8 @@ public class SocketSender implements Callable<IJobResult> {
 
     private ObjectMapper mapper;
 
+    private volatile boolean done = false;
+
     public SocketSender(Socket socket, ObjectMapper mapper, String type, String message) {
         this.socket = socket;
         this.message = message;
@@ -41,8 +43,6 @@ public class SocketSender implements Callable<IJobResult> {
         final BlockingQueue<String> response = new LinkedBlockingQueue<>();
 
         this.socket.emit(this.type, this.message, (Ack) args -> {
-            System.out.println("Received response from server");
-
             // Get JSONObject response
             JSONObject jsonResponse = (JSONObject) args[0];
 
@@ -51,10 +51,17 @@ public class SocketSender implements Callable<IJobResult> {
 
             // Offer it to the queue
             response.offer(stringResponse);
+
+            done = true;
+            System.out.println("Received response from server");
         });
 
-        // Read value from queue, convert to JobResult and return it
+        // Read value from queue, convert to JobR result and return it
         // TODO: make sure response is a valid IJobResult , otherwise throw JsonParseException
-        return mapper.readValue(response.take(), IJobResult.class);
+        while (!done) {
+        }
+
+        String result = response.take();
+        return mapper.readValue(result, CompilationJobResult.class);
     }
 }

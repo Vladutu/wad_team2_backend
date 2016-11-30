@@ -1,26 +1,30 @@
 package ro.ucv.ace.socket.impl;
 
+import ro.ucv.ace.socket.IJobResult;
+
 /**
- * Created by ctotolin on 19-Nov-16.
+ * Created by Geo on 30.11.2016.
  */
-public class JobResult {
+public abstract class JobResult implements IJobResult {
+
+    private boolean error;
+
+    private boolean internalError;
 
     private String result;
 
-    private String error;
-
-    public JobResult() {
+    @Override
+    public boolean getError() {
+        return error;
     }
 
-    public boolean isError() {
-        return error != null;
-    }
-
+    @Override
     public String getResult() {
         return result;
     }
 
-    public String getError() {
-        return error;
+    @Override
+    public boolean getInternalError() {
+        return internalError;
     }
 }

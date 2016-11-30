@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "TASK")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Task {
+public abstract class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

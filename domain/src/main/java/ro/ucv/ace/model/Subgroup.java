@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "SUBGROUP")
-public class Subgroup{
+public class Subgroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,9 @@ public class Subgroup{
 
     @OneToMany(mappedBy = "subgroup")
     private List<Student> students = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "subgroups")
+    private List<Task> task = new ArrayList<>();
 
     public Subgroup() {
     }
@@ -54,6 +57,14 @@ public class Subgroup{
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public List<Task> getTask() {
+        return task;
+    }
+
+    public void setTask(List<Task> task) {
+        this.task = task;
     }
 
     public void accept(SubgroupVisitor visitor) {

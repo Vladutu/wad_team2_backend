@@ -41,8 +41,17 @@ public abstract class Task {
     private boolean canSubmitSolutions;
 
     @ManyToOne
+    @JoinColumn(name = "PLAGIARISM_ANALYSER_ID")
+    private PlagiarismAnalyser plagiarismAnalyser;
+
+    @ManyToOne
     @JoinColumn(name = "TOPIC_ID", referencedColumnName = "ID")
     private Topic topic;
+
+    @ManyToMany
+    @JoinTable(name = "TASK_SUBGROUP", joinColumns = @JoinColumn(name = "TASK_ID", referencedColumnName = "ID")
+            , inverseJoinColumns = @JoinColumn(name = "SUBGROUP_ID", referencedColumnName = "ID"))
+    private List<Subgroup> subgroups = new ArrayList<>();
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Solution> solutions = new ArrayList<>();
@@ -111,7 +120,27 @@ public abstract class Task {
         this.solutions = solutions;
     }
 
+    public List<Subgroup> getSubgroups() {
+        return subgroups;
+    }
+
+    public void setSubgroups(List<Subgroup> subgroups) {
+        this.subgroups = subgroups;
+    }
+
+    public PlagiarismAnalyser getPlagiarismAnalyser() {
+        return plagiarismAnalyser;
+    }
+
+    public void setPlagiarismAnalyser(PlagiarismAnalyser plagiarismAnalyser) {
+        this.plagiarismAnalyser = plagiarismAnalyser;
+    }
+
     public void accept(TaskVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public boolean hasName(String name) {
+        return this.name.equals(name);
     }
 }

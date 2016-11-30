@@ -1,8 +1,12 @@
 package ro.ucv.ace.model;
 
+import ro.ucv.ace.model.enums.Language;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by Geo on 15.11.2016.
@@ -11,25 +15,31 @@ import javax.persistence.Table;
 @Table(name = "AUTOMATIC_TESTED_TASK")
 public class AutomaticTestedTask extends Task {
 
-    @Column(name = "INPUT_FILE_PATH")
-    private String inputFilePath;
+    @Column(name = "TEST_FILES_PATH")
+    private String testFilesPath;
 
-    @Column(name = "OUTPUT_FILE_PATH")
-    private String outputFilePath;
 
-    public String getInputFilePath() {
-        return inputFilePath;
+    public AutomaticTestedTask() {
     }
 
-    public void setInputFilePath(String inputFilePath) {
-        this.inputFilePath = inputFilePath;
+    public AutomaticTestedTask(Topic topic, List<Subgroup> subgroups, String name, LocalDate deadline,
+                               String description, Language language, String filePath, PlagiarismAnalyser plagiarismAnalyser) {
+        setTopic(topic);
+        setSubgroups(subgroups);
+        setName(name);
+        setDeadline(deadline);
+        setDescription(description);
+        setLanguage(language);
+        setTestFilesPath(filePath);
+        setPlagiarismAnalyser(plagiarismAnalyser);
+        setCanSubmitSolutions(true);
     }
 
-    public String getOutputFilePath() {
-        return outputFilePath;
+    public String getTestFilesPath() {
+        return testFilesPath;
     }
 
-    public void setOutputFilePath(String outputFilePath) {
-        this.outputFilePath = outputFilePath;
+    public void setTestFilesPath(String testFilesPath) {
+        this.testFilesPath = testFilesPath;
     }
 }

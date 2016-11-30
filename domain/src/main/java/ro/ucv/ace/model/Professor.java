@@ -77,4 +77,18 @@ public class Professor extends User {
 
         return false;
     }
+
+
+    public boolean hasTaskWithNameInTopicWithId(String name, int topicId) {
+        topics.size();
+        Topic searched = null;
+        for (Topic topic : topics) {
+            if (topic.hasId(topicId)) {
+                searched = topic;
+                break;
+            }
+        }
+
+        return searched.hasTaskWithName(name);
+    }
 }

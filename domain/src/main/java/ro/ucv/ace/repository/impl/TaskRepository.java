@@ -17,6 +17,6 @@ public class TaskRepository implements ITaskRepository {
 
     @Override
     public Task save(Task task) {
-        return null;
+        return innerTaskRepository.save(task);
     }
 }

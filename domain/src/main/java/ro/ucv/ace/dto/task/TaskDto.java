@@ -21,8 +21,12 @@ public class TaskDto {
 
     private boolean plagiarismAnalyserEnabled;
 
+    private int sentSolutions;
+
+    private int noStudents;
+
     public TaskDto(Integer id, String name, String description, String deadline, String language,
-                   boolean canSubmitSolutions, boolean testsEnabled, boolean plagiarismAnalyserEnabled) {
+                   boolean canSubmitSolutions, boolean testsEnabled, boolean plagiarismAnalyserEnabled, int sentSolutions, int noStudents) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -31,8 +35,25 @@ public class TaskDto {
         this.canSubmitSolutions = canSubmitSolutions;
         this.testsEnabled = testsEnabled;
         this.plagiarismAnalyserEnabled = plagiarismAnalyserEnabled;
+        this.sentSolutions = sentSolutions;
+        this.noStudents = noStudents;
     }
 
+    public int getSentSolutions() {
+        return sentSolutions;
+    }
+
+    public void setSentSolutions(int sentSolutions) {
+        this.sentSolutions = sentSolutions;
+    }
+
+    public int getNoStudents() {
+        return noStudents;
+    }
+
+    public void setNoStudents(int noStudents) {
+        this.noStudents = noStudents;
+    }
 
     public boolean isTestsEnabled() {
         return testsEnabled;

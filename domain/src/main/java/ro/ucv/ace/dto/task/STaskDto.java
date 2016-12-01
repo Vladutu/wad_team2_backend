@@ -1,6 +1,6 @@
 package ro.ucv.ace.dto.task;
 
-public class ESTaskDto {
+public class STaskDto {
 
     private String name;
 
@@ -20,7 +20,7 @@ public class ESTaskDto {
 
     private boolean plagiarismEnabled;
 
-    public ESTaskDto() {
+    public STaskDto() {
     }
 
     public String getName() {

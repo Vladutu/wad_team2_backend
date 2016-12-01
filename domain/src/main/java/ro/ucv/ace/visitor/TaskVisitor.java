@@ -13,8 +13,11 @@ public class TaskVisitor {
     private TaskDto taskDto;
 
     public void visit(Task task) {
+        boolean testsEnabled = task.hasTestsEnabled();
+        boolean plagiarismAnalyserEnabled = task.hasPlagiarismAnalyserEnabled();
+
         taskDto = new TaskDto(task.getId(), task.getName(), task.getDescription(), task.getDeadline().toString(), task.getLanguage().toString()
-                , task.isCanSubmitSolutions());
+                , task.isCanSubmitSolutions(), testsEnabled, plagiarismAnalyserEnabled);
     }
 
     public TaskDto getTaskDto() {

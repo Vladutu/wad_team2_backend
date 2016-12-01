@@ -3,7 +3,7 @@ package ro.ucv.ace.builder.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.ucv.ace.builder.ITaskBuilder;
-import ro.ucv.ace.dto.task.ESTaskDto;
+import ro.ucv.ace.dto.task.STaskDto;
 import ro.ucv.ace.model.*;
 import ro.ucv.ace.model.enums.Language;
 import ro.ucv.ace.repository.IPlagiarismAnalyserRepository;
@@ -22,7 +22,7 @@ public class TaskBuilder implements ITaskBuilder {
     private IPlagiarismAnalyserRepository plagiarismAnalyserRepository;
 
     @Override
-    public Task buildAutomaticTask(ESTaskDto taskDto, List<Subgroup> subgroups, Topic topic) {
+    public Task buildAutomaticTask(STaskDto taskDto, List<Subgroup> subgroups, Topic topic) {
         PlagiarismAnalyser plagiarismAnalyser = getPlagiarismAnalyser(taskDto.isPlagiarismEnabled());
 
         return new AutomaticTestedTask(topic, subgroups, taskDto.getName(), localDateFrom(taskDto.getDeadline()),
@@ -31,7 +31,7 @@ public class TaskBuilder implements ITaskBuilder {
     }
 
     @Override
-    public Task buildManualTask(ESTaskDto taskDto, List<Subgroup> subgroups, Topic topic) {
+    public Task buildManualTask(STaskDto taskDto, List<Subgroup> subgroups, Topic topic) {
         PlagiarismAnalyser plagiarismAnalyser = getPlagiarismAnalyser(taskDto.isPlagiarismEnabled());
 
         return new ManuallyTestedTask(topic, subgroups, taskDto.getName(), localDateFrom(taskDto.getDeadline()),

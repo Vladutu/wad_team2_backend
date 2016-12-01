@@ -17,13 +17,37 @@ public class TaskDto {
 
     private boolean canSubmitSolutions;
 
-    public TaskDto(Integer id, String name, String description, String deadline, String language, boolean canSubmitSolutions) {
+    private boolean testsEnabled;
+
+    private boolean plagiarismAnalyserEnabled;
+
+    public TaskDto(Integer id, String name, String description, String deadline, String language,
+                   boolean canSubmitSolutions, boolean testsEnabled, boolean plagiarismAnalyserEnabled) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.deadline = deadline;
         this.language = language;
         this.canSubmitSolutions = canSubmitSolutions;
+        this.testsEnabled = testsEnabled;
+        this.plagiarismAnalyserEnabled = plagiarismAnalyserEnabled;
+    }
+
+
+    public boolean isTestsEnabled() {
+        return testsEnabled;
+    }
+
+    public void setTestsEnabled(boolean testsEnabled) {
+        this.testsEnabled = testsEnabled;
+    }
+
+    public boolean isPlagiarismAnalyserEnabled() {
+        return plagiarismAnalyserEnabled;
+    }
+
+    public void setPlagiarismAnalyserEnabled(boolean plagiarismAnalyserEnabled) {
+        this.plagiarismAnalyserEnabled = plagiarismAnalyserEnabled;
     }
 
     public Integer getId() {

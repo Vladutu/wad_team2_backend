@@ -27,4 +27,14 @@ public class ManuallyTestedTask extends Task {
         setPlagiarismAnalyser(plagiarismAnalyser);
         setCanSubmitSolutions(true);
     }
+
+    @Override
+    public boolean hasTestsEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean hasPlagiarismAnalyserEnabled() {
+        return getPlagiarismAnalyser().isEnabled();
+    }
 }

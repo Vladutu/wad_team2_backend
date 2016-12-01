@@ -11,4 +11,8 @@ import javax.persistence.Table;
 @Table(name = "DEFAULT_PLAGIARISM_ANALYSER")
 @DiscriminatorValue("DPA")
 public class DefaultPlagiarismAnalyser extends PlagiarismAnalyser {
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

@@ -20,4 +20,6 @@ public abstract class PlagiarismAnalyser {
 
     @OneToMany(mappedBy = "plagiarismAnalyser")
     private List<Task> tasks = new ArrayList<>();
+
+    public abstract boolean isEnabled();
 }

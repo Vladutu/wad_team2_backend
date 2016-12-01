@@ -1,7 +1,6 @@
 package ro.ucv.ace.service.impl;
 
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -97,15 +96,15 @@ public class TaskService implements ITaskService {
         // save the input and output file if available
         if (taskDto.isTestsEnabled()) {
             try {
-                byte[] input = Base64.decode(taskDto.getInputFile());
-                byte[] output = Base64.decode(taskDto.getOutputFile());
+                byte[] input = Base64.decodeBase64(taskDto.getInputFile());
+                byte[] output = Base64.decodeBase64(taskDto.getOutputFile());
                 try (OutputStream stream = new FileOutputStream(stringPath + File.separator + folderInput)) {
                     stream.write(input);
                 }
                 try (OutputStream stream = new FileOutputStream(stringPath + File.separator + folderOutput)) {
-                    stream.write(input);
+                    stream.write(output);
                 }
-            } catch (Base64DecodingException | IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 

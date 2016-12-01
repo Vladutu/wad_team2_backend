@@ -19,7 +19,7 @@ public class Professor extends User {
     @Basic
     private String position;
 
-    @OneToMany(mappedBy = "professor")
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.REMOVE)
     private List<Topic> topics = new ArrayList<>();
 
     public Professor() {

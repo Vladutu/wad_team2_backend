@@ -9,4 +9,6 @@ import ro.ucv.ace.dto.task.TaskDto;
 public interface ITaskService {
 
     TaskDto save(int professorId, int topicId, ESTaskDto taskDto);
+
+    TaskDto delete(int taskId);
 }

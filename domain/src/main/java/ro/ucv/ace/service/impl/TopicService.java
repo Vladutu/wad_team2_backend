@@ -1,8 +1,10 @@
 package ro.ucv.ace.service.impl;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ro.ucv.ace.builder.IPathBuilder;
 import ro.ucv.ace.builder.ITopicBuilder;
 import ro.ucv.ace.dto.topic.ESTopicDto;
 import ro.ucv.ace.dto.topic.TopicDto;
@@ -14,6 +16,8 @@ import ro.ucv.ace.repository.impl.ProfessorRepository;
 import ro.ucv.ace.service.ITopicService;
 import ro.ucv.ace.visitor.TopicVisitor;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +39,9 @@ public class TopicService implements ITopicService {
 
     @Autowired
     private ITopicBuilder topicBuilder;
+
+    @Autowired
+    private IPathBuilder pathBuilder;
 
     @Override
     public TopicDto save(int professorId, ESTopicDto topicDto) {
@@ -69,6 +76,14 @@ public class TopicService implements ITopicService {
         Topic topic = topicRepository.delete(id);
         topic.accept(visitor);
 
+        //delete topic folder
+        String path = pathBuilder.buildTopicFolderPath(topic.getProfessor().getId(), topic.getId());
+        try {
+            FileUtils.deleteDirectory(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return visitor.getTopicDto();
     }
 
@@ -81,4 +96,5 @@ public class TopicService implements ITopicService {
 
         return visitor.getTopicDto();
     }
+
 }

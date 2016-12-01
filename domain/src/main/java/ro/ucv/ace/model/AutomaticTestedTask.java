@@ -23,14 +23,13 @@ public class AutomaticTestedTask extends Task {
     }
 
     public AutomaticTestedTask(Topic topic, List<Subgroup> subgroups, String name, LocalDate deadline,
-                               String description, Language language, String filePath, PlagiarismAnalyser plagiarismAnalyser) {
+                               String description, Language language, PlagiarismAnalyser plagiarismAnalyser) {
         setTopic(topic);
         setSubgroups(subgroups);
         setName(name);
         setDeadline(deadline);
         setDescription(description);
         setLanguage(language);
-        setTestFilesPath(filePath);
         setPlagiarismAnalyser(plagiarismAnalyser);
         setCanSubmitSolutions(true);
     }

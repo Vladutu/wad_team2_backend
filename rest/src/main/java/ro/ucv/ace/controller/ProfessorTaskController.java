@@ -33,4 +33,11 @@ public class ProfessorTaskController {
 
         return new ResponseEntity<>(saved, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/tasks/{taskId}", method = RequestMethod.DELETE)
+    public ResponseEntity<TaskDto> deleteTask(@PathVariable("taskId") int taskId) {
+        TaskDto deleted = taskService.delete(taskId);
+
+        return new ResponseEntity<>(deleted, HttpStatus.OK);
+    }
 }

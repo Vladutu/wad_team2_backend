@@ -19,4 +19,9 @@ public class TaskRepository implements ITaskRepository {
     public Task save(Task task) {
         return innerTaskRepository.save(task);
     }
+
+    @Override
+    public Task delete(int taskId) {
+        return innerTaskRepository.delete(taskId);
+    }
 }

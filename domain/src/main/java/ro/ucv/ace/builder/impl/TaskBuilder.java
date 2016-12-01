@@ -22,11 +22,11 @@ public class TaskBuilder implements ITaskBuilder {
     private IPlagiarismAnalyserRepository plagiarismAnalyserRepository;
 
     @Override
-    public Task buildAutomaticTask(ESTaskDto taskDto, List<Subgroup> subgroups, Topic topic, String filePath) {
+    public Task buildAutomaticTask(ESTaskDto taskDto, List<Subgroup> subgroups, Topic topic) {
         PlagiarismAnalyser plagiarismAnalyser = getPlagiarismAnalyser(taskDto.isPlagiarismEnabled());
 
         return new AutomaticTestedTask(topic, subgroups, taskDto.getName(), localDateFrom(taskDto.getDeadline()),
-                taskDto.getDescription(), Language.valueOf(taskDto.getLanguage()), filePath, plagiarismAnalyser);
+                taskDto.getDescription(), Language.valueOf(taskDto.getLanguage()), plagiarismAnalyser);
 
     }
 

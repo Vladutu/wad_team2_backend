@@ -8,4 +8,6 @@ import ro.ucv.ace.model.Task;
 public interface ITaskRepository {
 
     Task save(Task task);
+
+    Task delete(int taskId);
 }

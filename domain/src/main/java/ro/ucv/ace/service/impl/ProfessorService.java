@@ -1,8 +1,10 @@
 package ro.ucv.ace.service.impl;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ro.ucv.ace.builder.IPathBuilder;
 import ro.ucv.ace.builder.IProfessorBuilder;
 import ro.ucv.ace.dto.professor.ESProfessorDto;
 import ro.ucv.ace.dto.professor.ProfessorDto;
@@ -13,6 +15,8 @@ import ro.ucv.ace.service.IMailService;
 import ro.ucv.ace.service.IProfessorService;
 import ro.ucv.ace.visitor.ProfessorVisitor;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +41,9 @@ public class ProfessorService implements IProfessorService {
 
     @Autowired
     private IUserRepository userRepository;
+
+    @Autowired
+    private IPathBuilder pathBuilder;
 
     @Override
     public ProfessorDto save(ESProfessorDto professorDto) {
@@ -74,6 +81,14 @@ public class ProfessorService implements IProfessorService {
     public ProfessorDto delete(int id) {
         Professor professor = professorRepository.delete(id);
         professor.accept(professorVisitor);
+
+        // delete professor folder
+        String path = pathBuilder.buildProfessorFolderPath(professor.getId());
+        try {
+            FileUtils.deleteDirectory(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return professorVisitor.getProfessorDto();
     }

@@ -41,4 +41,14 @@ public class AutomaticTestedTask extends Task {
     public void setTestFilesPath(String testFilesPath) {
         this.testFilesPath = testFilesPath;
     }
+
+    @Override
+    public boolean hasTestsEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean hasPlagiarismAnalyserEnabled() {
+        return getPlagiarismAnalyser().isEnabled();
+    }
 }

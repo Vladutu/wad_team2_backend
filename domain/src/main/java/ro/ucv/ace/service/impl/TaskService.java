@@ -7,10 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.ucv.ace.builder.IPathBuilder;
 import ro.ucv.ace.builder.ITaskBuilder;
-import ro.ucv.ace.dto.task.ESTaskDto;
+import ro.ucv.ace.dto.task.ETaskDto;
+import ro.ucv.ace.dto.task.STaskDto;
 import ro.ucv.ace.dto.task.TaskDto;
 import ro.ucv.ace.exception.DuplicateEntryException;
+import ro.ucv.ace.exception.EntityNotFoundException;
 import ro.ucv.ace.model.*;
+import ro.ucv.ace.repository.IPlagiarismAnalyserRepository;
 import ro.ucv.ace.repository.ISubgroupRepository;
 import ro.ucv.ace.repository.ITaskRepository;
 import ro.ucv.ace.repository.impl.ProfessorRepository;
@@ -25,6 +28,8 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,9 +61,12 @@ public class TaskService implements ITaskService {
     @Autowired
     private IPathBuilder pathBuilder;
 
+    @Autowired
+    private IPlagiarismAnalyserRepository plagiarismAnalyserRepository;
+
 
     @Override
-    public TaskDto save(int professorId, int topicId, ESTaskDto taskDto) {
+    public TaskDto save(int professorId, int topicId, STaskDto taskDto) {
 
         // check if we can save the task
         List<Subgroup> subgroups = new ArrayList<>();
@@ -67,13 +75,14 @@ public class TaskService implements ITaskService {
 
         if (professor.hasTaskWithNameInTopicWithId(taskDto.getName(), topicId)) {
             throw new DuplicateEntryException("Task: Duplicate entry '" + taskDto.getName() + "' for Professor with id " + professorId
-                    + "and Topic with id" + topicId);
+                    + " and Topic with id " + topicId);
         }
 
         for (String subgroup : taskDto.getSubgroups()) {
             subgroups.add(subgroupRepository.findByName(subgroup));
         }
 
+        //save task in db
         Task task = null;
         if (taskDto.isTestsEnabled()) {
             task = taskBuilder.buildAutomaticTask(taskDto, subgroups, topic);
@@ -118,7 +127,6 @@ public class TaskService implements ITaskService {
 
         }
 
-
         return taskVisitor.getTaskDto();
     }
 
@@ -136,5 +144,55 @@ public class TaskService implements ITaskService {
         }
 
         return taskVisitor.getTaskDto();
+    }
+
+    @Override
+    public TaskDto edit(int taskId, ETaskDto taskDto) {
+        Task task = taskRepository.findOne(taskId);
+
+        if (!task.getName().equals(taskDto.getName())) {
+            try {
+                Task other = taskRepository.findTaskByNameInTopic(task.getTopic().getId(), taskDto.getName());
+                throw new DuplicateEntryException("Task: Duplicate entry '" + taskDto.getName() + "' for Topic with id " + task.getTopic().getId());
+            } catch (EntityNotFoundException e) {
+                // good to go
+            }
+        }
+
+        PlagiarismAnalyser plagiarismAnalyser = null;
+        if (taskDto.isPlagiarismEnabled()) {
+            plagiarismAnalyser = plagiarismAnalyserRepository.getDefaultPlagiarismAnalyser();
+        } else {
+            plagiarismAnalyser = plagiarismAnalyserRepository.getNullPlagiarismAnalyser();
+        }
+
+        task.update(taskDto.getName(), taskDto.getDescription(), localDateFrom(taskDto.getDeadline()), plagiarismAnalyser);
+        task = taskRepository.save(task);
+        task.accept(taskVisitor);
+
+        //save new data files if updated
+        if (taskDto.isFilesUpdated() && task instanceof AutomaticTestedTask) {
+            AutomaticTestedTask automaticTestedTask = (AutomaticTestedTask) task;
+            try {
+                byte[] input = Base64.decodeBase64(taskDto.getInputFile());
+                byte[] output = Base64.decodeBase64(taskDto.getOutputFile());
+                try (OutputStream stream = new FileOutputStream(pathBuilder.buildPathForInputFile(automaticTestedTask.getTestFilesPath()))) {
+                    stream.write(input);
+                }
+                try (OutputStream stream = new FileOutputStream(pathBuilder.buildPathForOutputFile(automaticTestedTask.getTestFilesPath()))) {
+                    stream.write(output);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return taskVisitor.getTaskDto();
+    }
+
+    private LocalDate localDateFrom(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(date, formatter);
     }
 }

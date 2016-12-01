@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ro.ucv.ace.dto.task.ESTaskDto;
+import ro.ucv.ace.dto.task.ETaskDto;
+import ro.ucv.ace.dto.task.STaskDto;
 import ro.ucv.ace.dto.task.TaskDto;
 import ro.ucv.ace.exception.EntityBindingException;
 import ro.ucv.ace.service.ITaskService;
@@ -23,8 +24,8 @@ public class ProfessorTaskController {
     private ITaskService taskService;
 
     @RequestMapping(value = "/{professorId}/topics/{topicId}/tasks", method = RequestMethod.POST)
-    public ResponseEntity<TaskDto> saveTopic(@Valid @RequestBody ESTaskDto taskDto, BindingResult bindingResult,
-                                             @PathVariable("professorId") int professorId, @PathVariable("topicId") int topicId) {
+    public ResponseEntity<TaskDto> saveTask(@Valid @RequestBody STaskDto taskDto, BindingResult bindingResult,
+                                            @PathVariable("professorId") int professorId, @PathVariable("topicId") int topicId) {
         if (bindingResult.hasErrors()) {
             throw new EntityBindingException(bindingResult.getFieldErrors());
         }
@@ -39,5 +40,17 @@ public class ProfessorTaskController {
         TaskDto deleted = taskService.delete(taskId);
 
         return new ResponseEntity<>(deleted, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/tasks/{taskId}", method = RequestMethod.PUT)
+    public ResponseEntity<TaskDto> editTask(@Valid @RequestBody ETaskDto taskDto, BindingResult bindingResult,
+                                            @PathVariable("taskId") int taskId) {
+        if (bindingResult.hasErrors()) {
+            throw new EntityBindingException(bindingResult.getFieldErrors());
+        }
+
+        TaskDto edited = taskService.edit(taskId, taskDto);
+
+        return new ResponseEntity<>(edited, HttpStatus.OK);
     }
 }

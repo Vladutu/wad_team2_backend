@@ -10,4 +10,8 @@ public interface ITaskRepository {
     Task save(Task task);
 
     Task delete(int taskId);
+
+    Task findOne(int taskId);
+
+    Task findTaskByNameInTopic(Integer id, String name);
 }

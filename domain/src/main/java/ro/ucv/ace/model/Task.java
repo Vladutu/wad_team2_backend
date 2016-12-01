@@ -21,7 +21,7 @@ public abstract class Task {
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "NAME", unique = true)
+    @Column(name = "NAME")
     @Basic
     private String name;
 
@@ -143,4 +143,15 @@ public abstract class Task {
     public boolean hasName(String name) {
         return this.name.equals(name);
     }
+
+    public void update(String name, String description, LocalDate localDate, PlagiarismAnalyser plagiarismAnalyser) {
+        setName(name);
+        setDescription(description);
+        setDeadline(localDate);
+        setPlagiarismAnalyser(plagiarismAnalyser);
+    }
+
+    public abstract boolean hasTestsEnabled();
+
+    public abstract boolean hasPlagiarismAnalyserEnabled();
 }

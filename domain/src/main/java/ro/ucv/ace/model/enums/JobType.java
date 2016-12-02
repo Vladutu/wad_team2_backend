@@ -15,4 +15,14 @@ public enum JobType {
     public String getName() {
         return name;
     }
+
+    public static JobType fromName(String name) {
+        for (JobType jobType : JobType.values()) {
+            if (jobType.getName().equals(name)) {
+                return jobType;
+            }
+        }
+
+        return null;
+    }
 }

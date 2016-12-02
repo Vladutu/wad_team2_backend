@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.socket.client.Ack;
 import io.socket.client.Socket;
 import org.json.JSONObject;
+import ro.ucv.ace.socket.IDeserializer;
 import ro.ucv.ace.socket.IJobResult;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by ctotolin on 19-Nov-16.
@@ -23,7 +25,9 @@ public class SocketSender implements Callable<IJobResult> {
 
     private ObjectMapper mapper;
 
-    private volatile boolean done = false;
+    private AtomicBoolean done = new AtomicBoolean(false);
+
+    private IDeserializer deserializer = new Deserializer();
 
     public SocketSender(Socket socket, ObjectMapper mapper, String type, String message) {
         this.socket = socket;
@@ -40,28 +44,24 @@ public class SocketSender implements Callable<IJobResult> {
      */
     @Override
     public IJobResult call() throws Exception {
-        final BlockingQueue<String> response = new LinkedBlockingQueue<>();
+        final BlockingQueue<JSONObject> response = new LinkedBlockingQueue<>();
 
         this.socket.emit(this.type, this.message, (Ack) args -> {
             // Get JSONObject response
             JSONObject jsonResponse = (JSONObject) args[0];
 
-            // Convert it to string
-            String stringResponse = jsonResponse.toString();
-
             // Offer it to the queue
-            response.offer(stringResponse);
+            response.offer(jsonResponse);
 
-            done = true;
+            done.set(true);
             System.out.println("Received response from server");
         });
 
         // Read value from queue, convert to JobR result and return it
         // TODO: make sure response is a valid IJobResult , otherwise throw JsonParseException
-        while (!done) {
+        while (!done.get()) {
         }
 
-        String result = response.take();
-        return mapper.readValue(result, CompilationJobResult.class);
+        return deserializer.deserializeJobResult(response.take());
     }
 }

@@ -17,7 +17,7 @@ import javax.validation.Valid;
  * Created by tzapt on 11/26/2016.
  */
 @RestController
-@RequestMapping(value = "/professor")
+@RequestMapping(value = "/professors")
 public class ProfessorTaskController {
 
     @Autowired

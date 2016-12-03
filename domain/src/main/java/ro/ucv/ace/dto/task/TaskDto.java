@@ -25,8 +25,11 @@ public class TaskDto {
 
     private int noStudents;
 
+    private String[] subgroups;
+
     public TaskDto(Integer id, String name, String description, String deadline, String language,
-                   boolean canSubmitSolutions, boolean testsEnabled, boolean plagiarismAnalyserEnabled, int sentSolutions, int noStudents) {
+                   boolean canSubmitSolutions, boolean testsEnabled, boolean plagiarismAnalyserEnabled, int sentSolutions,
+                   int noStudents, String[] subgroups) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -37,6 +40,15 @@ public class TaskDto {
         this.plagiarismAnalyserEnabled = plagiarismAnalyserEnabled;
         this.sentSolutions = sentSolutions;
         this.noStudents = noStudents;
+        this.subgroups = subgroups;
+    }
+
+    public String[] getSubgroups() {
+        return subgroups;
+    }
+
+    public void setSubgroups(String[] subgroups) {
+        this.subgroups = subgroups;
     }
 
     public int getSentSolutions() {

@@ -1,8 +1,6 @@
 package ro.ucv.ace.model;
 
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.ucv.ace.visitor.UserVisitor;
 
@@ -14,7 +12,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "USER")
 @Inheritance(strategy = InheritanceType.JOINED)
-@Configurable(preConstruction = true, autowire = Autowire.BY_TYPE)
 public class User {
 
     @Id
@@ -28,12 +25,9 @@ public class User {
     @Embedded
     private PersonDetails personDetails;
 
-    @Autowired
-    @Transient
-    private PasswordEncoder passwordEncoder;
 
     public boolean passwordMatches(String password) {
-        return passwordEncoder.matches(password, this.account.getPassword());
+        return account.passwordMatches(password);
     }
 
     public void accept(UserVisitor userVisitor) {

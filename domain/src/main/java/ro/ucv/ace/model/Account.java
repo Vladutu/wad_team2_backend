@@ -1,5 +1,9 @@
 package ro.ucv.ace.model;
 
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.ucv.ace.model.enums.UserRole;
 
 import javax.persistence.*;
@@ -11,6 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "ACCOUNT")
+@Configurable(preConstruction = true, autowire = Autowire.BY_TYPE)
 public class Account {
 
     @Id
@@ -41,6 +46,10 @@ public class Account {
     @MapsId
     private User user;
 
+    @Autowired
+    @Transient
+    private PasswordEncoder passwordEncoder;
+
     public Account() {
 
     }
@@ -48,7 +57,7 @@ public class Account {
     public Account(String email, String username, String password, UserRole professor, User user) {
         this.email = email;
         this.username = username;
-        this.password = password;
+        this.password = passwordEncoder.encode(password);
         this.role = professor;
         this.user = user;
     }
@@ -107,5 +116,9 @@ public class Account {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean passwordMatches(String password) {
+        return passwordEncoder.matches(password, getPassword());
     }
 }

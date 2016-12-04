@@ -23,8 +23,8 @@ public class PathBuilder implements IPathBuilder {
 
     @Override
     public String buildTaskFolderPath(int professorId, int topicId, int taskId) {
-        return String.format("%s%s%s%s%s%s%s", folderRoot, File.separator, "professor_" + professorId,
-                File.separator, "topic_" + topicId, File.separator, "task_" + taskId);
+        return String.format("%s%s%s%s%s%s%s", folderRoot, File.separator, professorId,
+                File.separator, topicId, File.separator, taskId);
     }
 
     @Override
@@ -39,12 +39,12 @@ public class PathBuilder implements IPathBuilder {
 
     @Override
     public String buildTopicFolderPath(Integer professorId, Integer topicId) {
-        return String.format("%s%s%s%s%s", folderRoot, File.separator, "professor_" + professorId,
-                File.separator, "topic_" + topicId);
+        return String.format("%s%s%s%s%s", folderRoot, File.separator, professorId,
+                File.separator, topicId);
     }
 
     @Override
     public String buildProfessorFolderPath(Integer professorId) {
-        return String.format("%s%s%s", folderRoot, File.separator, "professor_" + professorId);
+        return String.format("%s%s%s", folderRoot, File.separator, professorId);
     }
 }

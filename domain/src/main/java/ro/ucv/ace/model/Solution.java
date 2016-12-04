@@ -22,10 +22,6 @@ public class Solution {
     @Basic
     private String directoryPath;
 
-    @Column(name = "CAN_UPLOAD")
-    @Basic
-    private boolean canUpload;
-
     @ManyToOne
     @JoinColumn(name = "STUDENT_ID", referencedColumnName = "ID")
     private Student student;
@@ -56,14 +52,6 @@ public class Solution {
 
     public void setDirectoryPath(String directoryPath) {
         this.directoryPath = directoryPath;
-    }
-
-    public boolean isCanUpload() {
-        return canUpload;
-    }
-
-    public void setCanUpload(boolean canUpload) {
-        this.canUpload = canUpload;
     }
 
     public Student getStudent() {

@@ -31,7 +31,6 @@ public class AutomaticTestedTask extends Task {
         setDescription(description);
         setLanguage(language);
         setPlagiarismAnalyser(plagiarismAnalyser);
-        setCanSubmitSolutions(true);
     }
 
     public String getTestFilesPath() {

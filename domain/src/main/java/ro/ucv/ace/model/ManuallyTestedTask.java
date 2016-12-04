@@ -25,7 +25,6 @@ public class ManuallyTestedTask extends Task {
         setDescription(description);
         setLanguage(language);
         setPlagiarismAnalyser(plagiarismAnalyser);
-        setCanSubmitSolutions(true);
     }
 
     @Override

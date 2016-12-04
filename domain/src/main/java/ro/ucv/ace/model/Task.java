@@ -36,10 +36,6 @@ public abstract class Task {
     @Column(name = "LANGUAGE")
     private Language language;
 
-    @Column(name = "CAN_SUBMIT_SOLUTIONS")
-    @Basic
-    private boolean canSubmitSolutions;
-
     @ManyToOne
     @JoinColumn(name = "PLAGIARISM_ANALYSER_ID")
     private PlagiarismAnalyser plagiarismAnalyser;
@@ -97,11 +93,7 @@ public abstract class Task {
     }
 
     public boolean isCanSubmitSolutions() {
-        return canSubmitSolutions;
-    }
-
-    public void setCanSubmitSolutions(boolean canSubmitSolutions) {
-        this.canSubmitSolutions = canSubmitSolutions;
+        return this.deadline.isAfter(LocalDate.now());
     }
 
     public Topic getTopic() {

@@ -1,6 +1,8 @@
 package ro.ucv.ace.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Geo on 15.11.2016.
@@ -29,6 +31,17 @@ public class Solution {
     @ManyToOne
     @JoinColumn(name = "TASK_ID", referencedColumnName = "ID")
     private Task task;
+
+    @OneToMany(mappedBy = "solution", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PlagiarismResult> plagiarismResults = new ArrayList<>();
+
+    public List<PlagiarismResult> getPlagiarismResults() {
+        return plagiarismResults;
+    }
+
+    public void setPlagiarismResults(List<PlagiarismResult> plagiarismResults) {
+        this.plagiarismResults = plagiarismResults;
+    }
 
     public Integer getId() {
         return id;

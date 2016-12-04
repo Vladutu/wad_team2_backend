@@ -3,7 +3,7 @@ package ro.ucv.ace.socket.impl;
 /**
  * Created by Geo on 04.12.2016.
  */
-public class PlagiarismResult {
+public class PlagiarismMatch {
 
     private int firstStudentId;
 

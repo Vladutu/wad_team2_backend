@@ -7,13 +7,13 @@ import ro.ucv.ace.socket.IJobResult;
  */
 public class PlagiarismJobResult extends JobResult implements IJobResult {
 
-    private PlagiarismResult[] plagiarismResults;
+    private PlagiarismMatch[] plagiarismMatches;
 
-    public PlagiarismResult[] getPlagiarismResults() {
-        return plagiarismResults;
+    public PlagiarismMatch[] getPlagiarismMatches() {
+        return plagiarismMatches;
     }
 
-    public void setPlagiarismResults(PlagiarismResult[] plagiarismResults) {
-        this.plagiarismResults = plagiarismResults;
+    public void setPlagiarismMatches(PlagiarismMatch[] plagiarismMatches) {
+        this.plagiarismMatches = plagiarismMatches;
     }
 }

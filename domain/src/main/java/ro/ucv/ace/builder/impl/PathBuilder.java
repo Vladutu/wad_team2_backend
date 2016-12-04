@@ -47,4 +47,10 @@ public class PathBuilder implements IPathBuilder {
     public String buildProfessorFolderPath(Integer professorId) {
         return String.format("%s%s%s", folderRoot, File.separator, professorId);
     }
+
+    @Override
+    public String buildStudentSolutionFolderPath(int professorId, int topicId, int taskId, int studentId) {
+        return String.format("%s%s%s%s%s%s%s%s%s", folderRoot, File.separator, professorId, File.separator, topicId, File.separator,
+                taskId, File.separator, studentId);
+    }
 }

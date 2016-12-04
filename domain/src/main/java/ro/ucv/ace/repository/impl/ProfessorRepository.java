@@ -36,4 +36,5 @@ public class ProfessorRepository implements IProfessorRepository {
     public Professor findOne(int id) {
         return innerProfessorRepository.findOne(id);
     }
+
 }

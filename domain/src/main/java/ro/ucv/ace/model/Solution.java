@@ -1,5 +1,7 @@
 package ro.ucv.ace.model;
 
+import ro.ucv.ace.visitor.SolutionVisitor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ public class Solution {
 
     @Column(name = "MARK")
     @Basic
-    private int mark;
+    private double mark;
 
     @Column(name = "DIRECTORY_PATH", unique = true)
     @Basic
@@ -34,6 +36,15 @@ public class Solution {
 
     @OneToMany(mappedBy = "solution", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PlagiarismResult> plagiarismResults = new ArrayList<>();
+
+    public Solution() {
+    }
+
+    public Solution(Student student, Task task, String stringPath) {
+        setStudent(student);
+        setTask(task);
+        setDirectoryPath(stringPath);
+    }
 
     public List<PlagiarismResult> getPlagiarismResults() {
         return plagiarismResults;
@@ -51,11 +62,11 @@ public class Solution {
         this.id = id;
     }
 
-    public int getMark() {
+    public double getMark() {
         return mark;
     }
 
-    public void setMark(int mark) {
+    public void setMark(double mark) {
         this.mark = mark;
     }
 
@@ -81,5 +92,9 @@ public class Solution {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    public void accept(SolutionVisitor solutionVisitor) {
+        solutionVisitor.visit(this);
     }
 }

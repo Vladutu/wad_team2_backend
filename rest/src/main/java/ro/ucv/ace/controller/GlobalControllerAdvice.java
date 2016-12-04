@@ -66,4 +66,11 @@ public class GlobalControllerAdvice {
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(DeadlinePassedException.class)
+    public ResponseEntity<ErrorInfo> errorInfoResponseEntity(DeadlinePassedException e) {
+        ErrorInfo errorInfo = new ErrorInfo(HttpStatus.BAD_REQUEST, e.getMessage());
+
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+
 }

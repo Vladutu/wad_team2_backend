@@ -1,9 +1,16 @@
 package ro.ucv.ace.model;
 
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import ro.ucv.ace.dto.ResponseMessageDto;
 import ro.ucv.ace.model.enums.Language;
+import ro.ucv.ace.socket.IJobResult;
+import ro.ucv.ace.socket.ISocketManager;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,7 +19,12 @@ import java.util.List;
  */
 @Entity
 @Table(name = "MANUALLY_TESTED_TASK")
+@Configurable(preConstruction = true, autowire = Autowire.BY_TYPE)
 public class ManuallyTestedTask extends Task {
+
+    @Autowired
+    @Transient
+    private ISocketManager socketManager;
 
     public ManuallyTestedTask() {
     }
@@ -36,4 +48,20 @@ public class ManuallyTestedTask extends Task {
     public boolean hasPlagiarismAnalyserEnabled() {
         return getPlagiarismAnalyser().isEnabled();
     }
+
+    @Override
+    public ResponseMessageDto addSolution(Solution solution) {
+        getSolutions().add(solution);
+
+        IJobResult result = null;
+
+        ResponseMessageDto compilationMessage = compileSolution(solution, result);
+        if (compilationMessage != null) return compilationMessage;
+
+        return new ResponseMessageDto("You successfully uploaded your solution!");
+    }
+
+
+
+
 }

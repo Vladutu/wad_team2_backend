@@ -40,6 +40,7 @@ public class TaskBuilder implements ITaskBuilder {
 
     private PlagiarismAnalyser getPlagiarismAnalyser(boolean isPlagiarismEnabled) {
         PlagiarismAnalyser plagiarismAnalyser = null;
+
         if (isPlagiarismEnabled) {
             plagiarismAnalyser = plagiarismAnalyserRepository.getDefaultPlagiarismAnalyser();
         } else {

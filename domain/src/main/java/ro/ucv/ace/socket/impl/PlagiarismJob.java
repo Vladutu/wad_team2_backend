@@ -8,10 +8,10 @@ import ro.ucv.ace.socket.IJob;
  */
 public class PlagiarismJob extends Job implements IJob {
 
-    private String[] paths;
+    private String path;
 
-    public PlagiarismJob(String[] paths) {
+    public PlagiarismJob(String path) {
         super(JobType.PLAGIARISM);
-        this.paths = paths;
+        this.path = path;
     }
 }

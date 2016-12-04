@@ -1,12 +1,21 @@
 package ro.ucv.ace.model;
 
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import ro.ucv.ace.dto.ResponseMessageDto;
 import ro.ucv.ace.model.enums.Language;
+import ro.ucv.ace.socket.IJob;
+import ro.ucv.ace.socket.IJobResult;
+import ro.ucv.ace.socket.ISocketManager;
+import ro.ucv.ace.socket.impl.CompilationJob;
 import ro.ucv.ace.visitor.TaskVisitor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Geo on 15.11.2016.
@@ -14,6 +23,7 @@ import java.util.List;
 @Entity
 @Table(name = "TASK")
 @Inheritance(strategy = InheritanceType.JOINED)
+@Configurable(preConstruction = true, autowire = Autowire.BY_TYPE)
 public abstract class Task {
 
     @Id
@@ -51,6 +61,10 @@ public abstract class Task {
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Solution> solutions = new ArrayList<>();
+
+    @Autowired
+    @Transient
+    protected ISocketManager socketManager;
 
     public Integer getId() {
         return id;
@@ -146,4 +160,51 @@ public abstract class Task {
     public abstract boolean hasTestsEnabled();
 
     public abstract boolean hasPlagiarismAnalyserEnabled();
+
+    public abstract ResponseMessageDto addSolution(Solution solution);
+
+    public Solution getSolutionByStudent(int studentId) {
+        for (Solution solution : solutions) {
+            if (solution.getStudent().getId().equals(studentId)) {
+                return solution;
+            }
+        }
+
+        throw new EntityNotFoundException();
+    }
+
+    public void removeSolution(Solution solution) {
+        solutions.remove(solution);
+    }
+
+    protected ResponseMessageDto compileSolution(Solution solution, IJobResult result) {
+        if (getPlagiarismAnalyser().isEnabled()) {
+            IJob compilationJob = new CompilationJob(solution.getDirectoryPath(), getLanguage());
+            try {
+                result = socketManager.sendJob(compilationJob).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            if (checkForError(result)) {
+                return new ResponseMessageDto(result.getResult());
+            }
+        }
+        return null;
+    }
+
+    private boolean checkForError(IJobResult result) {
+        if (result.getError()) {
+            //Send error notification to student
+            return true;
+        }
+
+        if (result.getInternalError()) {
+            //Send error notification to professor
+            return true;
+        }
+        return false;
+    }
+
+
 }

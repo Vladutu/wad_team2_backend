@@ -10,4 +10,12 @@ public class TestJobResult extends JobResult implements IJobResult {
     private int totalTests;
 
     private int passedTests;
+
+    public int getTotalTests() {
+        return totalTests;
+    }
+
+    public int getPassedTests() {
+        return passedTests;
+    }
 }

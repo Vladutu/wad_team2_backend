@@ -14,4 +14,6 @@ public interface IPathBuilder {
     String buildTopicFolderPath(Integer professorId, Integer topicId);
 
     String buildProfessorFolderPath(Integer professorId);
+
+    String buildStudentSolutionFolderPath(int professorId, int topicId, int taskId, int studentId);
 }

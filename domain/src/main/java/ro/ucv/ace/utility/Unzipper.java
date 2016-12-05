@@ -1,16 +1,19 @@
 package ro.ucv.ace.utility;
 
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
-import java.util.zip.ZipEntry;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.zip.ZipInputStream;
 
 /**
  * Created by tzapt on 12/4/2016.
  */
 @Component
-public class Unzipper {
+public class Unzipper implements IUnzipper {
     /**
      * Size of the buffer to read/write data
      */
@@ -24,28 +27,9 @@ public class Unzipper {
      * @param destDirectory
      * @throws IOException
      */
-    public void unzip(String zipFilePath, String destDirectory) throws IOException {
-        File destDir = new File(destDirectory);
-        if (!destDir.exists()) {
-            destDir.mkdir();
-        }
-        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
-        ZipEntry entry = zipIn.getNextEntry();
-        // iterates over entries in the zip file
-        while (entry != null) {
-            String filePath = destDirectory + File.separator + entry.getName();
-            if (!entry.isDirectory()) {
-                // if the entry is a file, extracts it
-                extractFile(zipIn, filePath);
-            } else {
-                // if the entry is a directory, make the directory
-                File dir = new File(filePath);
-                dir.mkdir();
-            }
-            zipIn.closeEntry();
-            entry = zipIn.getNextEntry();
-        }
-        zipIn.close();
+    public void unzip(String zipFilePath, String destDirectory) throws ZipException {
+        ZipFile zipFile = new ZipFile(zipFilePath);
+        zipFile.extractAll(destDirectory);
     }
 
     /**

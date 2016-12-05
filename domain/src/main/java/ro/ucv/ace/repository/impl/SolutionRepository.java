@@ -21,11 +21,6 @@ public class SolutionRepository implements ISolutionRepository {
     }
 
     @Override
-    public Solution delete(int solutionId) {
-        return innerSolutionRepository.delete(solutionId);
-    }
-
-    @Override
     public Solution findOne(int solutionId) {
         return innerSolutionRepository.findOne(solutionId);
     }

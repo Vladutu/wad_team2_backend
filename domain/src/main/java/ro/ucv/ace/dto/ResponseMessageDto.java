@@ -5,7 +5,14 @@ package ro.ucv.ace.dto;
  */
 public class ResponseMessageDto {
 
+    private boolean error;
+
     private String message;
+
+    public ResponseMessageDto(boolean error, String message) {
+        this.error = error;
+        this.message = message;
+    }
 
     public String getMessage() {
         return message;
@@ -15,7 +22,11 @@ public class ResponseMessageDto {
         this.message = message;
     }
 
-    public ResponseMessageDto(String message) {
-        this.message = message;
+    public boolean isError() {
+        return error;
+    }
+
+    public void setError(boolean error) {
+        this.error = error;
     }
 }

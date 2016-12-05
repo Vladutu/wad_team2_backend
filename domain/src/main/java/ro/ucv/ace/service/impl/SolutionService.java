@@ -1,5 +1,6 @@
 package ro.ucv.ace.service.impl;
 
+import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import ro.ucv.ace.builder.IPathBuilder;
 import ro.ucv.ace.builder.ISolutionBuilder;
 import ro.ucv.ace.dto.ResponseMessageDto;
 import ro.ucv.ace.dto.solution.ESSolutionDto;
-import ro.ucv.ace.dto.solution.SolutionDto;
 import ro.ucv.ace.exception.DeadlinePassedException;
 import ro.ucv.ace.exception.EntityNotFoundException;
 import ro.ucv.ace.model.*;
@@ -17,16 +17,17 @@ import ro.ucv.ace.repository.ISolutionRepository;
 import ro.ucv.ace.repository.IStudentRepository;
 import ro.ucv.ace.repository.ITaskRepository;
 import ro.ucv.ace.service.ISolutionService;
-import ro.ucv.ace.utility.Unzipper;
+import ro.ucv.ace.utility.IUnzipper;
 import ro.ucv.ace.visitor.SolutionVisitor;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Created by tzapt on 12/4/2016.
@@ -54,7 +55,7 @@ public class SolutionService implements ISolutionService {
     private ITaskRepository taskRepository;
 
     @Autowired
-    private Unzipper unzipper;
+    private IUnzipper unzipper;
 
     @Override
     public ResponseMessageDto save(int studentId, int taskId, ESSolutionDto solutionDto) {
@@ -65,12 +66,12 @@ public class SolutionService implements ISolutionService {
 
         ResponseMessageDto messageDto;
 
-        Date date = new Date();
-        if (task.getDeadline().isBefore(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
-            throw new DeadlinePassedException("Deadline for " + task.getName() + " has passed!");
+        LocalDate currentDate = LocalDate.now();
+        if (task.getDeadline().isBefore(currentDate)) {
+            throw new DeadlinePassedException("You can no longer submit solution for this task.Deadline has passed.");
         }
 
-        String stringPath = pathBuilder.buildStudentSolutionFolderPath(professor.getId(), topic.getId(), taskId, studentId);
+        String stringPath = pathBuilder.buildAbsoluteStudentSolutionFolderPath(professor.getId(), topic.getId(), taskId, studentId);
 
         Path path = Paths.get(stringPath);
         try {
@@ -78,7 +79,7 @@ public class SolutionService implements ISolutionService {
                 Files.createDirectories(path);
 
             } else {
-                Files.delete(path);
+                FileUtils.deleteDirectory(new File(stringPath));
                 Files.createDirectories(path);
             }
         } catch (IOException e) {
@@ -90,11 +91,13 @@ public class SolutionService implements ISolutionService {
 
         //Saves zip, extracts it and then deletes it
         try {
-            FileUtils.writeByteArrayToFile(new File(zipPath), zipFile);
+            try (OutputStream stream = new FileOutputStream(zipPath)) {
+                stream.write(zipFile);
+            }
             unzipper.unzip(zipPath, stringPath);
             Path zip = Paths.get(zipPath);
             Files.delete(zip);
-        } catch (IOException e) {
+        } catch (IOException | ZipException e) {
             e.printStackTrace();
         }
 
@@ -107,27 +110,13 @@ public class SolutionService implements ISolutionService {
             e.printStackTrace();
         }
 
-        Solution solution = solutionBuilder.build(student, task, stringPath);
+        Solution solution = solutionBuilder.build(student, task,
+                pathBuilder.buildRelativeStudentSolutionFolderPath(professor.getId(), topic.getId(), taskId, studentId));
 
         messageDto = task.addSolution(solution);
         taskRepository.save(task);
         solutionRepository.save(solution);
 
         return messageDto;
-    }
-
-    @Override
-    public SolutionDto delete(int solutionId, ESSolutionDto solutionDto) {
-        Solution solution = solutionRepository.delete(solutionId);
-        solution.accept(solutionVisitor);
-
-        try {
-            FileUtils.deleteDirectory(new File(solution.getDirectoryPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return solutionVisitor.getSolutionDto();
-
     }
 }

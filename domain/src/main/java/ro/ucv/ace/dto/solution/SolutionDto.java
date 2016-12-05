@@ -7,14 +7,14 @@ public class SolutionDto {
 
     private int id;
 
-    private int mark;
+    private double mark;
 
     private String directoryPath;
 
     public SolutionDto() {
     }
 
-    public SolutionDto(int id, int mark, String directoryPath) {
+    public SolutionDto(int id, double mark, String directoryPath) {
         this.id = id;
         this.mark = mark;
         this.directoryPath = directoryPath;
@@ -28,11 +28,11 @@ public class SolutionDto {
         this.id = id;
     }
 
-    public int getMark() {
+    public double getMark() {
         return mark;
     }
 
-    public void setMark(int mark) {
+    public void setMark(double mark) {
         this.mark = mark;
     }
 

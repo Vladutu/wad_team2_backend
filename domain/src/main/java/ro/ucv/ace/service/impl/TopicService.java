@@ -77,7 +77,7 @@ public class TopicService implements ITopicService {
         topic.accept(visitor);
 
         //delete topic folder
-        String path = pathBuilder.buildTopicFolderPath(topic.getProfessor().getId(), topic.getId());
+        String path = pathBuilder.buildAbsoluteTopicFolderPath(topic.getProfessor().getId(), topic.getId());
         try {
             FileUtils.deleteDirectory(new File(path));
         } catch (IOException e) {

@@ -1,6 +1,7 @@
 package ro.ucv.ace.socket.impl;
 
 import ro.ucv.ace.model.enums.JobType;
+import ro.ucv.ace.model.enums.Language;
 import ro.ucv.ace.socket.IJob;
 
 /**
@@ -10,8 +11,11 @@ public class PlagiarismJob extends Job implements IJob {
 
     private String path;
 
-    public PlagiarismJob(String path) {
+    private Language language;
+
+    public PlagiarismJob(String path, Language language) {
         super(JobType.PLAGIARISM);
         this.path = path;
+        this.language = language;
     }
 }

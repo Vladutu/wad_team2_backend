@@ -32,18 +32,7 @@ public class StudentSolutionController {
 
         ResponseMessageDto messageDto = solutionService.save(studentId, taskId, solutionDto);
 
-        return new ResponseEntity<ResponseMessageDto>(messageDto, HttpStatus.OK);
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "solutions/{solutionId}", method = RequestMethod.DELETE)
-    public ResponseEntity<ResponseMessageDto> deleteSolution(@Valid @RequestBody ESSolutionDto solutionDto, BindingResult bindingResult,
-                                                             @PathVariable("solutionId") int solutionId) {
-        if (bindingResult.hasErrors()) {
-            throw new EntityBindingException(bindingResult.getFieldErrors());
-        }
-
-        ResponseMessageDto messageDto = solutionService.delete(solutionId, solutionDto);
-
-        return new ResponseEntity<ResponseMessageDto>(messageDto, HttpStatus.OK);
-    }
 }

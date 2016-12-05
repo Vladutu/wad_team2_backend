@@ -64,49 +64,46 @@ public class AutomaticTestedTask extends Task {
         getSolutions().add(solution);
 
         IJob compilationJob = new CompilationJob(solution.getDirectoryPath(), getLanguage());
-        IJobResult result = null;
-
-        //Compile and check for compilation errors
-        ResponseMessageDto resultMessage = compileSolution(solution, result);
-        if (resultMessage != null) {
-            return resultMessage;
-        }
-
-        //Test the solution
-        IJob testJob = new TestJob(solution.getDirectoryPath(), getLanguage());
-        result = sendJob(testJob, result);
-
-        if (checkForError(result)) {
-            return new ResponseMessageDto(result.getResult());
-        }
-
-        TestJobResult testJobResult = (TestJobResult) result;
-        solution.setMark(testJobResult.getPassedTests() / testJobResult.getTotalTests() * 100);
-
-        //Send successful notification to student
-        return new ResponseMessageDto(result.getResult());
-    }
-
-    private IJobResult sendJob(IJob job, IJobResult result) {
+        IJobResult compilationResult;
         try {
-            result = socketManager.sendJob(job).get();
+            compilationResult = socketManager.sendJob(compilationJob).get();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    private boolean checkForError(IJobResult result) {
-        if (result.getError()) {
-            //Send error notification to student
-            return true;
+            throw new RuntimeException("Code verifier server error");
         }
 
-        if (result.getInternalError()) {
-            //Send error notification to professor
-            return true;
+        if (compilationResult.getError()) {
+            //TODO: notify student
+            return new ResponseMessageDto(true, compilationResult.getResult());
         }
-        return false;
+        if (compilationResult.getInternalError()) {
+            //TODO: notify professor
+            return new ResponseMessageDto(true, "Internal server error. Please try again later");
+        }
+
+        IJob testJob = new TestJob(solution.getDirectoryPath(), getLanguage());
+        IJobResult testJobResult;
+
+        try {
+            testJobResult = socketManager.sendJob(testJob).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Code verified server error");
+        }
+
+        if (testJobResult.getError()) {
+            //TODO: notify student
+            return new ResponseMessageDto(true, testJobResult.getResult());
+        }
+
+        if (testJobResult.getInternalError()) {
+            //TODO: notify professor
+            return new ResponseMessageDto(true, "Internal server error. Please try again later");
+        }
+
+        TestJobResult tjResult = (TestJobResult) testJobResult;
+        double mark = tjResult.getPassedTests() / tjResult.getTotalTests() * 100;
+        solution.setMark(mark);
+
+        return new ResponseMessageDto(false, "Finished compile and test jobs. You have a score of " + mark);
     }
 
 

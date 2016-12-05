@@ -9,7 +9,5 @@ public interface ISolutionRepository {
 
     Solution save(Solution solution);
 
-    Solution delete(int solutionId);
-
     Solution findOne(int solutionId);
 }

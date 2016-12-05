@@ -2,7 +2,6 @@ package ro.ucv.ace.socket.impl;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONException;
 import org.json.JSONObject;
 import ro.ucv.ace.model.enums.JobType;
 import ro.ucv.ace.socket.IDeserializer;
@@ -26,11 +25,11 @@ public class Deserializer implements IDeserializer {
     }
 
     @Override
-    public IJobResult deserializeJobResult(JSONObject json) {
+    public IJobResult deserializeJobResult(JSONObject json, String type) {
         IJobResult result = null;
         try {
-            JobType type = JobType.fromName(json.getString("type"));
-            switch (type) {
+            JobType jobType = JobType.fromName(type);
+            switch (jobType) {
                 case COMPILE:
                     result = mapper.readValue(json.toString(), CompilationJobResult.class);
                     break;
@@ -42,7 +41,7 @@ public class Deserializer implements IDeserializer {
                     break;
             }
 
-        } catch (JSONException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

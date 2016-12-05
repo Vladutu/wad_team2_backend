@@ -83,7 +83,7 @@ public class ProfessorService implements IProfessorService {
         professor.accept(professorVisitor);
 
         // delete professor folder
-        String path = pathBuilder.buildProfessorFolderPath(professor.getId());
+        String path = pathBuilder.buildAbsoluteProfessorFolderPath(professor.getId());
         try {
             FileUtils.deleteDirectory(new File(path));
         } catch (IOException e) {

@@ -15,4 +15,5 @@ public interface IProfessorRepository {
     Professor delete(int id);
 
     Professor findOne(int id);
+
 }

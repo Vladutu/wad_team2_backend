@@ -1,23 +1,30 @@
 package ro.ucv.ace.model;
 
+import ro.ucv.ace.dto.ResponseMessageDto;
 import ro.ucv.ace.model.enums.Language;
+import ro.ucv.ace.socket.IJob;
+import ro.ucv.ace.socket.IJobResult;
+import ro.ucv.ace.socket.impl.CompilationJob;
+import ro.ucv.ace.socket.impl.TestJob;
+import ro.ucv.ace.socket.impl.TestJobResult;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Geo on 15.11.2016.
  */
 @Entity
 @Table(name = "AUTOMATIC_TESTED_TASK")
+
 public class AutomaticTestedTask extends Task {
 
     @Column(name = "TEST_FILES_PATH")
     private String testFilesPath;
-
 
     public AutomaticTestedTask() {
     }
@@ -50,4 +57,54 @@ public class AutomaticTestedTask extends Task {
     public boolean hasPlagiarismAnalyserEnabled() {
         return getPlagiarismAnalyser().isEnabled();
     }
+
+
+    @Override
+    public ResponseMessageDto addSolution(Solution solution) {
+        getSolutions().add(solution);
+
+        IJob compilationJob = new CompilationJob(solution.getDirectoryPath(), getLanguage());
+        IJobResult compilationResult;
+        try {
+            compilationResult = socketManager.sendJob(compilationJob).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Code verifier server error");
+        }
+
+        if (compilationResult.getError()) {
+            //TODO: notify student
+            return new ResponseMessageDto(true, compilationResult.getResult());
+        }
+        if (compilationResult.getInternalError()) {
+            //TODO: notify professor
+            return new ResponseMessageDto(true, "Internal server error. Please try again later");
+        }
+
+        IJob testJob = new TestJob(solution.getDirectoryPath(), getLanguage());
+        IJobResult testJobResult;
+
+        try {
+            testJobResult = socketManager.sendJob(testJob).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Code verified server error");
+        }
+
+        if (testJobResult.getError()) {
+            //TODO: notify student
+            return new ResponseMessageDto(true, testJobResult.getResult());
+        }
+
+        if (testJobResult.getInternalError()) {
+            //TODO: notify professor
+            return new ResponseMessageDto(true, "Internal server error. Please try again later");
+        }
+
+        TestJobResult tjResult = (TestJobResult) testJobResult;
+        double mark = tjResult.getPassedTests() / tjResult.getTotalTests() * 100;
+        solution.setMark(mark);
+
+        return new ResponseMessageDto(false, "Finished compile and test jobs. You have a score of " + mark);
+    }
+
+
 }

@@ -94,7 +94,7 @@ public class TaskService implements ITaskService {
         task.accept(taskVisitor);
 
         //create the folder for the task
-        String stringPath = pathBuilder.buildTaskFolderPath(professor.getId(), topic.getId(), task.getId());
+        String stringPath = pathBuilder.buildAbsoluteTaskFolderPath(professor.getId(), topic.getId(), task.getId());
         Path path = Paths.get(stringPath);
         if (!Files.exists(path)) {
             try {
@@ -107,7 +107,7 @@ public class TaskService implements ITaskService {
         // save the path into the task if it's automaticTask
         if (taskDto.isTestsEnabled()) {
             AutomaticTestedTask automaticTestedTask = (AutomaticTestedTask) task;
-            automaticTestedTask.setTestFilesPath(stringPath);
+            automaticTestedTask.setTestFilesPath(pathBuilder.buildRelativeTaskFolderPath(professor.getId(), topic.getId(), task.getId()));
         }
 
         // save the input and output file if available
@@ -136,7 +136,7 @@ public class TaskService implements ITaskService {
         task.accept(taskVisitor);
 
         // delete task folder
-        String path = pathBuilder.buildTaskFolderPath(task.getTopic().getProfessor().getId(), task.getTopic().getId(), task.getId());
+        String path = pathBuilder.buildAbsoluteTaskFolderPath(task.getTopic().getProfessor().getId(), task.getTopic().getId(), task.getId());
         try {
             FileUtils.deleteDirectory(new File(path));
         } catch (IOException e) {

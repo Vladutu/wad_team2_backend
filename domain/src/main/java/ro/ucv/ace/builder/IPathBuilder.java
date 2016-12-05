@@ -5,13 +5,19 @@ package ro.ucv.ace.builder;
  */
 public interface IPathBuilder {
 
-    String buildTaskFolderPath(int professorId, int topicId, int taskId);
+    String buildAbsoluteTaskFolderPath(int professorId, int topicId, int taskId);
 
     String buildPathForInputFile(String basePath);
 
     String buildPathForOutputFile(String basePath);
 
-    String buildTopicFolderPath(Integer professorId, Integer topicId);
+    String buildAbsoluteTopicFolderPath(Integer professorId, Integer topicId);
 
-    String buildProfessorFolderPath(Integer professorId);
+    String buildAbsoluteProfessorFolderPath(Integer professorId);
+
+    String buildAbsoluteStudentSolutionFolderPath(int professorId, int topicId, int taskId, int studentId);
+
+    String buildRelativeTaskFolderPath(int professorId, int topicId, int taskId);
+
+    String buildRelativeStudentSolutionFolderPath(int professorId, int topicId, int taskId, int studentId);
 }

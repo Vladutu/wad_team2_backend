@@ -1,6 +1,11 @@
 package ro.ucv.ace.model;
 
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import ro.ucv.ace.dto.ResponseMessageDto;
 import ro.ucv.ace.model.enums.Language;
+import ro.ucv.ace.socket.ISocketManager;
 import ro.ucv.ace.visitor.TaskVisitor;
 
 import javax.persistence.*;
@@ -14,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "TASK")
 @Inheritance(strategy = InheritanceType.JOINED)
+@Configurable(preConstruction = true, autowire = Autowire.BY_TYPE)
 public abstract class Task {
 
     @Id
@@ -51,6 +57,10 @@ public abstract class Task {
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Solution> solutions = new ArrayList<>();
+
+    @Autowired
+    @Transient
+    protected ISocketManager socketManager;
 
     public Integer getId() {
         return id;
@@ -146,4 +156,21 @@ public abstract class Task {
     public abstract boolean hasTestsEnabled();
 
     public abstract boolean hasPlagiarismAnalyserEnabled();
+
+    public abstract ResponseMessageDto addSolution(Solution solution);
+
+    public Solution getSolutionByStudent(int studentId) {
+        for (Solution solution : solutions) {
+            if (solution.getStudent().getId().equals(studentId)) {
+                return solution;
+            }
+        }
+
+        throw new ro.ucv.ace.exception.EntityNotFoundException("Solution not found");
+    }
+
+    public void removeSolution(Solution solution) {
+        solutions.remove(solution);
+    }
+
 }

@@ -62,6 +62,6 @@ public class SocketSender implements Callable<IJobResult> {
         while (!done.get()) {
         }
 
-        return deserializer.deserializeJobResult(response.take());
+        return deserializer.deserializeJobResult(response.take(), type);
     }
 }

@@ -146,6 +146,11 @@ public class DomainConfig {
         return new JpaRepository<>(Topic.class);
     }
 
+    @Bean(name = "innerSolutionRepository")
+    IJpaRepository<Solution, Integer> solutionIntegerIJpaRepository() {
+        return new JpaRepository<>(Solution.class);
+    }
+
     @Bean(name = "nullPlagiarismRepository")
     IJpaRepository<NullPlagiarismAnalyser, Integer> nullPlagiarismAnalyserIntegerIJpaRepository() {
         return new JpaRepository<>(NullPlagiarismAnalyser.class);

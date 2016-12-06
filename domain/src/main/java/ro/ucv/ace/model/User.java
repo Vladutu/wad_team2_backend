@@ -69,6 +69,7 @@ public class User {
     }
 
     public void addNotification(Notification notification) {
+        notification.setAccount(account);
         getAccount().getNotifications().add(notification);
     }
 }

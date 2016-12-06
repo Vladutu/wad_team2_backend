@@ -160,4 +160,9 @@ public class DomainConfig {
     IJpaRepository<DefaultPlagiarismAnalyser, Integer> defaultPlagiarismAnalyserIntegerIJpaRepository() {
         return new JpaRepository<>(DefaultPlagiarismAnalyser.class);
     }
+
+    @Bean(name = "innerNotificationRepository")
+    IJpaRepository<Notification, Integer> notificationIntegerIJpaRepository() {
+        return new JpaRepository<>(Notification.class);
+    }
 }

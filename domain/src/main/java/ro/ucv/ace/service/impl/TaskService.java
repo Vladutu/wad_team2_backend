@@ -68,7 +68,6 @@ public class TaskService implements ITaskService {
     @Autowired
     private INotificationBuilder notificationBuilder;
 
-
     @Override
     public TaskDto save(int professorId, int topicId, STaskDto taskDto) {
 
@@ -94,15 +93,16 @@ public class TaskService implements ITaskService {
             task = taskBuilder.buildManualTask(taskDto, subgroups, topic);
         }
 
-        task = taskRepository.save(task);
-        task.accept(taskVisitor);
-
         //send notification to students
-        for(Subgroup subgroup : subgroups){
-            for(Student student : subgroup.getStudents()){
+        for (Subgroup subgroup : subgroups) {
+            for (Student student : subgroup.getStudents()) {
                 student.addNotification(notificationBuilder.buildNewTaskNotification(topic.getName(), task.getName()));
             }
         }
+
+        task = taskRepository.save(task);
+        task.accept(taskVisitor);
+
 
         //create the folder for the task
         String stringPath = pathBuilder.buildAbsoluteTaskFolderPath(professor.getId(), topic.getId(), task.getId());

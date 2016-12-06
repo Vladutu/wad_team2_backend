@@ -30,4 +30,9 @@ public class NotificationBuilder implements INotificationBuilder {
     public Notification buildTestSuccessNotification(String taskName, double score) {
         return new Notification("Successfully finished testing task with name " + taskName + ". Your score is " + score + ".");
     }
+
+    @Override
+    public Notification buildNewTaskNotification(String topicName, String taskName) {
+        return new Notification("On " + topicName + " topic has been added a new task with name " + taskName + ".");
+    }
 }

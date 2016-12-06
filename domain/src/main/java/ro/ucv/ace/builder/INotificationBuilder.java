@@ -14,4 +14,6 @@ public interface INotificationBuilder {
     Notification buildTestErrorNotification(String taskName, String errorMessage);
 
     Notification buildTestSuccessNotification(String taskName, double score);
+
+    Notification buildNewTaskNotification(String topicName, String taskName);
 }

@@ -10,7 +10,7 @@ import java.util.Map;
  * Created by Geo on 15.11.2016.
  */
 public enum Language {
-    C("c"), JAVA("java"), PYTHON("python");
+    C("c"), JAVA("java"), CSHARP("csharp");
 
     private String name;
 
@@ -27,7 +27,7 @@ public enum Language {
     static {
         namesMap.put("c", C);
         namesMap.put("java", JAVA);
-        namesMap.put("python", PYTHON);
+        namesMap.put("csharp", CSHARP);
     }
 
     @JsonCreator

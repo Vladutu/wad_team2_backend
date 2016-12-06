@@ -1,18 +1,15 @@
 package ro.ucv.ace.model;
 
 import org.springframework.beans.factory.annotation.Autowire;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import ro.ucv.ace.dto.ResponseMessageDto;
 import ro.ucv.ace.model.enums.Language;
 import ro.ucv.ace.socket.IJob;
 import ro.ucv.ace.socket.IJobResult;
-import ro.ucv.ace.socket.ISocketManager;
 import ro.ucv.ace.socket.impl.CompilationJob;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -24,10 +21,6 @@ import java.util.concurrent.ExecutionException;
 @Table(name = "MANUALLY_TESTED_TASK")
 @Configurable(preConstruction = true, autowire = Autowire.BY_TYPE)
 public class ManuallyTestedTask extends Task {
-
-    @Autowired
-    @Transient
-    private ISocketManager socketManager;
 
     public ManuallyTestedTask() {
     }
@@ -65,14 +58,16 @@ public class ManuallyTestedTask extends Task {
         }
 
         if (result.getError()) {
-            //TODO: notify student
+            solution.getStudent().addNotification(
+                    notificationBuilder.buildCompilerErrorNotification(getName(), result.getResult()));
             return new ResponseMessageDto(true, result.getResult());
         }
         if (result.getInternalError()) {
-            //TODO: notify professor
+            getTopic().getProfessor().addNotification(notificationBuilder.buildCompilerErrorNotification(getName(), result.getResult()));
             return new ResponseMessageDto(true, "Internal server error. Please try again later");
         }
 
+        solution.getStudent().addNotification(notificationBuilder.buildCompileSuccessNotification(getName()));
         return new ResponseMessageDto(false, "Successfully finished compilation for task with name " + getName());
     }
 

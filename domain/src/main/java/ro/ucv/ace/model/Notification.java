@@ -28,6 +28,15 @@ public class Notification {
     @JoinColumn(name = "ACCOUNT_ID", referencedColumnName = "ID", nullable = false)
     private Account account;
 
+    public Notification() {
+    }
+
+    public Notification(String message) {
+        this.message = message;
+        this.date = LocalDateTime.now();
+        this.seen = false;
+    }
+
     public Integer getId() {
         return id;
     }

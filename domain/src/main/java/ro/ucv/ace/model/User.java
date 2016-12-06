@@ -1,7 +1,5 @@
 package ro.ucv.ace.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.ucv.ace.visitor.UserVisitor;
 
 import javax.persistence.*;
@@ -68,5 +66,9 @@ public class User {
 
     public void setPersonDetails(PersonDetails personDetails) {
         this.personDetails = personDetails;
+    }
+
+    public void addNotification(Notification notification) {
+        getAccount().getNotifications().add(notification);
     }
 }

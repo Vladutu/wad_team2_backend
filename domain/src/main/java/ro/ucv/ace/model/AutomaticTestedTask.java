@@ -72,11 +72,13 @@ public class AutomaticTestedTask extends Task {
         }
 
         if (compilationResult.getError()) {
-            //TODO: notify student
+            solution.getStudent().addNotification(
+                    notificationBuilder.buildCompilerErrorNotification(getName(), compilationResult.getResult()));
             return new ResponseMessageDto(true, compilationResult.getResult());
         }
         if (compilationResult.getInternalError()) {
-            //TODO: notify professor
+            getTopic().getProfessor().addNotification(notificationBuilder.buildCompilerErrorNotification(getName(),
+                    compilationResult.getResult()));
             return new ResponseMessageDto(true, "Internal server error. Please try again later");
         }
 
@@ -90,12 +92,13 @@ public class AutomaticTestedTask extends Task {
         }
 
         if (testJobResult.getError()) {
-            //TODO: notify student
+            solution.getStudent().addNotification(notificationBuilder.buildTestErrorNotification(getName(), testJobResult.getResult()));
             return new ResponseMessageDto(true, testJobResult.getResult());
         }
 
         if (testJobResult.getInternalError()) {
-            //TODO: notify professor
+            getTopic().getProfessor().addNotification(notificationBuilder.buildTestErrorNotification(getName(),
+                    compilationResult.getResult()));
             return new ResponseMessageDto(true, "Internal server error. Please try again later");
         }
 
@@ -103,6 +106,7 @@ public class AutomaticTestedTask extends Task {
         double mark = tjResult.getPassedTests() / tjResult.getTotalTests() * 100;
         solution.setMark(mark);
 
+        solution.getStudent().addNotification(notificationBuilder.buildTestSuccessNotification(getName(), mark));
         return new ResponseMessageDto(false, "Finished compile and test jobs. You have a score of " + mark);
     }
 

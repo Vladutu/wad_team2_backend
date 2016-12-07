@@ -15,23 +15,42 @@ public class PlagiarismResult {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "STUDENT_ID", referencedColumnName = "ID")
-    private Student student;
+    @JoinColumn(name = "STUDENT1_ID", referencedColumnName = "ID")
+    private Student student1;
 
+    @ManyToOne
+    @JoinColumn(name = "STUDENT2_ID", referencedColumnName = "ID")
+    private Student student2;
+
+    @Column(name = "URL")
+    @Basic
     private String url;
 
+    @Column(name = "SIMILARITY_PERCENT")
+    @Basic
     private float similarityPercent;
 
     @ManyToOne
-    @JoinColumn(name = "SOLUTION_ID", referencedColumnName = "ID")
-    private Solution solution;
+    @JoinColumn(name = "TASK_ID", referencedColumnName = "ID")
+    private Task task;
 
-    public Solution getSolution() {
-        return solution;
+    public PlagiarismResult() {
     }
 
-    public void setSolution(Solution solution) {
-        this.solution = solution;
+    public PlagiarismResult(Task task, Student student1, Student student2, String url, float similarityPercent) {
+        this.student1 = student1;
+        this.student2 = student2;
+        this.url = url;
+        this.similarityPercent = similarityPercent;
+        this.task = task;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
     }
 
     public Integer getId() {
@@ -42,12 +61,20 @@ public class PlagiarismResult {
         this.id = id;
     }
 
-    public Student getStudent() {
-        return student;
+    public Student getStudent1() {
+        return student1;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setStudent1(Student student1) {
+        this.student1 = student1;
+    }
+
+    public Student getStudent2() {
+        return student2;
+    }
+
+    public void setStudent2(Student student2) {
+        this.student2 = student2;
     }
 
     public String getUrl() {

@@ -18,7 +18,6 @@ import ro.ucv.ace.repository.IStudentRepository;
 import ro.ucv.ace.repository.ITaskRepository;
 import ro.ucv.ace.service.ISolutionService;
 import ro.ucv.ace.utility.impl.IUnzipper;
-import ro.ucv.ace.visitor.SolutionVisitor;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,9 +37,6 @@ public class SolutionService implements ISolutionService {
 
     @Autowired
     private ISolutionRepository solutionRepository;
-
-    @Autowired
-    private SolutionVisitor solutionVisitor;
 
     @Autowired
     private ISolutionBuilder solutionBuilder;
@@ -104,8 +100,7 @@ public class SolutionService implements ISolutionService {
 
         try {
             Solution solution = task.getSolutionByStudent(studentId);
-            task.removeSolution(solution);
-            taskRepository.save(task);
+            solutionRepository.delete(solution.getId());
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }

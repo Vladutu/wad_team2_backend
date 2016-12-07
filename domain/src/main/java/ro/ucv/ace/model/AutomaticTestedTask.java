@@ -8,7 +8,6 @@ import ro.ucv.ace.socket.impl.CompilationJob;
 import ro.ucv.ace.socket.impl.TestJob;
 import ro.ucv.ace.socket.impl.TestJobResult;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDate;
@@ -23,9 +22,6 @@ import java.util.concurrent.ExecutionException;
 
 public class AutomaticTestedTask extends Task {
 
-    @Column(name = "TEST_FILES_PATH")
-    private String testFilesPath;
-
     public AutomaticTestedTask() {
     }
 
@@ -38,14 +34,6 @@ public class AutomaticTestedTask extends Task {
         setDescription(description);
         setLanguage(language);
         setPlagiarismAnalyser(plagiarismAnalyser);
-    }
-
-    public String getTestFilesPath() {
-        return testFilesPath;
-    }
-
-    public void setTestFilesPath(String testFilesPath) {
-        this.testFilesPath = testFilesPath;
     }
 
     @Override

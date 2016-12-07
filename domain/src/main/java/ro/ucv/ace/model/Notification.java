@@ -1,5 +1,7 @@
 package ro.ucv.ace.model;
 
+import ro.ucv.ace.visitor.NotificationVisitor;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -22,11 +24,20 @@ public class Notification {
     private LocalDateTime date;
 
     @Column(name = "SEEN")
-    private boolean seen;
+    private Boolean seen;
 
     @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID", referencedColumnName = "ID", nullable = false)
     private Account account;
+
+    public Notification() {
+    }
+
+    public Notification(String message) {
+        this.message = message;
+        this.date = LocalDateTime.now();
+        this.seen = false;
+    }
 
     public Integer getId() {
         return id;
@@ -52,11 +63,11 @@ public class Notification {
         this.date = date;
     }
 
-    public boolean isSeen() {
+    public Boolean getSeen() {
         return seen;
     }
 
-    public void setSeen(boolean seen) {
+    public void setSeen(Boolean seen) {
         this.seen = seen;
     }
 
@@ -66,5 +77,9 @@ public class Notification {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public void accept(NotificationVisitor visitor) {
+        visitor.visit(this);
     }
 }

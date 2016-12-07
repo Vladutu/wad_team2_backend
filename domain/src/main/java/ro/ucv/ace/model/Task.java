@@ -3,6 +3,7 @@ package ro.ucv.ace.model;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import ro.ucv.ace.builder.INotificationBuilder;
 import ro.ucv.ace.dto.ResponseMessageDto;
 import ro.ucv.ace.model.enums.Language;
 import ro.ucv.ace.socket.ISocketManager;
@@ -61,6 +62,10 @@ public abstract class Task {
     @Autowired
     @Transient
     protected ISocketManager socketManager;
+
+    @Autowired
+    @Transient
+    protected INotificationBuilder notificationBuilder;
 
     public Integer getId() {
         return id;

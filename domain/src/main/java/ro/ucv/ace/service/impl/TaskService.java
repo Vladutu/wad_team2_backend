@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ro.ucv.ace.builder.INotificationBuilder;
 import ro.ucv.ace.builder.IPathBuilder;
 import ro.ucv.ace.builder.ITaskBuilder;
 import ro.ucv.ace.dto.task.ETaskDto;
@@ -64,6 +65,8 @@ public class TaskService implements ITaskService {
     @Autowired
     private IPlagiarismAnalyserRepository plagiarismAnalyserRepository;
 
+    @Autowired
+    private INotificationBuilder notificationBuilder;
 
     @Override
     public TaskDto save(int professorId, int topicId, STaskDto taskDto) {
@@ -90,8 +93,16 @@ public class TaskService implements ITaskService {
             task = taskBuilder.buildManualTask(taskDto, subgroups, topic);
         }
 
+        //send notification to students
+        for (Subgroup subgroup : subgroups) {
+            for (Student student : subgroup.getStudents()) {
+                student.addNotification(notificationBuilder.buildNewTaskNotification(topic.getName(), task.getName()));
+            }
+        }
+
         task = taskRepository.save(task);
         task.accept(taskVisitor);
+
 
         //create the folder for the task
         String stringPath = pathBuilder.buildAbsoluteTaskFolderPath(professor.getId(), topic.getId(), task.getId());

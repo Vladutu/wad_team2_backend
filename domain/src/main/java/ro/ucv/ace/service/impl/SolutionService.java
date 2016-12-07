@@ -17,7 +17,7 @@ import ro.ucv.ace.repository.ISolutionRepository;
 import ro.ucv.ace.repository.IStudentRepository;
 import ro.ucv.ace.repository.ITaskRepository;
 import ro.ucv.ace.service.ISolutionService;
-import ro.ucv.ace.utility.IUnzipper;
+import ro.ucv.ace.utility.impl.IUnzipper;
 import ro.ucv.ace.visitor.SolutionVisitor;
 
 import java.io.File;

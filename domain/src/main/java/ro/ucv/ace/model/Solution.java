@@ -20,7 +20,7 @@ public class Solution {
 
     @Column(name = "MARK")
     @Basic
-    private double mark;
+    private Double mark;
 
     @Column(name = "DIRECTORY_PATH", unique = true)
     @Basic
@@ -62,11 +62,11 @@ public class Solution {
         this.id = id;
     }
 
-    public double getMark() {
+    public Double getMark() {
         return mark;
     }
 
-    public void setMark(double mark) {
+    public void setMark(Double mark) {
         this.mark = mark;
     }
 

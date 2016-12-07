@@ -101,6 +101,8 @@ public class AutomaticTestedTask extends Task {
                     compilationResult.getResult()));
             return new ResponseMessageDto(true, "Internal server error. Please try again later");
         }
+        solution.getStudent().addNotification(notificationBuilder.buildCompileSuccessNotification(getName()));
+
 
         TestJobResult tjResult = (TestJobResult) testJobResult;
         double mark = tjResult.getPassedTests() / tjResult.getTotalTests() * 100;

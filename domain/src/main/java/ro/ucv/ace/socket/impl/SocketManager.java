@@ -89,5 +89,6 @@ public class SocketManager implements ISocketManager, DisposableBean {
     @Override
     public void destroy() throws Exception {
         this.socket.disconnect();
+        this.pool.shutdown();
     }
 }

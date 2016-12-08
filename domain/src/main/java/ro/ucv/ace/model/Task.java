@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import ro.ucv.ace.builder.INotificationBuilder;
-import ro.ucv.ace.dto.ResponseMessageDto;
+import ro.ucv.ace.dto.other.ResponseMessageDto;
 import ro.ucv.ace.model.enums.Language;
 import ro.ucv.ace.socket.ISocketManager;
 import ro.ucv.ace.visitor.TaskVisitor;

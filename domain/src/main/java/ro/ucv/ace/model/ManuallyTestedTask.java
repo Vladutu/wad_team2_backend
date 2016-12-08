@@ -2,7 +2,7 @@ package ro.ucv.ace.model;
 
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Configurable;
-import ro.ucv.ace.dto.ResponseMessageDto;
+import ro.ucv.ace.dto.other.ResponseMessageDto;
 import ro.ucv.ace.model.enums.Language;
 import ro.ucv.ace.socket.IJob;
 import ro.ucv.ace.socket.IJobResult;

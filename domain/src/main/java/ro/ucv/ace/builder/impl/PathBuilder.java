@@ -63,4 +63,9 @@ public class PathBuilder implements IPathBuilder {
         return String.format("%s%s%s%s%s%s%s%s", File.separator, professorId, File.separator, topicId, File.separator,
                 taskId, File.separator, studentId);
     }
+
+    @Override
+    public String buildAbsoluteStudentSolutionFolderPath(String relativePath) {
+        return folderRoot + relativePath;
+    }
 }

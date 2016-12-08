@@ -1,7 +1,8 @@
 package ro.ucv.ace.service;
 
-import ro.ucv.ace.dto.ResponseMessageDto;
+import ro.ucv.ace.dto.other.ResponseMessageDto;
 import ro.ucv.ace.dto.solution.ESSolutionDto;
+import ro.ucv.ace.utility.impl.Node;
 
 /**
  * Created by tzapt on 12/4/2016.
@@ -9,4 +10,8 @@ import ro.ucv.ace.dto.solution.ESSolutionDto;
 public interface ISolutionService {
 
     ResponseMessageDto save(int studentId, int taskId, ESSolutionDto solutionDto);
+
+    Node getSolutionFolderStructure(int solutionId);
+
+    String getFileContent(String filePath);
 }

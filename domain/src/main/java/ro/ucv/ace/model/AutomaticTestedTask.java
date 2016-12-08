@@ -1,6 +1,6 @@
 package ro.ucv.ace.model;
 
-import ro.ucv.ace.dto.ResponseMessageDto;
+import ro.ucv.ace.dto.other.ResponseMessageDto;
 import ro.ucv.ace.model.enums.Language;
 import ro.ucv.ace.socket.IJob;
 import ro.ucv.ace.socket.IJobResult;

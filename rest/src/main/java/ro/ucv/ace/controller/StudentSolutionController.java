@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ro.ucv.ace.dto.ResponseMessageDto;
+import ro.ucv.ace.dto.other.ResponseMessageDto;
 import ro.ucv.ace.dto.solution.ESSolutionDto;
 import ro.ucv.ace.exception.EntityBindingException;
 import ro.ucv.ace.service.ISolutionService;

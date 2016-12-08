@@ -20,4 +20,6 @@ public interface IPathBuilder {
     String buildRelativeTaskFolderPath(int professorId, int topicId, int taskId);
 
     String buildRelativeStudentSolutionFolderPath(int professorId, int topicId, int taskId, int studentId);
+
+    String buildAbsoluteStudentSolutionFolderPath(String relativePath);
 }

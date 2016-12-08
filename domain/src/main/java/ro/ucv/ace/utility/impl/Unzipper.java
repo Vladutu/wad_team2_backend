@@ -1,9 +1,9 @@
-package ro.ucv.ace.utility;
+package ro.ucv.ace.utility.impl;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.springframework.stereotype.Component;
-import ro.ucv.ace.utility.impl.IUnzipper;
+import ro.ucv.ace.utility.IUnzipper;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;

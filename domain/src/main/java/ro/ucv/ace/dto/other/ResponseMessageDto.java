@@ -1,4 +1,4 @@
-package ro.ucv.ace.dto;
+package ro.ucv.ace.dto.other;
 
 /**
  * Created by tzapt on 12/4/2016.

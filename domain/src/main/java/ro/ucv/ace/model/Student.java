@@ -22,8 +22,6 @@ public class Student extends User {
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Solution> solutions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<PlagiarismResult> plagiarismResults = new ArrayList<>();
 
     public Student() {
 
@@ -36,14 +34,6 @@ public class Student extends User {
         this.setSubgroup(subgroup);
         this.setAccount(account);
         this.setPersonDetails(personDetails);
-    }
-
-    public List<PlagiarismResult> getPlagiarismResults() {
-        return plagiarismResults;
-    }
-
-    public void setPlagiarismResults(List<PlagiarismResult> plagiarismResults) {
-        this.plagiarismResults = plagiarismResults;
     }
 
     public Subgroup getSubgroup() {

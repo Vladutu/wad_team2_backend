@@ -10,4 +10,6 @@ public interface ISolutionRepository {
     Solution save(Solution solution);
 
     Solution findOne(int solutionId);
+
+    Solution delete(Integer id);
 }

@@ -6,6 +6,8 @@ import ro.ucv.ace.model.Task;
 import ro.ucv.ace.repository.IJpaRepository;
 import ro.ucv.ace.repository.ITaskRepository;
 
+import java.util.List;
+
 /**
  * Created by tzapt on 11/26/2016.
  */
@@ -33,5 +35,10 @@ public class TaskRepository implements ITaskRepository {
     @Override
     public Task findTaskByNameInTopic(Integer id, String name) {
         return innerTaskRepository.findOneWhere(task -> task.getName().equals(name) && task.getTopic().getId().equals(id));
+    }
+
+    @Override
+    public List<Task> findAll() {
+        return innerTaskRepository.findAll();
     }
 }

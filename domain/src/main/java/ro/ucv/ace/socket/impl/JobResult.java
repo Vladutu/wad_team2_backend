@@ -27,4 +27,13 @@ public abstract class JobResult implements IJobResult {
     public boolean getInternalError() {
         return internalError;
     }
+
+    @Override
+    public String toString() {
+        return "JobResult{" +
+                "error=" + error +
+                ", internalError=" + internalError +
+                ", result='" + result + '\'' +
+                '}';
+    }
 }

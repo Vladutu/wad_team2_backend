@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import ro.ucv.ace.builder.INotificationBuilder;
-import ro.ucv.ace.dto.ResponseMessageDto;
+import ro.ucv.ace.dto.other.ResponseMessageDto;
 import ro.ucv.ace.model.enums.Language;
 import ro.ucv.ace.socket.ISocketManager;
 import ro.ucv.ace.visitor.TaskVisitor;
@@ -43,6 +43,14 @@ public abstract class Task {
     @Column(name = "LANGUAGE")
     private Language language;
 
+    @Column(name = "PATH")
+    @Basic
+    private String path;
+
+    @Column(name = "ANALYZED")
+    @Basic
+    private boolean analyzed = false;
+
     @ManyToOne
     @JoinColumn(name = "PLAGIARISM_ANALYSER_ID")
     private PlagiarismAnalyser plagiarismAnalyser;
@@ -59,6 +67,10 @@ public abstract class Task {
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Solution> solutions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "task", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
+    private List<PlagiarismResult> plagiarismResults = new ArrayList<>();
+
+
     @Autowired
     @Transient
     protected ISocketManager socketManager;
@@ -66,6 +78,30 @@ public abstract class Task {
     @Autowired
     @Transient
     protected INotificationBuilder notificationBuilder;
+
+    public List<PlagiarismResult> getPlagiarismResults() {
+        return plagiarismResults;
+    }
+
+    public void setPlagiarismResults(List<PlagiarismResult> plagiarismResults) {
+        this.plagiarismResults = plagiarismResults;
+    }
+
+    public boolean isAnalyzed() {
+        return analyzed;
+    }
+
+    public void setAnalyzed(boolean analyzed) {
+        this.analyzed = analyzed;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public Integer getId() {
         return id;
@@ -172,10 +208,6 @@ public abstract class Task {
         }
 
         throw new ro.ucv.ace.exception.EntityNotFoundException("Solution not found");
-    }
-
-    public void removeSolution(Solution solution) {
-        solutions.remove(solution);
     }
 
 }

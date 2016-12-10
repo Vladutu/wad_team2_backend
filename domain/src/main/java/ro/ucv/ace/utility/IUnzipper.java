@@ -1,4 +1,4 @@
-package ro.ucv.ace.utility.impl;
+package ro.ucv.ace.utility;
 
 import net.lingala.zip4j.exception.ZipException;
 

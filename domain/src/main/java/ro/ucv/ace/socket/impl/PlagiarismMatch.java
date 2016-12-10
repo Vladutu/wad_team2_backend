@@ -5,28 +5,28 @@ package ro.ucv.ace.socket.impl;
  */
 public class PlagiarismMatch {
 
-    private int firstStudentId;
+    private int solution1;
 
-    private int secondStudentId;
+    private int solution2;
 
     private String url;
 
-    private float similarityPercent;
+    private float value;
 
-    public int getFirstStudentId() {
-        return firstStudentId;
+    public int getSolution1() {
+        return solution1;
     }
 
-    public void setFirstStudentId(int firstStudentId) {
-        this.firstStudentId = firstStudentId;
+    public void setSolution1(int solution1) {
+        this.solution1 = solution1;
     }
 
-    public int getSecondStudentId() {
-        return secondStudentId;
+    public int getSolution2() {
+        return solution2;
     }
 
-    public void setSecondStudentId(int secondStudentId) {
-        this.secondStudentId = secondStudentId;
+    public void setSolution2(int solution2) {
+        this.solution2 = solution2;
     }
 
     public String getUrl() {
@@ -37,11 +37,21 @@ public class PlagiarismMatch {
         this.url = url;
     }
 
-    public float getSimilarityPercent() {
-        return similarityPercent;
+    public float getValue() {
+        return value;
     }
 
-    public void setSimilarityPercent(float similarityPercent) {
-        this.similarityPercent = similarityPercent;
+    public void setValue(float value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "PlagiarismMatch{" +
+                "solution1=" + solution1 +
+                ", solution2=" + solution2 +
+                ", url='" + url + '\'' +
+                ", value=" + value +
+                '}';
     }
 }

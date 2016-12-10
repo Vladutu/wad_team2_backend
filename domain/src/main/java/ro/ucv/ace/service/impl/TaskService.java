@@ -115,11 +115,8 @@ public class TaskService implements ITaskService {
             }
         }
 
-        // save the path into the task if it's automaticTask
-        if (taskDto.isTestsEnabled()) {
-            AutomaticTestedTask automaticTestedTask = (AutomaticTestedTask) task;
-            automaticTestedTask.setTestFilesPath(pathBuilder.buildRelativeTaskFolderPath(professor.getId(), topic.getId(), task.getId()));
-        }
+        // save the path into the task
+        task.setPath(pathBuilder.buildRelativeTaskFolderPath(professor.getId(), topic.getId(), task.getId()));
 
         // save the input and output file if available
         if (taskDto.isTestsEnabled()) {
@@ -187,10 +184,10 @@ public class TaskService implements ITaskService {
             try {
                 byte[] input = Base64.decodeBase64(taskDto.getInputFile());
                 byte[] output = Base64.decodeBase64(taskDto.getOutputFile());
-                try (OutputStream stream = new FileOutputStream(pathBuilder.buildPathForInputFile(automaticTestedTask.getTestFilesPath()))) {
+                try (OutputStream stream = new FileOutputStream(pathBuilder.buildPathForInputFile(automaticTestedTask.getPath()))) {
                     stream.write(input);
                 }
-                try (OutputStream stream = new FileOutputStream(pathBuilder.buildPathForOutputFile(automaticTestedTask.getTestFilesPath()))) {
+                try (OutputStream stream = new FileOutputStream(pathBuilder.buildPathForOutputFile(automaticTestedTask.getPath()))) {
                     stream.write(output);
                 }
             } catch (IOException e) {

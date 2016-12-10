@@ -3,12 +3,14 @@ package ro.ucv.ace.service.impl;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.ucv.ace.builder.IPathBuilder;
 import ro.ucv.ace.builder.ISolutionBuilder;
-import ro.ucv.ace.dto.ResponseMessageDto;
+import ro.ucv.ace.dto.other.ResponseMessageDto;
 import ro.ucv.ace.dto.solution.ESSolutionDto;
 import ro.ucv.ace.exception.DeadlinePassedException;
 import ro.ucv.ace.exception.EntityNotFoundException;
@@ -17,17 +19,16 @@ import ro.ucv.ace.repository.ISolutionRepository;
 import ro.ucv.ace.repository.IStudentRepository;
 import ro.ucv.ace.repository.ITaskRepository;
 import ro.ucv.ace.service.ISolutionService;
-import ro.ucv.ace.utility.impl.IUnzipper;
-import ro.ucv.ace.visitor.SolutionVisitor;
+import ro.ucv.ace.utility.IUnzipper;
+import ro.ucv.ace.utility.impl.Node;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by tzapt on 12/4/2016.
@@ -38,9 +39,6 @@ public class SolutionService implements ISolutionService {
 
     @Autowired
     private ISolutionRepository solutionRepository;
-
-    @Autowired
-    private SolutionVisitor solutionVisitor;
 
     @Autowired
     private ISolutionBuilder solutionBuilder;
@@ -56,6 +54,9 @@ public class SolutionService implements ISolutionService {
 
     @Autowired
     private IUnzipper unzipper;
+
+    @Value("#{'${folder.permittedExtensions}'.split(',')}")
+    public List<String> permittedExtensions;
 
     @Override
     public ResponseMessageDto save(int studentId, int taskId, ESSolutionDto solutionDto) {
@@ -104,8 +105,7 @@ public class SolutionService implements ISolutionService {
 
         try {
             Solution solution = task.getSolutionByStudent(studentId);
-            task.removeSolution(solution);
-            taskRepository.save(task);
+            solutionRepository.delete(solution.getId());
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }
@@ -118,5 +118,46 @@ public class SolutionService implements ISolutionService {
         solutionRepository.save(solution);
 
         return messageDto;
+    }
+
+    @Override
+    public Node getSolutionFolderStructure(int solutionId) {
+        Solution solution = solutionRepository.findOne(solutionId);
+        String absolutePath = pathBuilder.buildAbsoluteStudentSolutionFolderPath(solution.getDirectoryPath());
+        Node node = new Node(solution.getTask().getName(), absolutePath, false, "");
+        listFiles(new File(absolutePath), node);
+
+        return node;
+    }
+
+    @Override
+    public String getFileContent(String filePath) {
+        try {
+            return new Scanner(new File(filePath)).useDelimiter("\\Z").next();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("File not found");
+        }
+    }
+
+    private void listFiles(File root, Node parent) {
+        File[] files = root.listFiles();
+        if (files == null) {
+            return;
+        }
+
+        for (File file : files) {
+            String extension = FilenameUtils.getExtension(file.getAbsolutePath());
+            if (!file.isDirectory() && !permittedExtensions.contains(extension)) {
+                continue;
+            }
+
+            if (file.isDirectory()) {
+                Node node = new Node(file.getName(), file.getPath(), false, extension);
+                parent.addChild(node);
+                listFiles(file, node);
+            } else {
+                parent.addChild(new Node(file.getName(), file.getPath(), true, extension));
+            }
+        }
     }
 }

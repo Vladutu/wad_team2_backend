@@ -16,4 +16,5 @@ public interface IStudentRepository {
     Student delete(int id);
 
     Student findOne(int id);
+
 }

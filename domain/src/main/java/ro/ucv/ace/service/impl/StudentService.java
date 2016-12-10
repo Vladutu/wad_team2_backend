@@ -4,16 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.ucv.ace.builder.IStudentBuilder;
+import ro.ucv.ace.dto.plagiarismResult.PlagiarismResultDto;
 import ro.ucv.ace.dto.student.ESStudentDto;
 import ro.ucv.ace.dto.student.StudentDto;
-import ro.ucv.ace.model.Student;
-import ro.ucv.ace.model.Subgroup;
-import ro.ucv.ace.repository.IStudentRepository;
-import ro.ucv.ace.repository.ISubgroupRepository;
-import ro.ucv.ace.repository.IUserRepository;
+import ro.ucv.ace.dto.studentGrade.ESStudentGradeDto;
+import ro.ucv.ace.dto.studentGrade.StudentGradeDto;
+import ro.ucv.ace.exception.DeadlinePassedException;
+import ro.ucv.ace.exception.EntityNotFoundException;
+import ro.ucv.ace.exception.NoSolutionSentException;
+import ro.ucv.ace.model.*;
+import ro.ucv.ace.repository.*;
 import ro.ucv.ace.service.IStudentService;
+import ro.ucv.ace.visitor.PlagiarismResultVisitor;
+import ro.ucv.ace.visitor.StudentGradeVisitor;
 import ro.ucv.ace.visitor.StudentVisitor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +47,21 @@ public class StudentService implements IStudentService {
 
     @Autowired
     private ISubgroupRepository subgroupRepository;
+
+    @Autowired
+    private ITaskRepository taskRepository;
+
+    @Autowired
+    private ISolutionRepository solutionRepository;
+
+    @Autowired
+    private IPlagiarismResultRepository plagiarismResultRepository;
+
+    @Autowired
+    private StudentGradeVisitor studentGradeVisitor;
+
+    @Autowired
+    private PlagiarismResultVisitor plagiarismResultVisitor;
 
     @Override
     public StudentDto save(ESStudentDto studentDto) {
@@ -98,5 +119,77 @@ public class StudentService implements IStudentService {
         student.accept(studentVisitor);
 
         return studentVisitor.getStudentDto();
+    }
+
+    @Override
+    public List<StudentGradeDto> getAllStudentsWithTask(int taskId) {
+        Task task = taskRepository.findOne(taskId);
+        List<Student> students = new ArrayList<>();
+
+        for (Subgroup subgroup : task.getSubgroups()) {
+            students.addAll(subgroup.getStudents());
+        }
+
+        List<StudentGradeDto> studentGradeDtos = new ArrayList<>();
+        students.forEach(s -> {
+            s.accept(studentGradeVisitor);
+            StudentGradeDto studentGradeDto = studentGradeVisitor.getStudentGradeDto();
+
+            Solution solution = null;
+            try {
+                solution = solutionRepository.getSolutionForStudent(s.getId());
+                studentGradeDto.setMark(solution.getMark().toString());
+            } catch (EntityNotFoundException e) {
+            }
+
+            studentGradeDtos.add(studentGradeDto);
+        });
+
+        return studentGradeDtos;
+    }
+
+    @Override
+    public StudentGradeDto saveGradeForStudent(ESStudentGradeDto esStudentGradeDto, int taskId, int studentId) {
+        Task task = taskRepository.findOne(taskId);
+        Student student = studentRepository.findOne(studentId);
+
+        LocalDate currentDate = LocalDate.now();
+        if (task.getDeadline().isAfter(currentDate)) {
+            throw new DeadlinePassedException("You can't edit a solution until the deadline has passed.");
+        }
+
+        Solution solution = null;
+        try {
+            solution = solutionRepository.getSolutionForStudent(student.getId());
+        } catch (EntityNotFoundException e) {
+            throw new NoSolutionSentException("The student didn't send any solution.");
+        }
+
+        solution.setMark(Double.valueOf(esStudentGradeDto.getMark()));
+        solutionRepository.save(solution);
+
+        student.accept(studentGradeVisitor);
+
+        StudentGradeDto studentGradeDto = studentGradeVisitor.getStudentGradeDto();
+
+        return studentGradeDto;
+    }
+
+    @Override
+    public PlagiarismResultDto getPlagiarismResultForTask(int taskId, int studentId) {
+        Student student = studentRepository.findOne(studentId);
+
+        Solution solution = null;
+        try {
+            solution = solutionRepository.getSolutionForStudent(student.getId());
+        } catch (EntityNotFoundException e) {
+            throw new NoSolutionSentException("The student didn't send any solution.");
+        }
+
+        PlagiarismResult plagiarismResult = plagiarismResultRepository.findResultByStudentAndTask(studentId, taskId);
+
+        plagiarismResult.accept(plagiarismResultVisitor);
+
+        return plagiarismResultVisitor.getPlagiarismResultDto();
     }
 }

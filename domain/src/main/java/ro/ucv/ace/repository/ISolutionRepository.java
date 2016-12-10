@@ -12,4 +12,6 @@ public interface ISolutionRepository {
     Solution findOne(int solutionId);
 
     Solution delete(Integer id);
+
+    Solution getSolutionForStudent(Integer id);
 }

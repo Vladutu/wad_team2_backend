@@ -1,5 +1,7 @@
 package ro.ucv.ace.model;
 
+import ro.ucv.ace.visitor.PlagiarismResultVisitor;
+
 import javax.persistence.*;
 
 /**
@@ -91,5 +93,9 @@ public class PlagiarismResult {
 
     public void setSimilarityPercent(float similarityPercent) {
         this.similarityPercent = similarityPercent;
+    }
+
+    public void accept(PlagiarismResultVisitor plagiarismResultVisitor) {
+        plagiarismResultVisitor.visit(this);
     }
 }

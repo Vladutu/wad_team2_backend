@@ -30,4 +30,9 @@ public class SolutionRepository implements ISolutionRepository {
         return innerSolutionRepository.delete(id);
     }
 
+    @Override
+    public Solution getSolutionForStudent(Integer id) {
+        return innerSolutionRepository.findOneWhere(solution -> solution.getStudent().getId().equals(id));
+    }
+
 }

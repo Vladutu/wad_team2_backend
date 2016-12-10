@@ -2,6 +2,7 @@ package ro.ucv.ace.model;
 
 import ro.ucv.ace.model.enums.Gender;
 import ro.ucv.ace.model.enums.UserRole;
+import ro.ucv.ace.visitor.StudentGradeVisitor;
 import ro.ucv.ace.visitor.StudentVisitor;
 
 import javax.persistence.*;
@@ -63,5 +64,9 @@ public class Student extends User {
         this.getPersonDetails().setGender(Gender.valueOf(gender));
         this.getAccount().setEmail(email);
         this.setSubgroup(subgroup);
+    }
+
+    public void accept(StudentGradeVisitor studentGradeVisitor) {
+        studentGradeVisitor.visit(this);
     }
 }

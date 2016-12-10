@@ -36,4 +36,5 @@ public class StudentRepository implements IStudentRepository {
     public Student findOne(int id) {
         return innerStudentRepository.findOne(id);
     }
+
 }

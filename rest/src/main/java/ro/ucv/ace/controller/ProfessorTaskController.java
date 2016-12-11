@@ -85,12 +85,12 @@ public class ProfessorTaskController {
     }
 
     @RequestMapping(value = "/tasks/{taskId}/students/{studentId}/plagiarismResult", method = RequestMethod.GET)
-    public ResponseEntity<PlagiarismResultDto> getStudentsForTask(@PathVariable("taskId") int taskId,
-                                                                  @PathVariable("studentId") int studentId) {
+    public ResponseEntity<List<PlagiarismResultDto>> getStudentsForTask(@PathVariable("taskId") int taskId,
+                                                                        @PathVariable("studentId") int studentId) {
 
-        PlagiarismResultDto plagiarismResult = studentService.getPlagiarismResultForTask(taskId, studentId);
+        List<PlagiarismResultDto> plagiarismResultForTask = studentService.getPlagiarismResultForTask(taskId, studentId);
 
-        return new ResponseEntity<>(plagiarismResult, HttpStatus.OK);
+        return new ResponseEntity<>(plagiarismResultForTask, HttpStatus.OK);
     }
 
 }

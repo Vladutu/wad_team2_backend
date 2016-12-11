@@ -138,7 +138,10 @@ public class StudentService implements IStudentService {
             Solution solution = null;
             try {
                 solution = solutionRepository.getSolutionForStudent(s.getId());
-                studentGradeDto.setMark(solution.getMark().toString());
+                Double mark = solution.getMark();
+                if (mark != null) {
+                    studentGradeDto.setMark(mark.toString());
+                }
             } catch (EntityNotFoundException e) {
             }
 
@@ -171,12 +174,13 @@ public class StudentService implements IStudentService {
         student.accept(studentGradeVisitor);
 
         StudentGradeDto studentGradeDto = studentGradeVisitor.getStudentGradeDto();
+        studentGradeDto.setMark(solution.getMark().toString());
 
         return studentGradeDto;
     }
 
     @Override
-    public PlagiarismResultDto getPlagiarismResultForTask(int taskId, int studentId) {
+    public List<PlagiarismResultDto> getPlagiarismResultForTask(int taskId, int studentId) {
         Student student = studentRepository.findOne(studentId);
 
         Solution solution = null;
@@ -186,10 +190,14 @@ public class StudentService implements IStudentService {
             throw new NoSolutionSentException("The student didn't send any solution.");
         }
 
-        PlagiarismResult plagiarismResult = plagiarismResultRepository.findResultByStudentAndTask(studentId, taskId);
+        List<PlagiarismResult> plagiarismResults = plagiarismResultRepository.findResultsByStudentAndTask(studentId, taskId);
+        List<PlagiarismResultDto> plagiarismResultDtos = new ArrayList<>();
 
-        plagiarismResult.accept(plagiarismResultVisitor);
+        plagiarismResults.forEach(plagiarismResult -> {
+            plagiarismResult.accept(plagiarismResultVisitor);
+            plagiarismResultDtos.add(plagiarismResultVisitor.getPlagiarismResultDto());
+        });
 
-        return plagiarismResultVisitor.getPlagiarismResultDto();
+        return plagiarismResultDtos;
     }
 }

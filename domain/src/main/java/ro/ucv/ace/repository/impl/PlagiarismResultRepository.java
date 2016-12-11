@@ -38,8 +38,8 @@ public class PlagiarismResultRepository implements IPlagiarismResultRepository {
     }
 
     @Override
-    public PlagiarismResult findResultByStudentAndTask(Integer studentId, Integer taskId) {
-        return innerPlagiarismResultRespository.findOneWhere(result -> result.getStudent1().getId().equals(studentId) &&
+    public List<PlagiarismResult> findResultsByStudentAndTask(Integer studentId, Integer taskId) {
+        return innerPlagiarismResultRespository.findAllWhere(result -> result.getStudent1().getId().equals(studentId) &&
                 result.getTask().getId().equals(taskId));
     }
 }

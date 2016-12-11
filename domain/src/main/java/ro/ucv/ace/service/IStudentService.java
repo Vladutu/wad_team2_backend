@@ -25,5 +25,5 @@ public interface IStudentService {
 
     StudentGradeDto saveGradeForStudent(ESStudentGradeDto esStudentGradeDto, int taskId, int studentId);
 
-    PlagiarismResultDto getPlagiarismResultForTask(int taskId, int studentId);
+    List<PlagiarismResultDto> getPlagiarismResultForTask(int taskId, int studentId);
 }

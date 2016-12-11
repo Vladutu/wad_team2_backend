@@ -17,5 +17,5 @@ public interface IPlagiarismResultRepository {
 
     PlagiarismResult findOne(int id);
 
-    PlagiarismResult findResultByStudentAndTask(Integer studentId, Integer taskId);
+    List<PlagiarismResult> findResultsByStudentAndTask(Integer studentId, Integer taskId);
 }

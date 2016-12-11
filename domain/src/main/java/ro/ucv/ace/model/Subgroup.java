@@ -59,11 +59,11 @@ public class Subgroup {
         this.students = students;
     }
 
-    public List<Task> getTask() {
+    public List<Task> getTasks() {
         return task;
     }
 
-    public void setTask(List<Task> task) {
+    public void setTasks(List<Task> task) {
         this.task = task;
     }
 

@@ -73,4 +73,11 @@ public class GlobalControllerAdvice {
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(NoSolutionSentException.class)
+    public ResponseEntity<ErrorInfo> noSolutionException(NoSolutionSentException e) {
+        ErrorInfo errorInfo = new ErrorInfo(HttpStatus.BAD_REQUEST, e.getMessage());
+
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+
 }

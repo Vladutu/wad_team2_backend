@@ -165,4 +165,9 @@ public class DomainConfig {
     IJpaRepository<Notification, Integer> notificationIntegerIJpaRepository() {
         return new JpaRepository<>(Notification.class);
     }
+
+    @Bean(name = "innerPlagiarismResultRepository")
+    IJpaRepository<PlagiarismResult, Integer> plagiarismResultIntegerIJpaRepository() {
+        return new JpaRepository<>(PlagiarismResult.class);
+    }
 }

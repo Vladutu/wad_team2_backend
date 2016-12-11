@@ -96,6 +96,7 @@ public class AutomaticTestedTask extends Task {
         double mark = tjResult.getPassedTests() / tjResult.getTotalTests() * 100;
         solution.setMark(mark);
 
+        solution.setAccepted(true);
         solution.getStudent().addNotification(notificationBuilder.buildTestSuccessNotification(getName(), mark));
         return new ResponseMessageDto(false, "Finished compile and test jobs. You have a score of " + mark);
     }

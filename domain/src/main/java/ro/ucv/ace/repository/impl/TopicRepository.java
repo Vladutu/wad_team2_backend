@@ -47,4 +47,5 @@ public class TopicRepository implements ITopicRepository {
     public Topic findByProfessorAndName(int professorId, String name) {
         return innerTopicRepository.findOneWhere(topic -> topic.getProfessor().getId().equals(professorId) && topic.getName().equals(name));
     }
+
 }

@@ -24,6 +24,10 @@ public class Solution {
     @Basic
     private String directoryPath;
 
+    @Column(name = "ACCEPTED")
+    @Basic
+    private boolean accepted = false;
+
     @ManyToOne
     @JoinColumn(name = "STUDENT_ID", referencedColumnName = "ID")
     private Student student;
@@ -39,6 +43,14 @@ public class Solution {
         setStudent(student);
         setTask(task);
         setDirectoryPath(stringPath);
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 
     public Integer getId() {

@@ -7,6 +7,7 @@ import ro.ucv.ace.builder.INotificationBuilder;
 import ro.ucv.ace.dto.other.ResponseMessageDto;
 import ro.ucv.ace.model.enums.Language;
 import ro.ucv.ace.socket.ISocketManager;
+import ro.ucv.ace.visitor.StudentTaskVisitor;
 import ro.ucv.ace.visitor.TaskVisitor;
 
 import javax.persistence.*;
@@ -210,4 +211,7 @@ public abstract class Task {
         throw new ro.ucv.ace.exception.EntityNotFoundException("Solution not found");
     }
 
+    public void accept(StudentTaskVisitor studentTaskVisitor, String mark) {
+        studentTaskVisitor.visit(this, mark);
+    }
 }

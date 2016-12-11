@@ -1,6 +1,7 @@
 package ro.ucv.ace.service;
 
 import ro.ucv.ace.dto.topic.ESTopicDto;
+import ro.ucv.ace.dto.topic.StudentTopicDto;
 import ro.ucv.ace.dto.topic.TopicDto;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface ITopicService {
     TopicDto delete(int id);
 
     TopicDto edit(int id, ESTopicDto topicDto);
+
+    List<StudentTopicDto> getStudentTopics(int studentId);
 }

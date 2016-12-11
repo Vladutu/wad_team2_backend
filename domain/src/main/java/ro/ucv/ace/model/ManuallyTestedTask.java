@@ -67,6 +67,7 @@ public class ManuallyTestedTask extends Task {
             return new ResponseMessageDto(true, "Internal server error. Please try again later");
         }
 
+        solution.setAccepted(true);
         solution.getStudent().addNotification(notificationBuilder.buildCompileSuccessNotification(getName()));
         return new ResponseMessageDto(false, "Successfully finished compilation for task with name " + getName());
     }

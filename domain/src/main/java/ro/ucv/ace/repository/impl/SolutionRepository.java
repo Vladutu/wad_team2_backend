@@ -31,8 +31,9 @@ public class SolutionRepository implements ISolutionRepository {
     }
 
     @Override
-    public Solution getSolutionForStudent(Integer id) {
-        return innerSolutionRepository.findOneWhere(solution -> solution.getStudent().getId().equals(id));
+    public Solution getSolutionForStudentByTask(Integer studentId, Integer taskId) {
+        return innerSolutionRepository.findOneWhere(solution -> solution.getStudent().getId().equals(taskId) &&
+                solution.getTask().getId().equals(taskId));
     }
 
 }

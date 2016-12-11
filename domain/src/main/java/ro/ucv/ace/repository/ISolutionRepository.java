@@ -13,5 +13,5 @@ public interface ISolutionRepository {
 
     Solution delete(Integer id);
 
-    Solution getSolutionForStudent(Integer id);
+    Solution getSolutionForStudentByTask(Integer studentId, Integer taskId);
 }

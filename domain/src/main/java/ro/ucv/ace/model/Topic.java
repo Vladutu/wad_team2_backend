@@ -1,5 +1,7 @@
 package ro.ucv.ace.model;
 
+import ro.ucv.ace.dto.task.StudentTaskDto;
+import ro.ucv.ace.visitor.StudentTopicVisitor;
 import ro.ucv.ace.visitor.TopicVisitor;
 
 import javax.persistence.*;
@@ -97,5 +99,9 @@ public class Topic {
 
     public boolean hasId(int topicId) {
         return this.id.equals(topicId);
+    }
+
+    public void accept(StudentTopicVisitor studentTopicVisitor, List<StudentTaskDto> studentTaskDtos) {
+        studentTopicVisitor.visit(this, studentTaskDtos);
     }
 }

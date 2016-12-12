@@ -2,6 +2,7 @@ package ro.ucv.ace.service;
 
 import ro.ucv.ace.dto.other.ResponseMessageDto;
 import ro.ucv.ace.dto.solution.ESSolutionDto;
+import ro.ucv.ace.utility.impl.Content;
 import ro.ucv.ace.utility.impl.Node;
 
 /**
@@ -13,5 +14,5 @@ public interface ISolutionService {
 
     Node getSolutionFolderStructure(int solutionId);
 
-    String getFileContent(String filePath);
+    Content getFileContent(String filePath);
 }

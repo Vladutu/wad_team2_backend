@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.ucv.ace.dto.other.FilePath;
 import ro.ucv.ace.exception.EntityBindingException;
 import ro.ucv.ace.service.ISolutionService;
+import ro.ucv.ace.utility.impl.Content;
 import ro.ucv.ace.utility.impl.Node;
 
 import javax.validation.Valid;
@@ -30,13 +31,13 @@ public class SolutionController {
     }
 
     @RequestMapping(value = "/content", method = RequestMethod.POST)
-    public ResponseEntity<String> getFileContent(@Valid @RequestBody FilePath filePath, BindingResult bindingResult) {
+    public ResponseEntity<Content> getFileContent(@Valid @RequestBody FilePath filePath, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new EntityBindingException(bindingResult.getFieldErrors());
         }
 
-        String content = solutionService.getFileContent(filePath.getFilePath());
+        Content content = solutionService.getFileContent(filePath.getFilePath());
 
-        return new ResponseEntity<String>(content, HttpStatus.OK);
+        return new ResponseEntity<Content>(content, HttpStatus.OK);
     }
 }

@@ -20,6 +20,7 @@ import ro.ucv.ace.repository.IStudentRepository;
 import ro.ucv.ace.repository.ITaskRepository;
 import ro.ucv.ace.service.ISolutionService;
 import ro.ucv.ace.utility.IUnzipper;
+import ro.ucv.ace.utility.impl.Content;
 import ro.ucv.ace.utility.impl.Node;
 
 import java.io.*;
@@ -131,9 +132,9 @@ public class SolutionService implements ISolutionService {
     }
 
     @Override
-    public String getFileContent(String filePath) {
+    public Content getFileContent(String filePath) {
         try {
-            return new Scanner(new File(filePath)).useDelimiter("\\Z").next();
+            return new Content(new Scanner(new File(filePath)).useDelimiter("\\Z").next());
         } catch (FileNotFoundException e) {
             throw new RuntimeException("File not found");
         }

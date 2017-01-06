@@ -169,7 +169,7 @@ public class StudentService implements IStudentService {
             throw new NoSolutionSentException("The student didn't send any solution.");
         }
 
-        solution.setMark(Double.valueOf(esStudentGradeDto.getMark()));
+        solution.setMark(esStudentGradeDto.getMark());
         solutionRepository.save(solution);
 
         student.accept(studentGradeVisitor);

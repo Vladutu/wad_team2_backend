@@ -5,20 +5,20 @@ package ro.ucv.ace.dto.studentGrade;
  */
 public class ESStudentGradeDto {
 
-    private String mark;
+    private Double mark;
 
     public ESStudentGradeDto() {
     }
 
-    public ESStudentGradeDto(String mark) {
+    public ESStudentGradeDto(Double mark) {
         this.mark = mark;
     }
 
-    public String getMark() {
+    public Double getMark() {
         return mark;
     }
 
-    public void setMark(String mark) {
+    public void setMark(Double mark) {
         this.mark = mark;
     }
 }

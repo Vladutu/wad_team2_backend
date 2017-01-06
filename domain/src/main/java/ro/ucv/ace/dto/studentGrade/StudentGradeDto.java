@@ -23,6 +23,8 @@ public class StudentGradeDto {
 
     private String mark;
 
+    private Integer solutionId;
+
     public StudentGradeDto(int id, String username, String firstName, String lastName, String gender, String ssn,
                            String email, String subgroup, String mark) {
         this.id = id;
@@ -34,6 +36,14 @@ public class StudentGradeDto {
         this.email = email;
         this.subgroup = subgroup;
         this.mark = mark;
+    }
+
+    public Integer getSolutionId() {
+        return solutionId;
+    }
+
+    public void setSolutionId(Integer solutionId) {
+        this.solutionId = solutionId;
     }
 
     public int getId() {

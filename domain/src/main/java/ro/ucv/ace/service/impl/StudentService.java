@@ -142,6 +142,7 @@ public class StudentService implements IStudentService {
                 if (mark != null) {
                     studentGradeDto.setMark(mark.toString());
                 }
+                studentGradeDto.setSolutionId(solution.getId());
             } catch (EntityNotFoundException e) {
             }
 

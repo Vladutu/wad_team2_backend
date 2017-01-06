@@ -32,7 +32,7 @@ public class SolutionRepository implements ISolutionRepository {
 
     @Override
     public Solution getSolutionForStudentByTask(Integer studentId, Integer taskId) {
-        return innerSolutionRepository.findOneWhere(solution -> solution.getStudent().getId().equals(taskId) &&
+        return innerSolutionRepository.findOneWhere(solution -> solution.getStudent().getId().equals(studentId) &&
                 solution.getTask().getId().equals(taskId));
     }
 

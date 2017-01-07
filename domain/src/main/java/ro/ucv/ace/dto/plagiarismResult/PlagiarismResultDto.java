@@ -5,6 +5,8 @@ package ro.ucv.ace.dto.plagiarismResult;
  */
 public class PlagiarismResultDto {
 
+    private int id;
+
     private String username;
 
     private String firstName;
@@ -26,7 +28,9 @@ public class PlagiarismResultDto {
     public PlagiarismResultDto() {
     }
 
-    public PlagiarismResultDto(String username, String firstName, String lastName, String gender, String ssn, String email, String subgroup, String similarityPercent, String url) {
+    public PlagiarismResultDto(int id, String username, String firstName, String lastName, String gender, String ssn,
+                               String email, String subgroup, String similarityPercent, String url) {
+        this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,6 +40,14 @@ public class PlagiarismResultDto {
         this.subgroup = subgroup;
         this.similarityPercent = similarityPercent;
         this.url = url;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {

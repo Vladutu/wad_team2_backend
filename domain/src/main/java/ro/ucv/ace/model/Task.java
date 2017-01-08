@@ -211,7 +211,7 @@ public abstract class Task {
         throw new ro.ucv.ace.exception.EntityNotFoundException("Solution not found");
     }
 
-    public void accept(StudentTaskVisitor studentTaskVisitor, String mark) {
-        studentTaskVisitor.visit(this, mark);
+    public void accept(StudentTaskVisitor studentTaskVisitor, String mark, boolean solutionSent) {
+        studentTaskVisitor.visit(this, mark, solutionSent);
     }
 }

@@ -12,9 +12,9 @@ public class StudentTaskVisitor {
 
     private StudentTaskDto studentTaskDto;
 
-    public void visit(Task task, String mark) {
+    public void visit(Task task, String mark, boolean solutionSent) {
         studentTaskDto = new StudentTaskDto(task.getId(), task.getName(), task.getDescription(),
-                task.getDeadline().toString(), task.getLanguage().toString(), task.hasTestsEnabled(), mark);
+                task.getDeadline().toString(), task.getLanguage().toString(), task.hasTestsEnabled(), mark, solutionSent);
     }
 
     public StudentTaskDto getStudentTaskDto() {

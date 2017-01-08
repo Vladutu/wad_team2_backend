@@ -19,7 +19,10 @@ public class StudentTaskDto {
 
     private String mark;
 
-    public StudentTaskDto(Integer id, String name, String description, String deadline, String language, boolean testsEnabled, String mark) {
+    private boolean solutionSent;
+
+    public StudentTaskDto(Integer id, String name, String description, String deadline, String language,
+                          boolean testsEnabled, String mark, boolean solutionSent) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -27,6 +30,7 @@ public class StudentTaskDto {
         this.language = language;
         this.testsEnabled = testsEnabled;
         this.mark = mark;
+        this.solutionSent = solutionSent;
     }
 
     public Integer getId() {
@@ -35,6 +39,14 @@ public class StudentTaskDto {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public boolean isSolutionSent() {
+        return solutionSent;
+    }
+
+    public void setSolutionSent(boolean solutionSent) {
+        this.solutionSent = solutionSent;
     }
 
     public String getName() {

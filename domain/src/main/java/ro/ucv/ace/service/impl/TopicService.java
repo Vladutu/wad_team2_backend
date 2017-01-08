@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by tzapt on 11/26/2016.
@@ -115,6 +116,7 @@ public class TopicService implements ITopicService {
     public List<StudentTopicDto> getStudentTopics(int studentId) {
         List<Topic> topics = topicRepository.findAll();
         List<StudentTopicDto> studentTopicDtos = new ArrayList<>();
+        AtomicBoolean solutionSent = new AtomicBoolean(false);
 
         topics.forEach(topic -> {
             List<Task> tasks = topic.getTasks();
@@ -132,11 +134,12 @@ public class TopicService implements ITopicService {
                                 if (solution.getMark() != null) {
                                     mark = solution.getMark().toString();
                                 }
+                                solutionSent.set(true);
                             } catch (EntityNotFoundException ignored) {
                             }
 
 
-                            task.accept(studentTaskVisitor, mark);
+                            task.accept(studentTaskVisitor, mark, solutionSent.get());
                             studentTaskDtos.add(studentTaskVisitor.getStudentTaskDto());
                         }
                     });

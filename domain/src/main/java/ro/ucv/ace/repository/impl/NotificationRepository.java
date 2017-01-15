@@ -7,6 +7,7 @@ import ro.ucv.ace.repository.IJpaRepository;
 import ro.ucv.ace.repository.INotificationRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Geo on 06.12.2016.
@@ -20,13 +21,17 @@ public class NotificationRepository implements INotificationRepository {
 
     @Override
     public List<Notification> findByUser(int userId) {
-        return innerNotificationRepository.findAllWhere(notification -> notification.getAccount().getUser().getId().equals(userId));
+        return innerNotificationRepository
+                .findAllWhere(notification -> notification.getAccount().getUser().getId().equals(userId));
     }
 
     @Override
     public List<Notification> findUnseenByUser(int userId) {
-        return innerNotificationRepository.findAllWhere(notification -> notification.getAccount().getUser().getId().equals(userId)
+        List<Notification> notifications = innerNotificationRepository.findAllWhere(notification -> notification.getAccount().getUser().getId().equals(userId)
                 && !notification.getSeen().equals(true));
+        notifications = notifications.stream().sorted((n1, n2) -> n2.getDate().compareTo(n1.getDate())).collect(Collectors.toList());
+
+        return notifications;
     }
 
     @Override

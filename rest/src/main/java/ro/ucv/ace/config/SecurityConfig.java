@@ -54,9 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/", "/login", "/users/**").permitAll()
                 .antMatchers("/students/**").access("hasRole('STUDENT')")
-                .antMatchers("/secretaries/**").access("hasRole('SECRETARY')")
+                .antMatchers("/secretaries/**").access("hasAnyRole('SECRETARY','PROFESSOR')")
                 .antMatchers("/professors/**").access("hasRole('PROFESSOR')")
-                .antMatchers("/solutions/**").access("hasRole('PROFESSOR', 'STUDENT')")
+                .antMatchers("/solutions/**").access("hasAnyRole('PROFESSOR', 'STUDENT')")
                 .and()
                 .httpBasic().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

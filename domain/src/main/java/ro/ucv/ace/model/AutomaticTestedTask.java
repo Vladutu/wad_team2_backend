@@ -93,7 +93,7 @@ public class AutomaticTestedTask extends Task {
 
 
         TestJobResult tjResult = (TestJobResult) testJobResult;
-        double mark = tjResult.getPassedTests() / tjResult.getTotalTests() * 100;
+        double mark = tjResult.getPassedTests() * 100 / tjResult.getTotalTests();
         solution.setMark(mark);
 
         solution.setAccepted(true);

@@ -37,7 +37,7 @@ public class ExceptionParserImpl implements IExceptionParser {
         String tokens[] = unformattedMessage.split(" ");
         String className = tokens[3].split("\\.")[4];
 
-        return createString("Unable to find " + className + " with id " + tokens[6]);
+        return createString("Unable to find ", className, " with id ", tokens[6]);
     }
 
     private String createString(String... strings) {
